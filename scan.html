@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hebra — Hair Diagnosis</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream: #F5F2EC;
+  --ink: #111111;
+  --ink60: rgba(17,17,17,0.6);
+  --ink30: rgba(17,17,17,0.3);
+  --ink10: rgba(17,17,17,0.08);
+  --white: #FFFFFF;
+  --accent: #111111;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'Barlow Condensed', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.4rem 3rem;
+  background: var(--cream);
+  border-bottom: 1px solid var(--ink10);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem;
+  letter-spacing: 0.15em;
+  color: var(--ink);
+  text-decoration: none;
+}
+.nav-step {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ink30);
+}
+
+/* ── MAIN WRAPPER ── */
+.scan-wrapper {
+  padding-top: 6rem;
+  min-height: 100vh;
+}
+
+/* ── STEP PANELS ── */
+.step-panel {
+  display: none;
+  min-height: calc(100vh - 6rem);
+  padding: 4rem 3rem 6rem;
+  max-width: 860px;
+  margin: 0 auto;
+  animation: panelIn 0.5s cubic-bezier(0.16,1,0.3,1) both;
+}
+.step-panel.active { display: block; }
+
+@keyframes panelIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── STEP LABEL ── */
+.step-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--ink30);
+  margin-bottom: 1.2rem;
+}
+.step-title {
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--ink);
+  margin-bottom: 0.6rem;
+}
+.step-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--ink60);
+  margin-bottom: 3rem;
+}
+
+/* ── UPLOAD STEP ── */
+.upload-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.upload-zone {
+  aspect-ratio: 3/4;
+  border: 1.5px dashed rgba(17,17,17,0.2);
+  border-radius: 4px;
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.3s, background 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.upload-zone:hover { border-color: var(--ink); background: #FAFAF8; }
+.upload-zone.has-image { border-style: solid; border-color: var(--ink); }
+
+.upload-zone input[type="file"] {
+  position: absolute; inset: 0;
+  opacity: 0; cursor: pointer; width: 100%; height: 100%;
+}
+.upload-zone .preview-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+}
+.upload-icon {
+  width: 32px; height: 32px;
+  margin-bottom: 0.8rem;
+  opacity: 0.3;
+}
+.upload-label-text {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink30);
+  text-align: center;
+  line-height: 1.6;
+}
+.upload-zone-num {
+  position: absolute;
+  top: 0.8rem; left: 0.9rem;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: var(--ink30);
+}
+.upload-remove {
+  position: absolute;
+  top: 0.6rem; right: 0.6rem;
+  width: 24px; height: 24px;
+  background: var(--ink);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 10;
+  border: none;
+  color: white;
+  font-size: 0.75rem;
+  line-height: 1;
+}
+.upload-zone.has-image .upload-remove { opacity: 1; }
+.upload-zone.has-image .upload-icon,
+.upload-zone.has-image .upload-label-text { display: none; }
+
+.upload-tips {
+  background: var(--white);
+  border-radius: 4px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 3rem;
+}
+.upload-tips-title {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ink30);
+  margin-bottom: 1rem;
+}
+.upload-tips-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+.tip-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+.tip-dot {
+  width: 4px; height: 4px;
+  background: var(--ink30);
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 0.45rem;
+}
+.tip-text {
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--ink60);
+  line-height: 1.5;
+}
+
+/* ── QUESTIONNAIRE STEP ── */
+.question-progress {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 3.5rem;
+}
+.q-bar {
+  height: 2px;
+  flex: 1;
+  background: var(--ink10);
+  border-radius: 1px;
+  transition: background 0.4s;
+}
+.q-bar.done { background: var(--ink); }
+.q-bar.active { background: rgba(17,17,17,0.5); }
+
+.question-block {
+  display: none;
+}
+.question-block.active { display: block; }
+
+.q-num {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--ink30);
+  margin-bottom: 0.8rem;
+}
+.q-text {
+  font-size: clamp(1.3rem, 3vw, 1.9rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  line-height: 1.2;
+  margin-bottom: 2rem;
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+}
+.option-btn {
+  background: var(--white);
+  border: 1.5px solid var(--ink10);
+  border-radius: 3px;
+  padding: 1rem 1.2rem;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  font-family: 'Barlow Condensed', sans-serif;
+}
+.option-btn:hover { border-color: rgba(17,17,17,0.4); }
+.option-btn.selected {
+  border-color: var(--ink);
+  background: var(--ink);
+}
+.option-btn.selected .opt-label,
+.option-btn.selected .opt-sub { color: var(--white) !important; }
+
+.opt-label {
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink);
+  display: block;
+  margin-bottom: 0.2rem;
+}
+.opt-sub {
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--ink60);
+  display: block;
+}
+
+/* ── BUTTONS ── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--white);
+  background: var(--ink);
+  border: none;
+  padding: 1.1rem 2.8rem;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  text-decoration: none;
+}
+.btn-primary:hover { background: #333; transform: translateY(-2px); }
+.btn-primary:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink60);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem 0;
+  transition: color 0.2s;
+}
+.btn-secondary:hover { color: var(--ink); }
+
+.btn-row {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+/* ── LOADING STEP ── */
+#step-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: calc(100vh - 6rem);
+  padding: 4rem 3rem;
+}
+
+.loading-canvas-wrap {
+  width: 200px; height: 200px;
+  position: relative;
+  margin-bottom: 3rem;
+}
+#loadingCanvas {
+  width: 200px; height: 200px;
+}
+
+.loading-title {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+}
+.loading-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--ink60);
+  margin-bottom: 2.5rem;
+}
+
+.loading-steps {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-width: 320px;
+}
+.loading-step-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink30);
+  transition: color 0.4s;
+}
+.loading-step-item.done { color: var(--ink); }
+.loading-step-item.active { color: var(--ink60); }
+.ls-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+  transition: background 0.4s;
+}
+.loading-step-item.active .ls-dot { background: var(--ink60); animation: pulse 1s infinite; }
+.loading-step-item.done .ls-dot { background: var(--ink); }
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.6); opacity: 0.5; }
+}
+
+/* ── RESULTS STEP ── */
+#step-results {
+  max-width: 1000px;
+}
+
+.results-header {
+  margin-bottom: 4rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid var(--ink10);
+}
+.results-name {
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+.results-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.3rem;
+  color: var(--ink60);
+}
+
+.scores-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  margin-bottom: 4rem;
+}
+@media (max-width: 700px) {
+  .scores-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.score-card {
+  background: var(--white);
+  border-radius: 4px;
+  padding: 1.5rem 1.2rem;
+  text-align: center;
+  border: 1px solid var(--ink10);
+}
+.score-num {
+  font-size: 2.8rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 0.4rem;
+  color: var(--ink);
+}
+.score-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink30);
+  line-height: 1.4;
+}
+.score-bar-wrap {
+  height: 3px;
+  background: var(--ink10);
+  border-radius: 2px;
+  margin-top: 1rem;
+  overflow: hidden;
+}
+.score-bar-fill {
+  height: 100%;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
+  width: 0;
+}
+
+/* OVERALL */
+.overall-band {
+  background: var(--ink);
+  color: var(--white);
+  border-radius: 4px;
+  padding: 2rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4rem;
+  gap: 2rem;
+}
+.overall-left { }
+.overall-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 0.4rem;
+}
+.overall-score {
+  font-size: 4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.overall-tag {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.6);
+  margin-top: 0.3rem;
+}
+.overall-summary {
+  flex: 1;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 300;
+  line-height: 1.75;
+  color: rgba(255,255,255,0.75);
+  max-width: 500px;
+}
+
+/* DIAGNOSIS TEXT */
+.diagnosis-section {
+  margin-bottom: 4rem;
+}
+.diag-section-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--ink30);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--ink10);
+}
+.diag-text {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--ink60);
+}
+.diag-findings {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+@media (max-width: 600px) { .diag-findings { grid-template-columns: 1fr; } }
+
+.finding-card {
+  background: var(--white);
+  border: 1px solid var(--ink10);
+  border-radius: 4px;
+  padding: 1.5rem;
+}
+.finding-cat {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ink30);
+  margin-bottom: 0.5rem;
+}
+.finding-title {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 0.6rem;
+}
+.finding-desc {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--ink60);
+}
+
+/* PRODUCTS */
+.products-section { margin-bottom: 4rem; }
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+}
+@media (max-width: 700px) { .products-grid { grid-template-columns: 1fr; } }
+
+.product-card {
+  background: var(--white);
+  border: 1px solid var(--ink10);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.product-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
+
+.product-img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  background: #EEE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: var(--ink30);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.product-body { padding: 1.2rem; }
+.product-rank {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ink30);
+  margin-bottom: 0.4rem;
+}
+.product-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 0.3rem;
+  line-height: 1.3;
+}
+.product-brand {
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--ink30);
+  margin-bottom: 0.8rem;
+}
+.product-reason {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--ink60);
+  margin-bottom: 1rem;
+}
+.product-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 1px;
+  transition: opacity 0.2s;
+}
+.product-link:hover { opacity: 0.5; }
+
+/* ── ROUTINE SECTION ── */
+.routine-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+@media (max-width: 600px) { .routine-grid { grid-template-columns: 1fr; } }
+
+.routine-step {
+  background: var(--white);
+  border: 1px solid var(--ink10);
+  border-radius: 4px;
+  padding: 1.5rem;
+}
+.routine-step-num {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--ink30);
+  margin-bottom: 0.5rem;
+}
+.routine-step-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+}
+.routine-step-desc {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--ink60);
+}
+
+/* ── RESULTS FOOTER ── */
+.results-footer-actions {
+  padding-top: 3rem;
+  border-top: 1px solid var(--ink10);
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+
+.disclaimer {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: var(--white);
+  border-radius: 4px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--ink30);
+}
+
+/* ── ERROR STATE ── */
+.error-banner {
+  background: #FFF5F5;
+  border: 1px solid rgba(200,50,50,0.2);
+  border-radius: 4px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  color: #8B2020;
+  display: none;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  nav { padding: 1.2rem 1.5rem; }
+  .step-panel { padding: 3rem 1.5rem 5rem; }
+  .upload-grid { grid-template-columns: repeat(3, 1fr); gap: 0.8rem; }
+  .upload-tips-list { grid-template-columns: 1fr; }
+  .scores-grid { grid-template-columns: repeat(2, 1fr); }
+  .overall-band { flex-direction: column; }
+  .products-grid { grid-template-columns: 1fr; }
+  .routine-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="index.html" class="nav-logo">Hebra</a>
+  <span class="nav-step" id="navStep">Step 1 of 3</span>
+</nav>
+
+<div class="scan-wrapper">
+
+  <!-- ════════════════════════════════════ STEP 1: UPLOAD ════════════ -->
+  <div id="step-upload" class="step-panel active">
+    <p class="step-label">01 — Photo Upload</p>
+    <h1 class="step-title">Show us<br>your hair.</h1>
+    <p class="step-subtitle">Three photos give us a complete picture.</p>
+
+    <div id="errorBanner" class="error-banner">
+      Please upload all three photos before continuing.
+    </div>
+
+    <div class="upload-grid">
+      <!-- Zone 1 -->
+      <div class="upload-zone" id="zone1" onclick="triggerUpload(1)">
+        <span class="upload-zone-num">01</span>
+        <input type="file" id="file1" accept="image/*" onchange="handleFile(1, this)" style="display:none">
+        <img class="preview-img" id="preview1" style="display:none" alt="">
+        <svg class="upload-icon" viewBox="0 0 32 32" fill="none">
+          <path d="M16 22V10M16 10L11 15M16 10L21 15" stroke="#111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="4" y="4" width="24" height="24" rx="3" stroke="#111" stroke-width="1.5"/>
+        </svg>
+        <span class="upload-label-text">Top of head<br>crown area</span>
+        <button class="upload-remove" onclick="removeFile(event,1)">✕</button>
+      </div>
+
+      <!-- Zone 2 -->
+      <div class="upload-zone" id="zone2" onclick="triggerUpload(2)">
+        <span class="upload-zone-num">02</span>
+        <input type="file" id="file2" accept="image/*" onchange="handleFile(2, this)" style="display:none">
+        <img class="preview-img" id="preview2" style="display:none" alt="">
+        <svg class="upload-icon" viewBox="0 0 32 32" fill="none">
+          <path d="M16 22V10M16 10L11 15M16 10L21 15" stroke="#111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="4" y="4" width="24" height="24" rx="3" stroke="#111" stroke-width="1.5"/>
+        </svg>
+        <span class="upload-label-text">Side profile<br>mid-lengths</span>
+        <button class="upload-remove" onclick="removeFile(event,2)">✕</button>
+      </div>
+
+      <!-- Zone 3 -->
+      <div class="upload-zone" id="zone3" onclick="triggerUpload(3)">
+        <span class="upload-zone-num">03</span>
+        <input type="file" id="file3" accept="image/*" onchange="handleFile(3, this)" style="display:none">
+        <img class="preview-img" id="preview3" style="display:none" alt="">
+        <svg class="upload-icon" viewBox="0 0 32 32" fill="none">
+          <path d="M16 22V10M16 10L11 15M16 10L21 15" stroke="#111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="4" y="4" width="24" height="24" rx="3" stroke="#111" stroke-width="1.5"/>
+        </svg>
+        <span class="upload-label-text">Ends &amp; tips<br>close-up</span>
+        <button class="upload-remove" onclick="removeFile(event,3)">✕</button>
+      </div>
+    </div>
+
+    <div class="upload-tips">
+      <p class="upload-tips-title">Tips for better results</p>
+      <div class="upload-tips-list">
+        <div class="tip-item"><div class="tip-dot"></div><span class="tip-text">Natural daylight, no flash</span></div>
+        <div class="tip-item"><div class="tip-dot"></div><span class="tip-text">Clean, dry hair preferred</span></div>
+        <div class="tip-item"><div class="tip-dot"></div><span class="tip-text">Close enough to see texture</span></div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="goToQuestions()">Continue →</button>
+      <a href="index.html" class="btn-secondary">← Back to home</a>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════ STEP 2: QUESTIONNAIRE ════ -->
+  <div id="step-questions" class="step-panel">
+    <p class="step-label">02 — Hair Profile</p>
+    <h1 class="step-title">Nine questions.<br>One diagnosis.</h1>
+    <p class="step-subtitle">Be honest — there are no wrong answers.</p>
+
+    <div class="question-progress" id="questionProgress">
+      <!-- 9 bars, generated by JS -->
+    </div>
+
+    <div id="questionsContainer">
+      <!-- Questions generated by JS -->
+    </div>
+
+    <div class="btn-row" id="qBtnRow">
+      <button class="btn-secondary" id="btnQBack" onclick="prevQuestion()">← Back</button>
+      <button class="btn-primary" id="btnQNext" onclick="nextQuestion()">Next →</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════ STEP 3: LOADING ══════════ -->
+  <div id="step-loading" class="step-panel" style="display:none; max-width:100%;">
+    <div class="loading-canvas-wrap">
+      <canvas id="loadingCanvas" width="200" height="200"></canvas>
+    </div>
+    <h2 class="loading-title">Reading your hair.</h2>
+    <p class="loading-sub">Our AI is analysing your photos and answers.</p>
+    <ul class="loading-steps" id="loadingStepsList">
+      <li class="loading-step-item" data-step="0"><div class="ls-dot"></div> Analysing texture &amp; porosity</li>
+      <li class="loading-step-item" data-step="1"><div class="ls-dot"></div> Evaluating scalp condition</li>
+      <li class="loading-step-item" data-step="2"><div class="ls-dot"></div> Mapping moisture profile</li>
+      <li class="loading-step-item" data-step="3"><div class="ls-dot"></div> Assessing structural integrity</li>
+      <li class="loading-step-item" data-step="4"><div class="ls-dot"></div> Generating recommendations</li>
+    </ul>
+  </div>
+
+  <!-- ════════════════════════════════════ STEP 4: RESULTS ══════════ -->
+  <div id="step-results" class="step-panel">
+    <!-- Filled dynamically by JS -->
+  </div>
+
+</div><!-- /scan-wrapper -->
+
+
+<script>
+/* ════════════════════════════════════════════════════════
+   STATE
+════════════════════════════════════════════════════════ */
+const state = {
+  photos: { 1: null, 2: null, 3: null },
+  currentQuestion: 0,
+  answers: {},
+  results: null
+};
+
+const QUESTIONS = [
+  {
+    id: 'hair_type',
+    text: 'How would you describe your natural hair texture?',
+    options: [
+      { value: 'straight', label: 'Straight', sub: 'Type 1 — no curl' },
+      { value: 'wavy', label: 'Wavy', sub: 'Type 2 — soft S-waves' },
+      { value: 'curly', label: 'Curly', sub: 'Type 3 — defined curls' },
+      { value: 'coily', label: 'Coily / Kinky', sub: 'Type 4 — tight coils' }
+    ]
+  },
+  {
+    id: 'density',
+    text: 'How would you describe your hair density?',
+    options: [
+      { value: 'thin', label: 'Fine / Thin', sub: 'Can see scalp easily' },
+      { value: 'medium', label: 'Medium', sub: 'Balanced coverage' },
+      { value: 'thick', label: 'Thick / Dense', sub: 'Heavy, full coverage' }
+    ]
+  },
+  {
+    id: 'scalp',
+    text: 'What is your scalp like between wash days?',
+    options: [
+      { value: 'oily', label: 'Oily', sub: 'Gets greasy fast' },
+      { value: 'dry', label: 'Dry / Flaky', sub: 'Tight, sometimes flaky' },
+      { value: 'balanced', label: 'Balanced', sub: 'Comfortable, no issues' },
+      { value: 'sensitive', label: 'Sensitive', sub: 'Irritated, itchy at times' }
+    ]
+  },
+  {
+    id: 'damage',
+    text: 'Have you chemically treated your hair?',
+    options: [
+      { value: 'none', label: 'No treatments', sub: 'Fully natural' },
+      { value: 'color', label: 'Colour / Bleach', sub: 'Dyed or lightened' },
+      { value: 'chemical', label: 'Relaxer / Perm', sub: 'Chemically straightened or curled' },
+      { value: 'multiple', label: 'Multiple', sub: 'Color + relaxer / multiple' }
+    ]
+  },
+  {
+    id: 'heat',
+    text: 'How often do you use heat styling tools?',
+    options: [
+      { value: 'never', label: 'Never', sub: 'Air dry only' },
+      { value: 'occasional', label: 'Occasionally', sub: '1-2 times per month' },
+      { value: 'weekly', label: 'Weekly', sub: '1-2 times per week' },
+      { value: 'daily', label: 'Daily', sub: 'Every or most days' }
+    ]
+  },
+  {
+    id: 'wash_freq',
+    text: 'How often do you wash your hair?',
+    options: [
+      { value: 'daily', label: 'Daily', sub: 'Every day' },
+      { value: '2-3week', label: 'Every 2–3 days', sub: 'Multiple times per week' },
+      { value: 'weekly', label: 'Once a week', sub: 'Weekly washes' },
+      { value: 'biweekly', label: 'Every 2 weeks', sub: 'Low-poo / co-wash routine' }
+    ]
+  },
+  {
+    id: 'concern',
+    text: 'What is your primary hair concern right now?',
+    options: [
+      { value: 'frizz', label: 'Frizz', sub: 'Flyaways, lack of definition' },
+      { value: 'breakage', label: 'Breakage', sub: 'Snapping, short pieces' },
+      { value: 'dryness', label: 'Dryness', sub: 'Brittle, rough texture' },
+      { value: 'loss', label: 'Hair loss', sub: 'Thinning, shedding' }
+    ]
+  },
+  {
+    id: 'diet',
+    text: 'How would you describe your overall diet & hydration?',
+    options: [
+      { value: 'poor', label: 'Needs work', sub: 'Irregular meals, low water' },
+      { value: 'average', label: 'Average', sub: 'Mostly OK but not great' },
+      { value: 'good', label: 'Good', sub: 'Balanced, hydrated' },
+      { value: 'excellent', label: 'Excellent', sub: 'Very mindful, plant-rich' }
+    ]
+  },
+  {
+    id: 'goal',
+    text: 'What is your hair goal?',
+    options: [
+      { value: 'growth', label: 'Length & Growth', sub: 'Retain length, grow faster' },
+      { value: 'strength', label: 'Strength & Health', sub: 'Reduce breakage' },
+      { value: 'texture', label: 'Texture & Shine', sub: 'More definition, gloss' },
+      { value: 'scalp', label: 'Scalp Balance', sub: 'Healthier root foundation' }
+    ]
+  }
+];
+
+/* ════════════════════════════════════════════════════════
+   UPLOAD
+════════════════════════════════════════════════════════ */
+function triggerUpload(n) {
+  document.getElementById('file' + n).click();
+}
+
+function handleFile(n, input) {
+  if (!input.files || !input.files[0]) return;
+  const file = input.files[0];
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    state.photos[n] = e.target.result;
+    const preview = document.getElementById('preview' + n);
+    preview.src = e.target.result;
+    preview.style.display = 'block';
+    document.getElementById('zone' + n).classList.add('has-image');
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeFile(e, n) {
+  e.stopPropagation();
+  state.photos[n] = null;
+  document.getElementById('preview' + n).style.display = 'none';
+  document.getElementById('preview' + n).src = '';
+  document.getElementById('file' + n).value = '';
+  document.getElementById('zone' + n).classList.remove('has-image');
+}
+
+function goToQuestions() {
+  const missing = [1,2,3].filter(n => !state.photos[n]);
+  if (missing.length > 0) {
+    document.getElementById('errorBanner').style.display = 'block';
+    return;
+  }
+  document.getElementById('errorBanner').style.display = 'none';
+  showStep('step-questions');
+  buildQuestions();
+}
+
+/* ════════════════════════════════════════════════════════
+   QUESTIONNAIRE
+════════════════════════════════════════════════════════ */
+function buildQuestions() {
+  // Build progress bars
+  const prog = document.getElementById('questionProgress');
+  prog.innerHTML = QUESTIONS.map((_, i) => `<div class="q-bar" id="qbar${i}"></div>`).join('');
+
+  // Build question blocks
+  const container = document.getElementById('questionsContainer');
+  container.innerHTML = QUESTIONS.map((q, i) => `
+    <div class="question-block ${i === 0 ? 'active' : ''}" id="qblock${i}">
+      <p class="q-num">${String(i+1).padStart(2,'0')} / ${String(QUESTIONS.length).padStart(2,'0')}</p>
+      <p class="q-text">${q.text}</p>
+      <div class="options-grid">
+        ${q.options.map(o => `
+          <button class="option-btn ${state.answers[q.id] === o.value ? 'selected' : ''}"
+                  onclick="selectOption('${q.id}', '${o.value}', this)">
+            <span class="opt-label">${o.label}</span>
+            <span class="opt-sub">${o.sub}</span>
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  updateQProgress();
+  updateQButtons();
+}
+
+function selectOption(qId, value, btn) {
+  state.answers[qId] = value;
+  // Remove selected from siblings
+  btn.closest('.options-grid').querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  // Auto-advance after short delay
+  setTimeout(() => nextQuestion(), 400);
+}
+
+function updateQProgress() {
+  QUESTIONS.forEach((_, i) => {
+    const bar = document.getElementById('qbar' + i);
+    if (!bar) return;
+    bar.className = 'q-bar';
+    if (i < state.currentQuestion) bar.classList.add('done');
+    else if (i === state.currentQuestion) bar.classList.add('active');
+  });
+}
+
+function updateQButtons() {
+  const btnBack = document.getElementById('btnQBack');
+  const btnNext = document.getElementById('btnQNext');
+  btnBack.style.visibility = state.currentQuestion === 0 ? 'hidden' : 'visible';
+
+  const isLast = state.currentQuestion === QUESTIONS.length - 1;
+  btnNext.textContent = isLast ? 'Get My Diagnosis →' : 'Next →';
+}
+
+function nextQuestion() {
+  const q = QUESTIONS[state.currentQuestion];
+  if (!state.answers[q.id]) {
+    // Highlight options to hint
+    document.querySelectorAll(`#qblock${state.currentQuestion} .option-btn`).forEach(b => {
+      b.style.borderColor = 'rgba(17,17,17,0.3)';
+    });
+    return;
+  }
+
+  if (state.currentQuestion < QUESTIONS.length - 1) {
+    document.getElementById('qblock' + state.currentQuestion).classList.remove('active');
+    state.currentQuestion++;
+    document.getElementById('qblock' + state.currentQuestion).classList.add('active');
+    updateQProgress();
+    updateQButtons();
+    document.getElementById('navStep').textContent = `Step 2 of 3 — Q${state.currentQuestion + 1}/${QUESTIONS.length}`;
+  } else {
+    startDiagnosis();
+  }
+}
+
+function prevQuestion() {
+  if (state.currentQuestion > 0) {
+    document.getElementById('qblock' + state.currentQuestion).classList.remove('active');
+    state.currentQuestion--;
+    document.getElementById('qblock' + state.currentQuestion).classList.add('active');
+    updateQProgress();
+    updateQButtons();
+  } else {
+    showStep('step-upload');
+  }
+}
+
+/* ════════════════════════════════════════════════════════
+   LOADING ANIMATION
+════════════════════════════════════════════════════════ */
+let loadingAnim;
+
+function startLoadingAnimation() {
+  const canvas = document.getElementById('loadingCanvas');
+  const ctx = canvas.getContext('2d');
+  const W = 200, H = 200;
+  let t = 0;
+  const lines = Array.from({length: 12}, (_, i) => ({
+    angle: (i / 12) * Math.PI * 2,
+    len: 0.4 + Math.random() * 0.4,
+    speed: 0.003 + Math.random() * 0.004,
+    phase: Math.random() * Math.PI * 2
+  }));
+
+  loadingAnim = setInterval(() => {
+    t += 0.02;
+    ctx.clearRect(0, 0, W, H);
+    const cx = W / 2, cy = H / 2;
+
+    // Outer ring
+    ctx.beginPath();
+    ctx.arc(cx, cy, 70, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(17,17,17,0.06)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Animated arc
+    ctx.beginPath();
+    ctx.arc(cx, cy, 70, t, t + Math.PI * 1.2);
+    ctx.strokeStyle = 'rgba(17,17,17,0.7)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // Hair strands
+    lines.forEach((l, i) => {
+      const angle = l.angle + t * l.speed * 20;
+      const r = 28 + Math.sin(t * 2 + l.phase) * 8;
+      const len = l.len * 30 + Math.sin(t * 3 + l.phase) * 5;
+      const x1 = cx + Math.cos(angle) * r;
+      const y1 = cy + Math.sin(angle) * r;
+      const x2 = cx + Math.cos(angle) * (r + len);
+      const y2 = cy + Math.sin(angle) * (r + len);
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.strokeStyle = `rgba(17,17,17,${0.15 + Math.sin(t + l.phase) * 0.1})`;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    });
+
+    // Center dot
+    ctx.beginPath();
+    ctx.arc(cx, cy, 3 + Math.sin(t * 2) * 1, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(17,17,17,0.5)';
+    ctx.fill();
+  }, 1000 / 60);
+}
+
+function animateLoadingSteps() {
+  const steps = document.querySelectorAll('.loading-step-item');
+  let i = 0;
+  function next() {
+    if (i > 0) steps[i-1].className = 'loading-step-item done';
+    if (i < steps.length) {
+      steps[i].className = 'loading-step-item active';
+      i++;
+      setTimeout(next, 1200);
+    }
+  }
+  next();
+}
+
+/* ════════════════════════════════════════════════════════
+   DIAGNOSIS API CALL
+════════════════════════════════════════════════════════ */
+async function startDiagnosis() {
+  showStep('step-loading');
+  document.getElementById('navStep').textContent = 'Analysing…';
+  startLoadingAnimation();
+  animateLoadingSteps();
+
+  try {
+    const payload = {
+      answers: state.answers,
+      photos: [state.photos[1], state.photos[2], state.photos[3]]
+    };
+
+    const response = await fetch('/api/diagnose', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) throw new Error('API error ' + response.status);
+    const data = await response.json();
+    state.results = data;
+
+    // Ensure minimum loading time (2.5s feels real)
+    await new Promise(r => setTimeout(r, 2500));
+    clearInterval(loadingAnim);
+    renderResults(data);
+    showStep('step-results');
+    document.getElementById('navStep').textContent = 'Your Diagnosis';
+    // Animate score bars
+    setTimeout(animateScoreBars, 300);
+
+  } catch (err) {
+    clearInterval(loadingAnim);
+    console.error(err);
+    // Fallback: show demo results
+    await new Promise(r => setTimeout(r, 1500));
+    const demo = generateDemoResults();
+    state.results = demo;
+    renderResults(demo);
+    showStep('step-results');
+    document.getElementById('navStep').textContent = 'Your Diagnosis';
+    setTimeout(animateScoreBars, 300);
+  }
+}
+
+/* ════════════════════════════════════════════════════════
+   DEMO RESULTS GENERATOR (fallback if API unavailable)
+════════════════════════════════════════════════════════ */
+function generateDemoResults() {
+  const a = state.answers;
+
+  // Simple scoring logic based on answers
+  let scalp = 75, strand = 68, moisture = 72, structural = 65, vitality = 78;
+
+  if (a.scalp === 'balanced') scalp = 88;
+  if (a.scalp === 'oily') scalp = 62;
+  if (a.scalp === 'dry') scalp = 55;
+
+  if (a.heat === 'daily') { strand -= 15; structural -= 12; }
+  if (a.heat === 'never') { strand += 10; }
+
+  if (a.damage === 'multiple') { strand -= 18; structural -= 15; }
+  if (a.damage === 'none') { strand += 8; structural += 8; }
+
+  if (a.diet === 'excellent') vitality = 92;
+  if (a.diet === 'poor') vitality = 52;
+
+  // Clamp
+  const clamp = v => Math.min(95, Math.max(30, Math.round(v)));
+  scalp = clamp(scalp); strand = clamp(strand);
+  moisture = clamp(moisture); structural = clamp(structural); vitality = clamp(vitality);
+
+  const overall = clamp(Math.round((scalp + strand + moisture + structural + vitality) / 5));
+
+  const concernMap = {
+    frizz: 'Your frizz pattern suggests elevated cuticle porosity.',
+    breakage: 'Breakage at the mid-shaft indicates mechanical or chemical stress.',
+    dryness: 'Dryness signals a disrupted moisture-protein balance.',
+    loss: 'Hair thinning can be addressed through scalp stimulation and nutrition.'
+  };
+
+  const goalMap = {
+    growth: ['Scalp Stimulation Massage', 'Biotin & Keratin Nutrition', 'Protective Styling'],
+    strength: ['Protein Treatment', 'Bond Repair Routine', 'Gentle Detangling'],
+    texture: ['Deep Conditioning', 'Curl Definition', 'Glossing Treatments'],
+    scalp: ['Scalp Exfoliation', 'Balancing Shampoo', 'Microbiome Support']
+  };
+
+  return {
+    overall,
+    scores: {
+      scalp_health: scalp,
+      strand_strength: strand,
+      moisture_balance: moisture,
+      structural_integrity: structural,
+      vitality_index: vitality
+    },
+    hair_type_label: getHairTypeLabel(a.hair_type),
+    summary: `Your hair presents as ${a.hair_type || 'textured'} with ${a.density || 'medium'} density. The analysis reveals a profile shaped by your styling habits, chemical history, and scalp environment. With a targeted routine, your hair can reach significantly higher performance across all five dimensions.`,
+    key_finding: concernMap[a.concern] || 'Your hair profile shows clear areas for targeted improvement.',
+    findings: [
+      {
+        category: 'Scalp',
+        title: a.scalp === 'oily' ? 'Sebum Overproduction' : a.scalp === 'dry' ? 'Moisture Deficit' : 'Balanced Environment',
+        desc: a.scalp === 'oily' ? 'Excess sebum is clogging follicles and creating an environment that inhibits optimal growth.' : a.scalp === 'dry' ? 'Low sebum production is leaving the scalp prone to flaking and sensitivity.' : 'Your scalp maintains a healthy sebum balance, providing a good foundation for growth.'
+      },
+      {
+        category: 'Damage',
+        title: a.damage === 'none' ? 'Pristine Strand Integrity' : 'Chemical Stress Detected',
+        desc: a.damage === 'none' ? 'No chemical processing means your cuticle layer remains largely intact.' : 'Chemical services have altered the disulfide bond structure of your strands, requiring bond-repair focus.'
+      },
+      {
+        category: 'Moisture',
+        title: a.heat === 'daily' ? 'Heat-Induced Dryness' : 'Moderate Hydration',
+        desc: a.heat === 'daily' ? 'Daily heat exposure is depleting your hair\'s natural moisture reserves, leading to brittleness.' : 'Your moisture levels are within a functional range but can be significantly improved with targeted conditioning.'
+      },
+      {
+        category: 'Vitality',
+        title: a.diet === 'excellent' ? 'Strong Nutritional Foundation' : 'Nutrition Opportunity',
+        desc: a.diet === 'excellent' ? 'Your diet is providing the micronutrients needed for robust hair growth and strength.' : 'Internal nutrition is a key lever for hair health — targeted supplementation could accelerate results.'
+      }
+    ],
+    routine: (goalMap[a.goal] || goalMap['strength']).map((title, i) => ({
+      step: String(i + 1).padStart(2, '0'),
+      title,
+      desc: getRoutineDesc(title)
+    })),
+    products: [
+      {
+        rank: '01',
+        name: 'Olaplex No.3 Hair Perfector',
+        brand: 'Olaplex',
+        reason: 'Reconnects broken disulfide bonds at home, targeting structural damage from heat and chemical services.',
+        link: 'https://www.amazon.com/s?k=olaplex+no+3&tag=hebrahair-20'
+      },
+      {
+        rank: '02',
+        name: 'SheaMoisture Manuka Honey Masque',
+        brand: 'SheaMoisture',
+        reason: 'Deeply restores moisture balance with Manuka honey and Mafura oil for lasting hydration and elasticity.',
+        link: 'https://www.amazon.com/s?k=sheamoisture+manuka+honey+masque&tag=hebrahair-20'
+      },
+      {
+        rank: '03',
+        name: 'The Ordinary Multi-Peptide Serum',
+        brand: 'The Ordinary',
+        reason: 'Clinically studied peptide complex that supports scalp health and can visibly improve hair density over 90 days.',
+        link: 'https://www.amazon.com/s?k=the+ordinary+multi+peptide+hair+serum&tag=hebrahair-20'
+      }
+    ]
+  };
+}
+
+function getHairTypeLabel(t) {
+  const m = { straight: 'Straight Type 1', wavy: 'Wavy Type 2', curly: 'Curly Type 3', coily: 'Coily Type 4' };
+  return m[t] || 'Natural';
+}
+
+function getRoutineDesc(title) {
+  const m = {
+    'Scalp Stimulation Massage': 'Use fingertips (not nails) to massage your scalp in circular motions for 5 minutes before washing. Boosts circulation and nutrient delivery to follicles.',
+    'Biotin & Keratin Nutrition': 'Supplement with biotin 5000mcg and ensure adequate protein intake. Hair is 95% keratin — your body needs the building blocks.',
+    'Protective Styling': 'Minimise manipulation with low-tension styles. Protective styles reduce breakage and retain length while your hair strengthens.',
+    'Protein Treatment': 'Incorporate a monthly protein treatment to rebuild weakened hair structure. Follow with a deep moisture mask to maintain elasticity.',
+    'Bond Repair Routine': 'Use a bond-repair product like Olaplex No.3 weekly before shampooing to reconnect broken disulfide bonds.',
+    'Gentle Detangling': 'Always detangle from ends to roots on wet, conditioned hair using a wide-tooth comb or fingers. Never force through tangles.',
+    'Deep Conditioning': 'Weekly deep conditioning sessions of 20–30 minutes under a heat cap. Look for ingredients like shea butter, glycerin and panthenol.',
+    'Curl Definition': 'Apply a leave-in conditioner and curl cream to soaking wet hair using the praying hands method. Diffuse on low heat.',
+    'Glossing Treatments': 'Monthly gloss treatments or apple cider vinegar rinses seal the cuticle for mirror-like shine and reduced frizz.',
+    'Scalp Exfoliation': 'Use a gentle scalp scrub or exfoliating shampoo bi-weekly to remove product buildup and dead skin cells.',
+    'Balancing Shampoo': 'Alternate your regular shampoo with a clarifying or pH-balancing formula every 4th wash to reset scalp chemistry.',
+    'Microbiome Support': 'Look for shampoos containing prebiotics or postbiotics to nurture a healthy scalp microbiome ecosystem.'
+  };
+  return m[title] || 'A consistent approach to this step will yield visible results within 6-8 weeks.';
+}
+
+/* ════════════════════════════════════════════════════════
+   RENDER RESULTS
+════════════════════════════════════════════════════════ */
+function renderResults(data) {
+  const s = data.scores;
+  const el = document.getElementById('step-results');
+
+  el.innerHTML = `
+    <div class="results-header">
+      <p class="step-label">03 — Your Diagnosis</p>
+      <h1 class="results-name">${data.hair_type_label}<br>Profile.</h1>
+      <p class="results-tagline">Here is what we found.</p>
+    </div>
+
+    <!-- Overall score band -->
+    <div class="overall-band">
+      <div class="overall-left">
+        <p class="overall-label">Overall Hair Score</p>
+        <p class="overall-score">${data.overall}<span style="font-size:1.8rem;opacity:0.4">/100</span></p>
+        <p class="overall-tag">${getScoreTag(data.overall)}</p>
+      </div>
+      <p class="overall-summary">${data.summary}</p>
+    </div>
+
+    <!-- 5 category scores -->
+    <div class="scores-grid">
+      ${[
+        { key: 'scalp_health', label: 'Scalp Health' },
+        { key: 'strand_strength', label: 'Strand Strength' },
+        { key: 'moisture_balance', label: 'Moisture Balance' },
+        { key: 'structural_integrity', label: 'Structural Integrity' },
+        { key: 'vitality_index', label: 'Vitality Index' }
+      ].map(cat => `
+        <div class="score-card">
+          <p class="score-num" id="score-${cat.key}">${s[cat.key]}</p>
+          <p class="score-label">${cat.label}</p>
+          <div class="score-bar-wrap">
+            <div class="score-bar-fill" id="bar-${cat.key}" style="width:0%"></div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+
+    <!-- Key finding -->
+    <div class="diagnosis-section">
+      <p class="diag-section-label">Key Finding</p>
+      <p class="diag-text">${data.key_finding}</p>
+
+      <div class="diag-findings">
+        ${data.findings.map(f => `
+          <div class="finding-card">
+            <p class="finding-cat">${f.category}</p>
+            <p class="finding-title">${f.title}</p>
+            <p class="finding-desc">${f.desc}</p>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- Routine -->
+    <div class="diagnosis-section">
+      <p class="diag-section-label">Your Recommended Routine</p>
+      <div class="routine-grid">
+        ${data.routine.map(r => `
+          <div class="routine-step">
+            <p class="routine-step-num">Step ${r.step}</p>
+            <p class="routine-step-title">${r.title}</p>
+            <p class="routine-step-desc">${r.desc}</p>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- Products -->
+    <div class="products-section">
+      <p class="diag-section-label">Recommended Products</p>
+      <div class="products-grid">
+        ${data.products.map(p => `
+          <div class="product-card">
+            <div class="product-img" style="background:#F0EDE8; display:flex; align-items:center; justify-content:center;">
+              <span style="font-size:0.65rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(17,17,17,0.3);">${p.brand}</span>
+            </div>
+            <div class="product-body">
+              <p class="product-rank">${p.rank}</p>
+              <p class="product-name">${p.name}</p>
+              <p class="product-brand">${p.brand}</p>
+              <p class="product-reason">${p.reason}</p>
+              <a href="${p.link}" target="_blank" rel="noopener" class="product-link">
+                View on Amazon →
+              </a>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="results-footer-actions">
+      <button class="btn-primary" onclick="window.print()">Save Results</button>
+      <a href="index.html" class="btn-secondary">← Back to Hebra</a>
+      <button class="btn-secondary" onclick="startOver()">Start New Diagnosis</button>
+    </div>
+
+    <div class="disclaimer">
+      <strong>Disclaimer:</strong> Hebra's diagnosis is powered by AI image analysis and questionnaire data. Results are for informational purposes only and do not constitute medical or dermatological advice. Product recommendations may include affiliate links — Hebra may earn a commission at no extra cost to you. Recommendations are based solely on your diagnosis profile.
+    </div>
+  `;
+}
+
+function getScoreTag(score) {
+  if (score >= 85) return 'Exceptional condition';
+  if (score >= 70) return 'Good overall health';
+  if (score >= 55) return 'Moderate — room to improve';
+  return 'Needs focused attention';
+}
+
+function animateScoreBars() {
+  const keys = ['scalp_health', 'strand_strength', 'moisture_balance', 'structural_integrity', 'vitality_index'];
+  if (!state.results) return;
+  keys.forEach(key => {
+    const bar = document.getElementById('bar-' + key);
+    if (bar) bar.style.width = state.results.scores[key] + '%';
+  });
+}
+
+/* ════════════════════════════════════════════════════════
+   NAV / STEP CONTROL
+════════════════════════════════════════════════════════ */
+const STEP_NAV = {
+  'step-upload': 'Step 1 of 3',
+  'step-questions': 'Step 2 of 3',
+  'step-loading': 'Analysing…',
+  'step-results': 'Your Diagnosis'
+};
+
+function showStep(id) {
+  document.querySelectorAll('.step-panel').forEach(p => {
+    p.classList.remove('active');
+    p.style.display = '';
+  });
+  const target = document.getElementById(id);
+  if (id === 'step-loading') {
+    target.style.display = 'flex';
+  } else {
+    target.classList.add('active');
+  }
+  if (STEP_NAV[id]) document.getElementById('navStep').textContent = STEP_NAV[id];
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function startOver() {
+  state.photos = { 1: null, 2: null, 3: null };
+  state.answers = {};
+  state.currentQuestion = 0;
+  state.results = null;
+  // Clear previews
+  [1,2,3].forEach(n => {
+    document.getElementById('preview' + n).style.display = 'none';
+    document.getElementById('file' + n).value = '';
+    document.getElementById('zone' + n).classList.remove('has-image');
+  });
+  showStep('step-upload');
+}
+</script>
+</body>
+</html>

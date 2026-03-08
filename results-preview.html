@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hebra — Sample Results</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream: #F5F2EC;
+  --ink: #111111;
+  --ink60: rgba(17,17,17,0.6);
+  --ink30: rgba(17,17,17,0.3);
+  --ink10: rgba(17,17,17,0.07);
+  --white: #FFFFFF;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'Barlow Condensed', sans-serif;
+  min-height: 100vh;
+}
+
+nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.4rem 3rem;
+  background: var(--cream);
+  border-bottom: 1px solid var(--ink10);
+}
+.nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 0.15em; color: var(--ink); text-decoration: none; }
+.nav-tag { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink30); }
+
+.page { max-width: 960px; margin: 0 auto; padding: 4rem 3rem 8rem; }
+
+/* SAMPLE BANNER */
+.sample-banner {
+  background: var(--ink); color: var(--white);
+  text-align: center; padding: 0.8rem 2rem;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase;
+}
+
+/* HEADER */
+.results-header { margin-bottom: 3rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--ink10); }
+.step-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.35em; text-transform: uppercase; color: var(--ink30); margin-bottom: 1rem; }
+.results-name { font-size: clamp(2.2rem, 6vw, 4.5rem); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; line-height: 1; margin-bottom: 0.4rem; }
+.results-tagline { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.2rem; color: var(--ink60); }
+
+/* OVERALL BAND */
+.overall-band {
+  background: var(--ink); color: var(--white);
+  border-radius: 3px; padding: 2.5rem 3rem;
+  display: flex; align-items: center;
+  justify-content: space-between; margin-bottom: 3rem; gap: 3rem;
+}
+.overall-left { flex-shrink: 0; }
+.overall-score-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 0.3rem; }
+.overall-score-num { font-size: 5.5rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
+.overall-score-num span { font-size: 1.8rem; opacity: 0.3; }
+.overall-tag { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; color: rgba(255,255,255,0.4); margin-top: 0.3rem; }
+.overall-summary { font-family: 'DM Sans', sans-serif; font-size: 0.92rem; font-weight: 300; line-height: 1.85; color: rgba(255,255,255,0.6); max-width: 480px; }
+
+/* SCORES GRID */
+.scores-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.8rem; margin-bottom: 3.5rem; }
+.score-card { background: var(--white); border-radius: 3px; padding: 1.5rem 1rem; text-align: center; border: 1px solid var(--ink10); }
+.score-num { font-size: 2.8rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1; margin-bottom: 0.3rem; }
+.score-label { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink30); line-height: 1.4; }
+.score-bar-wrap { height: 2px; background: var(--ink10); border-radius: 1px; margin-top: 0.9rem; overflow: hidden; }
+.score-bar-fill { height: 100%; background: var(--ink); border-radius: 1px; transition: width 1.6s cubic-bezier(0.16,1,0.3,1); }
+
+/* SECTIONS */
+.diag-section { margin-bottom: 3.5rem; }
+.diag-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.35em; text-transform: uppercase; color: var(--ink30); margin-bottom: 1.2rem; padding-bottom: 0.7rem; border-bottom: 1px solid var(--ink10); }
+.diag-text { font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 300; line-height: 1.85; color: var(--ink60); }
+
+/* FINDINGS */
+.findings-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1rem; margin-top: 1.5rem; }
+.finding-card { background: var(--white); border: 1px solid var(--ink10); border-radius: 3px; padding: 1.6rem; }
+.finding-cat { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: var(--ink30); margin-bottom: 0.4rem; }
+.finding-title { font-size: 0.95rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); margin-bottom: 0.5rem; }
+.finding-desc { font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 300; line-height: 1.75; color: var(--ink60); }
+
+/* ROUTINE */
+.routine-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+.routine-step { background: var(--white); border: 1px solid var(--ink10); border-radius: 3px; padding: 1.6rem; }
+.routine-num { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink30); margin-bottom: 0.4rem; }
+.routine-title { font-size: 0.9rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); margin-bottom: 0.5rem; }
+.routine-desc { font-family: 'DM Sans', sans-serif; font-size: 0.83rem; font-weight: 300; line-height: 1.7; color: var(--ink60); }
+
+/* PRODUCTS */
+.products-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+.product-card { background: var(--white); border: 1px solid var(--ink10); border-radius: 3px; overflow: hidden; transition: transform 0.25s, box-shadow 0.25s; }
+.product-card:hover { transform: translateY(-4px); box-shadow: 0 14px 40px rgba(0,0,0,0.07); }
+.product-img { width: 100%; aspect-ratio: 1; background: #EDEAE4; display: flex; align-items: center; justify-content: center; }
+.product-img span { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink30); }
+.product-body { padding: 1.3rem; }
+.product-rank { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink30); margin-bottom: 0.3rem; }
+.product-name { font-size: 0.92rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); line-height: 1.3; margin-bottom: 0.2rem; }
+.product-brand { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.06em; color: var(--ink30); margin-bottom: 0.7rem; }
+.product-reason { font-family: 'DM Sans', sans-serif; font-size: 0.83rem; font-weight: 300; line-height: 1.65; color: var(--ink60); margin-bottom: 0.9rem; }
+.product-link { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--ink); padding-bottom: 1px; transition: opacity 0.2s; }
+.product-link:hover { opacity: 0.4; }
+
+/* ACTIONS */
+.results-actions { padding-top: 2.5rem; border-top: 1px solid var(--ink10); display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+.btn-primary { display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: var(--white); background: var(--ink); border: none; padding: 1.1rem 2.8rem; border-radius: 2px; cursor: pointer; transition: background 0.3s, transform 0.2s; text-decoration: none; }
+.btn-primary:hover { background: #333; transform: translateY(-2px); }
+.btn-secondary { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink30); background: transparent; border: none; cursor: pointer; text-decoration: none; transition: color 0.2s; }
+.btn-secondary:hover { color: var(--ink); }
+
+/* DISCLAIMER */
+.disclaimer { background: var(--white); border-radius: 3px; padding: 1.2rem 1.5rem; margin-bottom: 3rem; font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 300; line-height: 1.7; color: var(--ink30); }
+
+@media (max-width: 640px) {
+  nav { padding: 1.2rem 1.5rem; }
+  .page { padding: 2.5rem 1.5rem 5rem; }
+  .scores-grid { grid-template-columns: repeat(2,1fr); }
+  .overall-band { flex-direction: column; }
+  .products-grid, .routine-grid, .findings-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="sample-banner">Sample Result — This is what your diagnosis looks like</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">Hebra</a>
+  <span class="nav-tag">Your Diagnosis</span>
+</nav>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="results-header">
+    <p class="step-label">03 — Your Diagnosis</p>
+    <h1 class="results-name">Chemically Stressed<br>Profile.</h1>
+    <p class="results-tagline">Here is what we found.</p>
+  </div>
+
+  <!-- OVERALL -->
+  <div class="overall-band">
+    <div class="overall-left">
+      <p class="overall-score-label">Overall Score</p>
+      <p class="overall-score-num">61<span>/100</span></p>
+      <p class="overall-tag">Moderate — room to grow</p>
+    </div>
+    <p class="overall-summary">Your hair profile reflects accumulated chemical stress combined with a mild moisture deficit. The good news: your scalp foundation is healthy — meaning results from a targeted protocol will be visible within 6–8 weeks. The priority is structural repair before anything else.</p>
+  </div>
+
+  <!-- SCORES -->
+  <div class="scores-grid">
+    <div class="score-card">
+      <p class="score-num" id="s1">78</p>
+      <p class="score-label">Scalp Health</p>
+      <div class="score-bar-wrap"><div class="score-bar-fill" id="b1" style="width:0%"></div></div>
+    </div>
+    <div class="score-card">
+      <p class="score-num" id="s2">52</p>
+      <p class="score-label">Strand Strength</p>
+      <div class="score-bar-wrap"><div class="score-bar-fill" id="b2" style="width:0%"></div></div>
+    </div>
+    <div class="score-card">
+      <p class="score-num" id="s3">58</p>
+      <p class="score-label">Moisture Balance</p>
+      <div class="score-bar-wrap"><div class="score-bar-fill" id="b3" style="width:0%"></div></div>
+    </div>
+    <div class="score-card">
+      <p class="score-num" id="s4">49</p>
+      <p class="score-label">Structural Integrity</p>
+      <div class="score-bar-wrap"><div class="score-bar-fill" id="b4" style="width:0%"></div></div>
+    </div>
+    <div class="score-card">
+      <p class="score-num" id="s5">67</p>
+      <p class="score-label">Vitality Index</p>
+      <div class="score-bar-wrap"><div class="score-bar-fill" id="b5" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <!-- KEY FINDING -->
+  <div class="diag-section">
+    <p class="diag-label">Key Finding</p>
+    <p class="diag-text">Your scalp environment is healthy — which is a strong foundation. The limiting factor is structural: bleach and toning services have disrupted the disulfide bond network of your strands, creating micro-fractures that lead to breakage, frizz and reduced elasticity. This is entirely correctable with the right bond-repair protocol applied consistently over 8–10 weeks.</p>
+
+    <div class="findings-grid">
+      <div class="finding-card">
+        <p class="finding-cat">Scalp</p>
+        <p class="finding-title">Healthy Foundation</p>
+        <p class="finding-desc">Your scalp maintains a healthy sebum balance with no signs of irritation or excess buildup. Follicle health is good — growth potential is unimpaired.</p>
+      </div>
+      <div class="finding-card">
+        <p class="finding-cat">Structure</p>
+        <p class="finding-title">Chemical Stress Detected</p>
+        <p class="finding-desc">Bleaching has altered the disulfide bond structure within your cortex. This is the root cause of your breakage, elasticity loss and frizz — not surface dryness.</p>
+      </div>
+      <div class="finding-card">
+        <p class="finding-cat">Moisture</p>
+        <p class="finding-title">Moderate Deficit</p>
+        <p class="finding-desc">Raised cuticle scales from chemical processing are causing moisture loss between washes. Sealing the cuticle after washing will produce visible improvement within 2–3 weeks.</p>
+      </div>
+      <div class="finding-card">
+        <p class="finding-cat">Vitality</p>
+        <p class="finding-title">Internal Support Needed</p>
+        <p class="finding-desc">Your current stress levels are redirecting nutrients away from non-essential tissues. Targeted supplementation with biotin, zinc and omega-3s will amplify topical results significantly.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROUTINE -->
+  <div class="diag-section">
+    <p class="diag-label">Your Routine</p>
+    <div class="routine-grid">
+      <div class="routine-step">
+        <p class="routine-num">Step 01</p>
+        <p class="routine-title">Bond Repair Protocol</p>
+        <p class="routine-desc">Apply a bond-repair treatment (Olaplex No.3 or K18) weekly to pre-shampoo hair for 10 minutes. This is the foundation of your recovery — nothing else works properly until structural integrity is restored.</p>
+      </div>
+      <div class="routine-step">
+        <p class="routine-num">Step 02</p>
+        <p class="routine-title">Scalp Ritual</p>
+        <p class="routine-desc">3-minute fingertip massage before each wash. Stimulates microcirculation, distributes natural sebum and maintains the healthy scalp environment you already have. Do not skip this.</p>
+      </div>
+      <div class="routine-step">
+        <p class="routine-num">Step 03</p>
+        <p class="routine-title">Moisture Sealing</p>
+        <p class="routine-desc">Apply a leave-in treatment to damp hair before any heat. This seals raised cuticles, locks in hydration and protects against further mechanical damage during styling.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <div class="diag-section">
+    <p class="diag-label">Recommended Products</p>
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="product-img"><span>Olaplex</span></div>
+        <div class="product-body">
+          <p class="product-rank">01 — Priority</p>
+          <p class="product-name">No.3 Hair Perfector</p>
+          <p class="product-brand">Olaplex</p>
+          <p class="product-reason">Reconnects broken disulfide bonds — the exact mechanism causing your breakage and elasticity loss. Weekly use for 8 weeks will produce measurable improvement in strand strength.</p>
+          <a href="#" class="product-link">View on Amazon →</a>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><span>SheaMoisture</span></div>
+        <div class="product-body">
+          <p class="product-rank">02 — Hydration</p>
+          <p class="product-name">Manuka Honey Masque</p>
+          <p class="product-brand">SheaMoisture</p>
+          <p class="product-reason">Manuka honey and Mafura oil restore moisture balance at the cortex level — not just surface coating. Use after bond repair treatment for maximum absorption.</p>
+          <a href="#" class="product-link">View on Amazon →</a>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img"><span>The Ordinary</span></div>
+        <div class="product-body">
+          <p class="product-rank">03 — Growth Support</p>
+          <p class="product-name">Multi-Peptide Hair Serum</p>
+          <p class="product-brand">The Ordinary</p>
+          <p class="product-reason">Clinically studied peptide complex supports scalp microcirculation and follicle anchoring. Apply to scalp before your massage ritual for compounded benefit over 90 days.</p>
+          <a href="#" class="product-link">View on Amazon →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="results-actions">
+    <a href="scan.html" class="btn-primary">Start New Diagnosis</a>
+    <a href="index.html" class="btn-secondary">← Back to Hebra</a>
+  </div>
+
+  <div class="disclaimer">
+    Your diagnosis is based on a combined analysis of your three photographs and your questionnaire responses. Photo analysis evaluates visible texture, porosity, cuticle condition, strand density and scalp presentation. Questionnaire responses provide context on your chemical history, lifestyle, health and current routine — factors that are not visible in images but directly influence hair condition. Product recommendations are selected specifically to address the deficiencies identified in your profile, filtered to exclude products you already use. Results are for informational purposes only and do not constitute medical or dermatological advice.
+  </div>
+
+</div>
+
+<script>
+// Animate bars on load
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('b1').style.width = '78%';
+    document.getElementById('b2').style.width = '52%';
+    document.getElementById('b3').style.width = '58%';
+    document.getElementById('b4').style.width = '49%';
+    document.getElementById('b5').style.width = '67%';
+  }, 300);
+});
+</script>
+
+</body>
+</html>

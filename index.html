@@ -1,0 +1,3245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hebra</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap');
+
+  /* ── CTA SCAN ── */
+  #cta-scan {
+    background: #F5F2EC;
+    padding: 8rem 4rem;
+    text-align: center;
+  }
+  .cta-scan-inner { max-width: 700px; margin: 0 auto; }
+  #cta-scan .section-label {
+    color: rgba(0,0,0,0.3);
+  }
+  .cta-scan-title {
+    font-family: 'Barlow Condensed', sans-serif !important;
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #111111;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+  .cta-scan-sub {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #666666;
+    max-width: 520px;
+    margin: 0 auto 3rem;
+    line-height: 1.6;
+  }
+  .cta-scan-btn {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    background: #111111;
+    padding: 1.1rem 3rem;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: background 0.3s, transform 0.2s;
+  }
+  .cta-scan-btn:hover {
+    background: #333333;
+    transform: translateY(-2px);
+  }
+
+  /* ── SCROLL ANIMATIONS ── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .fade-in {
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+  }
+  .slide-left {
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .slide-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .slide-right {
+    opacity: 0;
+    transform: translateX(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .slide-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .scale-in {
+    opacity: 0;
+    transform: scale(0.92);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .scale-in.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+  /* Staggered delays for grid items */
+  .stagger-1 { transition-delay: 0.05s; }
+  .stagger-2 { transition-delay: 0.12s; }
+  .stagger-3 { transition-delay: 0.19s; }
+  .stagger-4 { transition-delay: 0.26s; }
+  .stagger-5 { transition-delay: 0.33s; }
+  .stagger-6 { transition-delay: 0.40s; }
+
+
+  /* ── SAMPLE RESULT ── */
+  #sample-result {
+    background: #F5F2EC;
+    padding: 8rem 4rem;
+    border-top: none;
+  }
+  .sample-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .sample-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 5rem;
+    gap: 2rem;
+  }
+  .sample-intro {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: #666666;
+    max-width: 340px; line-height: 1.7;
+  }
+  #sample-result .section-label { color: rgba(0,0,0,0.3); }
+  #sample-result .section-title { color: #111111; }
+  #sample-result .section-title em { color: #111111; }
+
+  /* Card resultado */
+  .sample-card {
+    background: #FFFFFF;
+    border-radius: 4px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    box-shadow: 0 4px 40px rgba(0,0,0,0.08);
+  }
+
+  /* Left panel — score */
+  .sample-left {
+    background: #111111;
+    padding: 3.5rem;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+  }
+  .sample-profile-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 2rem;
+  }
+  .sample-score-wrap {
+    text-align: center;
+    margin: 2rem 0;
+  }
+  .sample-score-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 6rem; font-weight: 700;
+    color: #FFFFFF; line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .sample-score-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-top: 0.5rem;
+  }
+  .sample-archetype {
+    background: #111111;
+    padding: 1.2rem 1.5rem;
+    border-radius: 2px;
+    text-align: center;
+  }
+  .sample-archetype-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 0.3rem;
+  }
+  .sample-archetype-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.3rem; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: #FFFFFF;
+  }
+
+  /* Right panel — categories + recommendations */
+  .sample-right {
+    padding: 3.5rem;
+    display: flex; flex-direction: column; gap: 2.5rem;
+  }
+  .sample-categories {
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+  .sample-cat-row {
+    display: flex; align-items: center; gap: 1.2rem;
+  }
+  .sample-cat-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: #111111; width: 90px; flex-shrink: 0;
+  }
+  .sample-bar-track {
+    flex: 1; height: 4px;
+    background: rgba(0,0,0,0.08);
+    border-radius: 2px; overflow: hidden;
+  }
+  .sample-bar-fill {
+    height: 100%; border-radius: 2px;
+    background: #EDE9E3;
+    transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    width: 0;
+  }
+  .sample-bar-fill.animate { width: var(--w); }
+  .sample-cat-score {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.8rem; font-weight: 700;
+    color: #111111; width: 32px; text-align: right;
+  }
+
+  .sample-divider {
+    height: 1px; background: rgba(0,0,0,0.08);
+  }
+
+  .sample-recs-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: rgba(0,0,0,0.4); margin-bottom: 1rem;
+  }
+  .sample-recs {
+    display: flex; flex-direction: column; gap: 0.6rem;
+  }
+  .sample-rec-item {
+    display: flex; align-items: flex-start; gap: 0.8rem;
+  }
+  .sample-rec-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: #111111; flex-shrink: 0; margin-top: 0.45rem;
+  }
+  .sample-rec-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.78rem; font-weight: 500;
+    letter-spacing: 0.05em;
+    color: #111111; line-height: 1.5;
+  }
+
+  .sample-disclaimer {
+    text-align: center;
+    margin-top: 2rem;
+  }
+  .sample-disclaimer p {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem; font-weight: 500;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: rgba(0,0,0,0.25);
+  }
+
+  @media (max-width: 800px) {
+    .sample-card { grid-template-columns: 1fr; }
+    .sample-head { flex-direction: column; align-items: flex-start; }
+  }
+
+
+  /* ── ARCHETYPE IN RESULTS ── */
+  .archetype-reveal {
+    background: #FFFFFF;
+    border-radius: 4px;
+    padding: 3.5rem;
+    margin-bottom: 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1.8fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  .archetype-left {
+    text-align: center;
+  }
+  .archetype-badge-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 1.2rem;
+  }
+  .archetype-name-big {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: #FFFFFF;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+  .archetype-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+    color: rgba(255,255,255,0.5);
+  }
+  .archetype-pill {
+    display: inline-block;
+    background: #111111;
+    color: #111111;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    padding: 0.4rem 1.2rem;
+    border-radius: 100px;
+  }
+  .archetype-right {}
+  .archetype-desc {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem; font-weight: 500;
+    letter-spacing: 0.06em;
+    color: #444444;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+  .archetype-traits {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+  }
+  .archetype-trait {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: #111111;
+    border: 1px solid #111111;
+    padding: 0.3rem 0.8rem;
+    border-radius: 100px;
+  }
+  @media (max-width: 700px) {
+    .archetype-reveal { grid-template-columns: 1fr; text-align: center; }
+    .archetype-traits { justify-content: center; }
+  }
+
+
+  /* ── SHAREABLE CARD ── */
+  .share-section {
+    margin-top: 4rem;
+    padding-top: 4rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+  .share-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    color: rgba(0,0,0,0.3); margin-bottom: 2.5rem;
+  }
+  .share-card-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+  .share-card {
+    width: 320px;
+    background: #111111;
+    border-radius: 4px;
+    padding: 2.5rem 2rem;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 1.2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .share-card::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .share-card::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+  }
+  .share-card-brand {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.35em; text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    align-self: flex-start;
+  }
+  .share-card-divider {
+    width: 100%; height: 1px;
+    background: rgba(255,255,255,0.1);
+  }
+  .share-card-score-row {
+    display: flex; align-items: baseline; gap: 0.6rem;
+  }
+  .share-card-score {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 5rem; font-weight: 700;
+    color: #FFFFFF; line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .share-card-score-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+  }
+  .share-card-archetype {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: #FFFFFF; text-align: center;
+  }
+  .share-card-traits-row {
+    display: flex; flex-wrap: wrap;
+    justify-content: center; gap: 0.4rem;
+  }
+  .share-card-trait {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.58rem; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: rgba(0,0,0,0.55);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 0.2rem 0.6rem; border-radius: 100px;
+  }
+  .share-card-cats {
+    width: 100%;
+    display: flex; flex-direction: column; gap: 0.6rem;
+  }
+  .share-card-cat-row {
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .share-card-cat-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: rgba(255,255,255,0.5); width: 70px; flex-shrink: 0;
+  }
+  .share-card-bar {
+    flex: 1; height: 2px;
+    background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden;
+  }
+  .share-card-bar-fill {
+    height: 100%; border-radius: 2px;
+    background: rgba(255,255,255,0.6);
+  }
+  .share-card-cat-score {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem; font-weight: 700;
+    color: rgba(255,255,255,0.5); width: 24px; text-align: right;
+  }
+  .share-card-footer {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.55rem; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(0,0,0,0.3);
+    align-self: flex-end;
+  }
+  .share-btn {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.78rem; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: #FFFFFF;
+    background: #111111;
+    border: none;
+    padding: 0.9rem 2.5rem;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    margin-top: 0.5rem;
+  }
+  .share-btn:hover { background: #333333; transform: translateY(-2px); }
+  .share-hint {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem; font-weight: 400;
+    color: rgba(0,0,0,0.3); margin-top: 0.8rem;
+  }
+
+
+  /* ── SOCIAL PROOF ── */
+  #social-proof {
+    background: #FFFFFF;
+    padding: 6rem 4rem;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .social-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+  .social-stat {
+    text-align: center;
+    padding: 2rem;
+    border-right: 1px solid var(--border);
+  }
+  .social-stat:last-child { border-right: none; }
+  .social-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(2.8rem, 5vw, 4rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #111111;
+    line-height: 1;
+    margin-bottom: 0.8rem;
+    display: block;
+  }
+  .social-stat-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(0,0,0,0.3);
+  }
+  @media (max-width: 600px) {
+    .social-inner { grid-template-columns: 1fr; }
+    .social-stat { border-right: none; border-bottom: 1px solid var(--border); }
+    .social-stat:last-child { border-bottom: none; }
+  }
+
+
+  
+
+
+
+  
+
+
+  /* ── ABOUT ── */
+  #about {
+    background: #F5F2EC;
+    padding: 10rem 4rem;
+    border-top: 1px solid var(--border);
+  }
+  .about-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8rem;
+    align-items: start;
+  }
+  .about-left {}
+  .about-manifesto {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #111111;
+    line-height: 1.15;
+    margin-top: 2rem;
+    margin-bottom: 0;
+  }
+  .about-manifesto em {
+    font-style: normal;
+    color: #111111;
+  }
+  .about-right {
+    padding-top: 0.5rem;
+  }
+  .about-body {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.85;
+    color: #444444;
+    margin-bottom: 2.5rem;
+  
+    letter-spacing: 0.05em;}
+  .about-body + .about-body {
+    margin-top: -1rem;
+  }
+  .about-pillars {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 3rem;
+    border-top: 1px solid var(--border);
+  }
+  .about-pillar-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.2rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .about-pillar-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.2em;
+    color: rgba(0,0,0,0.2);
+    width: 24px; flex-shrink: 0;
+  }
+  .about-pillar-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.78rem; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: #111111; flex: 1;
+  }
+  .about-pillar-desc {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.72rem; font-weight: 400;
+    color: #888888; text-align: right;
+    max-width: 180px;
+  }
+  @media (max-width: 900px) {
+    .about-inner { grid-template-columns: 1fr; gap: 4rem; }
+  }
+
+
+  /* ── PRE-FOOTER ── */
+  .pre-footer {
+    background: #F5F2EC;
+    padding: 8rem 4rem;
+    border-top: 1px solid var(--border);
+  }
+  .pre-footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8rem;
+    align-items: center;
+  }
+  .pre-footer-manifesto {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(1.3rem, 2vw, 1.8rem);
+    font-weight: 300;
+    font-style: italic;
+    letter-spacing: 0.01em;
+    text-transform: none;
+    color: #111111;
+    line-height: 1.6;
+    margin-top: 1.5rem;
+  }
+  .pre-footer-body {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    line-height: 1.9;
+    color: #999999;
+    margin-bottom: 1.2rem;
+  
+    letter-spacing: 0.05em;}
+  .pre-footer-cta {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #111111;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(17,17,17,0.3);
+    padding-bottom: 0.2rem;
+    transition: opacity 0.2s;
+    display: inline-block;
+    margin-top: 1rem;
+  }
+  .pre-footer-cta:hover { opacity: 0.5; }
+  @media (max-width: 900px) {
+    .pre-footer-inner { grid-template-columns: 1fr; gap: 3rem; }
+  }
+
+
+  .hero-value {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    line-height: 1.6;
+    color: #111111;
+    text-align: center;
+    margin-top: 4rem;
+    margin-bottom: 0.5rem;
+  }
+  .hero-social-proof {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(0,0,0,0.35);
+    margin-top: 0.8rem;
+  }
+  .hero-scroll {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    z-index: 3;
+    opacity: 0;
+    animation: heroLineIn 1s 1.2s cubic-bezier(0.22,1,0.36,1) forwards;
+    padding-bottom: 1.5rem;
+  }
+  .hero-scroll-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(0,0,0,0.2);
+  }
+  .hero-scroll-line {
+    width: 1px;
+    height: 32px;
+    background: rgba(0,0,0,0.15);
+    animation: scrollPulse 1.8s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { transform: scaleY(1); opacity: 0.4; }
+    50% { transform: scaleY(0.4); opacity: 1; }
+  }
+
+
+  /* ── GLOBAL BARLOW SPACING ── */
+  p, .about-body, .pre-footer-body, .how-desc, .ing-desc,
+  .hero-value, .p-why, .step-desc, .cta-scan-sub {
+    letter-spacing: 0.06em;
+  }
+
+
+  /* ── QUESTIONNAIRE DYNAMIC ── */
+  .q-slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(40px);
+    pointer-events: none;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .q-slide.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+  }
+  .q-slide.exit {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+  .q-slide-inner {
+    max-width: 680px;
+    width: 100%;
+    padding: 0 2rem;
+    text-align: center;
+  }
+  .q-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    color: rgba(0,0,0,0.2);
+    margin-bottom: 1.5rem;
+  }
+  .q-big {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(2rem, 4.5vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #111111;
+    line-height: 1.1;
+    margin-bottom: 2.5rem;
+  }
+  .q-sub {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(0,0,0,0.3);
+    margin-top: -1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .q-input-big {
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid #111111;
+    background: transparent;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: #111111;
+    padding: 0.8rem 0;
+    outline: none;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    transition: border-color 0.3s;
+  }
+  .q-input-big::placeholder { color: rgba(0,0,0,0.2); }
+  .q-input-big:focus { border-color: #111111; }
+  .q-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+  }
+  .q-card {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.9rem 1.8rem;
+    border: 1.5px solid #111111;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    color: #111111;
+    background: transparent;
+  }
+  .q-card:hover { background: rgba(0,0,0,0.05); }
+  .q-card.selected { background: #111111; color: #FFFFFF; }
+  .q-next-btn {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: #111111 !important;
+    color: #FFFFFF !important;
+    border: 2px solid #111111;
+    padding: 1rem 3rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    display: inline-block;
+    margin-top: 0.5rem;
+  }
+  .q-next-btn:hover { background: #333333 !important; transform: translateY(-2px); }
+  .q-submit-btn { background: #111111 !important; }
+
+
+  /* ── FOOTER BYREDO STYLE ── */
+  .footer-byredo {
+    background: #111111;
+    color: #FFFFFF;
+    padding: 0;
+  }
+  .footer-top {
+    padding: 6rem 4rem 4rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .footer-brand-giant {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(5rem, 14vw, 12rem);
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    line-height: 1;
+    color: #FFFFFF;
+    opacity: 0.12;
+    user-select: none;
+  }
+  .footer-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1.5fr;
+    gap: 3rem;
+    padding: 4rem 4rem 3rem;
+  }
+  .footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .footer-col-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 0.5rem;
+  }
+  .footer-col a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    transition: color 0.2s;
+    text-transform: uppercase;
+  }
+  .footer-col a:hover { color: #FFFFFF; }
+  .footer-col-right { }
+  .footer-email {
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 2px;
+    margin-bottom: 1rem;
+    padding: 0 0.75rem;
+    background: rgba(255,255,255,0.05);
+  }
+  .footer-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: #FFFFFF;
+    padding: 0.75rem 0;
+  }
+  .footer-input::placeholder { color: rgba(255,255,255,0.3); }
+  .footer-submit {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.5);
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0.5rem 0 0.5rem 0.5rem;
+    transition: color 0.2s;
+  }
+  .footer-submit:hover { color: #FFFFFF; }
+  .footer-fine {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.2);
+    text-transform: uppercase;
+    margin-top: auto;
+  }
+  @media (max-width: 768px) {
+    .footer-bottom { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .footer-top { padding: 4rem 2rem 3rem; }
+    .footer-bottom { padding: 2rem; }
+  }
+
+
+  /* ── AESOP GRAIN TEXTURE ── */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.018;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+  }
+
+  /* ── AESOP: sección separator ── */
+  .how-section, .about-section, .sample-section, .social-proof, .pre-footer {
+    border-top: 1px solid rgba(0,0,0,0.06);
+  }
+
+  /* ── AESOP: about body text más refinado ── */
+  .about-body {
+    font-size: 0.92rem;
+    line-height: 1.85;
+    color: rgba(17,17,17,0.7);
+  }
+
+  /* ── AESOP: pillar label bajo imagen ── */
+  .pillar-name {
+    letter-spacing: 0.2em;
+  }
+
+  /* ── GROWN ALCHEMIST: how-step número grande ── */
+  .step-number {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 4rem;
+    font-weight: 700;
+    color: rgba(0,0,0,0.04);
+    line-height: 1;
+    margin-bottom: -1rem;
+  }
+
+</style>
+<style>
+  :root {
+    --cream: #EDE9E3;
+    --beige: #F0F0F0;
+    --sand: #E0E0E0;
+    --warm-brown: #3D3428;
+    --dark: #111111;
+    --accent: #111111;
+    --white: #FFFFFF;
+    --border: rgba(0,0,0,0.08);
+    --teal-dark: #111111;
+    --teal-mid: #111111;
+    --teal-light: #111111;
+    --rouge: #111111;
+    --gris: #F7F7F7;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  ::selection { background: #111111; color: #FFFFFF; }
+  body {
+    font-family: 'Barlow Condensed', sans-serif;
+    background: #FFFFFF;
+    color: var(--dark);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.4rem 3rem;
+    background: #FFFFFF;
+    transition: box-shadow 0.4s;
+  }
+  nav.scrolled {
+    box-shadow: 0 2px 24px rgba(0,0,0,0.08);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.15em;
+    color: #111111;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .nav-logo:hover { opacity: 0.7; }
+  nav.scrolled .nav-logo { color: #111111; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(0,0,0,0.6);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  nav.scrolled .nav-links a { color: rgba(0,0,0,0.5); }
+  .nav-links a:hover { color: #111111; }
+  nav.scrolled .nav-links a:hover { color: #111111; }
+
+
+
+
+
+  /* ── HERO ── */
+  #hero {
+    position: relative;
+    height: 100vh;
+    min-height: 700px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Video background */
+  #heroVideo {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+    filter: grayscale(100%);
+  }
+
+  /* Dark overlay for text legibility */
+  .hero-overlay {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.3) 0%,
+      rgba(0,0,0,0.2) 50%,
+      rgba(0,0,0,0.55) 100%
+    );
+  }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    display: flex; flex-direction: column;
+    align-items: center; text-align: center;
+    padding: 0 2rem;
+  }
+
+  .hero-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem; font-weight: 700;
+    letter-spacing: 0.35em; text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: hIn 0.8s 0.1s cubic-bezier(0.16,1,0.3,1) forwards;
+  }
+
+  .hero-h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: clamp(4rem, 8.5vw, 9.5rem);
+    line-height: 0.93;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    color: #FFFFFF;
+    margin: 0;
+    text-shadow: 0 4px 60px rgba(0,0,0,0.4);
+  }
+  .hero-h1 .hl {
+    display: block; opacity: 0; transform: translateY(50px);
+    animation: hIn 1s cubic-bezier(0.16,1,0.3,1) forwards;
+  }
+  .hero-h1 .hl:nth-child(1) { animation-delay: 0.25s; }
+  .hero-h1 .hl:nth-child(2) {
+    animation-delay: 0.42s;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 0.72em;
+    text-transform: none;
+    color: rgba(255,255,255,0.6);
+  }
+  .hero-h1 .hl:nth-child(3) { animation-delay: 0.59s; }
+
+  .hero-divider {
+    width: 1px; height: 40px;
+    background: rgba(255,255,255,0.3);
+    margin: 2.2rem 0;
+    opacity: 0;
+    animation: hIn 0.8s 0.85s cubic-bezier(0.16,1,0.3,1) forwards;
+  }
+
+  .hero-sub {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem; font-weight: 700;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+    margin-top: 1.8rem; margin-bottom: 2.5rem; line-height: 2;
+    opacity: 0;
+    animation: hIn 0.8s 1s cubic-bezier(0.16,1,0.3,1) forwards;
+  }
+
+  .hero-cta-btn {
+    display: inline-flex; align-items: center; gap: 0.7rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.95rem; font-weight: 700;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    color: #111; background: #FFFFFF;
+    padding: 1.2rem 3.5rem;
+    text-decoration: none;
+    border: 2px solid #FFFFFF;
+    transition: background 0.25s, color 0.25s, transform 0.2s;
+    opacity: 0;
+    animation: hIn 0.8s 1.15s cubic-bezier(0.16,1,0.3,1) forwards;
+    box-shadow: 0 8px 50px rgba(0,0,0,0.4);
+  }
+  .hero-cta-btn:hover {
+    background: transparent; color: #FFFFFF;
+    transform: translateY(-2px);
+  }
+
+  /* Stats floating bottom corners */
+  .hero-stat {
+    position: absolute; z-index: 2; bottom: 5rem;
+    opacity: 0; animation: hIn 1s 1.4s cubic-bezier(0.16,1,0.3,1) forwards;
+  }
+  .hero-stat-l { left: 4rem; text-align: left; }
+  .hero-stat-r { right: 4rem; text-align: right; }
+  .hero-stat-n {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2rem; font-weight: 700;
+    color: rgba(255,255,255,0.4); display: block; line-height: 1;
+  }
+  .hero-stat-t {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.55rem; font-weight: 700;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+  }
+
+  /* Ticker */
+  .hero-ticker {
+    position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    overflow: hidden; padding: 0.75rem 0;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .hero-ticker-track {
+    display: flex; width: max-content;
+    animation: htick 35s linear infinite;
+  }
+  @keyframes htick { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .hero-ticker-item {
+    display: flex; align-items: center; gap: 2rem; padding: 0 2rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: rgba(255,255,255,0.45); font-weight: 600; white-space: nowrap;
+  }
+  .hero-ticker-dot { width: 2px; height: 2px; border-radius: 50%; background: rgba(255,255,255,0.3); flex-shrink: 0; }
+
+  @keyframes hIn {
+    from { opacity: 0; transform: translateY(50px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 768px) {
+    .hero-h1 { font-size: clamp(3.5rem, 16vw, 6rem); }
+    .hero-stat { display: none; }
+    .hero-cta-btn { padding: 1rem 2.5rem; }
+  }
+
+
+  /* ── SECTION SHARED ── */
+  section { padding: 7rem 3rem; }
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #111111;
+    margin-bottom: 1.2rem;
+  }
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif !important;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    line-height: 1.1;
+    color: var(--dark);
+  }
+  .section-title em { font-style: normal; color: #111111; }
+
+  #how .section-title { color: #111111; }
+  #how .section-title em { color: #111111; }
+  #how .section-label { color: rgba(0,0,0,0.4); }
+  #how .how-step:hover { background: rgba(0,0,0,0.06); }
+
+  /* ── HOW IT WORKS ── */
+  #how {
+    background: #F5F2EC;
+    border-top: none;
+    border-bottom: none;
+  }
+  .how-inner {
+    max-width: 1200px; margin: 0 auto;
+  }
+  .how-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 5rem;
+    gap: 2rem;
+  }
+  .how-intro {
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--warm-brown);
+    max-width: 380px;
+  }
+  .how-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+  .how-step {
+    padding: 3rem 2.5rem;
+    border-left: 1px solid rgba(0,0,0,0.08);
+    position: relative;
+    transition: background 0.3s;
+  }
+  .how-step:first-child { border-left: none; }
+  .step-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    color: #888888;
+    margin-bottom: 2.5rem;
+  }
+  .step-icon {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.7;
+  }
+  .step-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    font-style: normal;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #111111;
+    margin-bottom: 0.8rem;
+    line-height: 1.2;
+  }
+  .step-desc {
+    font-size: 0.82rem;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--warm-brown);
+  }
+
+
+  /* ── INGREDIENTS ── */
+  #ingredients {
+    background: #FFFFFF;
+    border-top: none;
+  }
+  .ing-inner { max-width: 1200px; margin: 0 auto; }
+  #ingredients .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-style: normal;
+  }
+  #ingredients .section-title em {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: #111111;
+  }
+  .ing-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 5rem; gap: 2rem;
+  }
+  .ing-intro {
+    font-size: 1rem; font-weight: 400; line-height: 1.7;
+    color: #1a1a1a; max-width: 360px;
+  }
+  .ing-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .ing-card {
+    background: var(--white);
+    padding: 0;
+    display: flex; flex-direction: column;
+    transition: background 0.3s;
+    cursor: default;
+    border-right: 1px solid var(--border);
+  }
+  .ing-card:last-child { border-right: none; }
+  .ing-card:hover { background: #FFFFFF; }
+  .ing-img-wrap {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: #FFFFFF;
+  }
+  .ing-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: saturate(0.7) brightness(1.05);
+    transition: transform 0.6s ease, filter 0.4s;
+    display: block;
+  }
+  .ing-card:hover .ing-img-wrap img {
+    transform: scale(1.04);
+    filter: saturate(0.9) brightness(1.02);
+  }
+  .ing-text {
+    padding: 1.2rem 1.1rem 1.5rem;
+  }
+  .ing-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.95rem; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--dark); margin-bottom: 0.5rem; line-height: 1.2;
+  }
+  .ing-desc {
+    font-size: 0.68rem; font-weight: 500; line-height: 1.7;
+    color: #666666;
+  }
+  @media (max-width: 900px) {
+    .ing-grid { grid-template-columns: repeat(3, 1fr); }
+    .ing-head { flex-direction: column; align-items: flex-start; }
+  }
+  @media (max-width: 600px) {
+    .ing-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ── SCAN SECTION ── */
+  #scan {
+    background: #FFFFFF;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  /* Grown Alchemist 50/50 scan intro */
+  .scan-hero-50 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    min-height: 420px;
+    margin-bottom: 5rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .scan-hero-img {
+    background: #111111;
+    position: relative;
+    overflow: hidden;
+    min-height: 320px;
+  }
+  .scan-hero-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: saturate(0) brightness(0.85);
+    display: block;
+  }
+  .scan-hero-img-placeholder {
+    width: 100%; height: 100%; min-height: 320px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #111 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .scan-hero-img-sym {
+    font-size: 5rem;
+    color: rgba(255,255,255,0.08);
+    letter-spacing: 0.5rem;
+  }
+  .scan-hero-best-seller {
+    position: absolute;
+    top: 1.5rem; left: 1.5rem;
+    background: #111111;
+    color: #FFFFFF;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.58rem; font-weight: 700;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    padding: 0.4rem 0.8rem;
+  }
+  .scan-hero-text {
+    background: #FFFFFF;
+    padding: 4rem 3.5rem;
+    display: flex; flex-direction: column;
+    justify-content: center;
+  }
+  .scan-hero-text .section-label {
+    color: rgba(0,0,0,0.3);
+    margin-bottom: 1.2rem;
+  }
+  .scan-hero-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #111111;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+  .scan-hero-body {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem; font-weight: 500;
+    letter-spacing: 0.06em;
+    color: #666666; line-height: 1.75;
+    margin-bottom: 2.5rem;
+    max-width: 340px;
+  }
+  /* Grown Alchemist arrow button */
+  .btn-ga {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.82rem; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: #FFFFFF;
+    background: #111111;
+    border: none;
+    padding: 1rem 2rem 1rem 2.2rem;
+    border-radius: 2px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s, gap 0.3s;
+  }
+  .btn-ga:hover { background: #333333; gap: 1.2rem; }
+  .btn-ga-arrow { font-size: 1.1rem; }
+
+  @media (max-width: 800px) {
+    .scan-hero-50 { grid-template-columns: 1fr; }
+    .scan-hero-img { min-height: 220px; }
+  }
+
+  #scan .scan-inner { max-width: 1000px; margin: 0 auto; }
+  #scan .section-title {
+    font-family: 'Barlow Condensed', sans-serif !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.15em !important;
+    text-transform: uppercase !important;
+    font-style: normal !important;
+  }
+
+  .upload-header { margin-bottom: 4rem; }
+
+  .upload-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .photo-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 1.2rem;
+    cursor: pointer;
+    transition: border-color 0.3s, transform 0.2s, box-shadow 0.3s;
+  }
+  .photo-card:hover {
+    border-color: #111111;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(139,111,94,0.12);
+  }
+  .photo-card.ready {
+    border-color: #111111;
+    background: linear-gradient(135deg, var(--white) 0%, rgba(201,168,130,0.08) 100%);
+  }
+
+  .card-circle {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    background: #EDE9E3;
+    transition: border-color 0.3s;
+  }
+  .photo-card.ready .card-circle { border-color: #111111; }
+  .card-circle img { width: 100%; height: 100%; object-fit: cover; display: none; }
+  .card-circle img.shown { display: block; }
+  .card-sym {
+    font-size: 1.4rem;
+    color: var(--warm-brown);
+    opacity: 0.5;
+  }
+
+  .card-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dark);
+    text-align: center;
+  }
+  .card-sub {
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    color: var(--warm-brown);
+    text-align: center;
+    line-height: 1.5;
+  }
+  .card-change {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    cursor: pointer;
+  }
+  .card-change:hover { text-decoration: underline; }
+
+  .privacy-note {
+    font-size: 0.72rem;
+    color: var(--warm-brown);
+    opacity: 0.7;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    letter-spacing: 0.03em;
+    line-height: 1.6;
+  }
+
+  .btn-primary {
+    display: block;
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+    padding: 1.1rem;
+    background: #FFFFFF;
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    opacity: 0.3;
+    pointer-events: none;
+    transition: opacity 0.3s, transform 0.2s, background 0.3s;
+  }
+  .btn-primary.active {
+    opacity: 1;
+    pointer-events: all;
+    background: #111111;
+  }
+  .btn-primary.active:hover {
+    background: #111111;
+    transform: translateY(-2px);
+  }
+  input[type="file"] { display: none; }
+
+  /* ── QUESTIONNAIRE ── */
+  #questionnaire {
+    background: #EDE9E3;
+    border-top: none;
+  }
+  #questionnaire .q-inner { max-width: 680px; margin: 0 auto; }
+  #questionnaire .section-title { color: #111111; }
+  #questionnaire .section-title em { color: #111111; }
+  #questionnaire .section-label { color: rgba(0,0,0,0.3); }
+  #questionnaire .q-label { color: #111111; }
+  #questionnaire .q-input { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); color: #111111; }
+
+  .progress-bar-wrap {
+    background: var(--sand);
+    height: 2px;
+    border-radius: 2px;
+    margin-bottom: 3rem;
+    overflow: hidden;
+  }
+  #sbFill {
+    height: 100%;
+    background: #111111;
+    transition: width 0.5s cubic-bezier(0.22,1,0.36,1);
+  }
+  .progress-meta {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 0.8rem;
+  }
+  .progress-steps { display: flex; gap: 1.5rem; }
+  .sb-item {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--sand);
+    transition: color 0.3s;
+  }
+  .sb-item.active { color: #111111; }
+  .sb-item.done { color: var(--accent); }
+  #sbPct {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--warm-brown);
+  }
+
+  .q-page { display: none; }
+  .q-page.active { display: block; }
+
+  .q-field { margin-bottom: 2.5rem; }
+  .q-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    font-style: normal;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dark);
+    display: block;
+    margin-bottom: 1rem;
+  }
+  .q-input {
+    width: 100%;
+    padding: 0.85rem 1.2rem;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--dark);
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .q-input:focus { border-color: #111111; }
+
+  .radio-group, .check-group {
+    display: flex; flex-wrap: wrap; gap: 0.6rem;
+  }
+  .radio-group label, .check-group label {
+    padding: 0.6rem 1.2rem;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--warm-brown);
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .radio-group input, .check-group input { display: none; }
+  .radio-group input:checked + span,
+  .check-group input:checked + span {
+    /* handled via label style below */
+  }
+  .radio-group label:has(input:checked),
+  .check-group label:has(input:checked) {
+    background: #FFFFFF;
+    color: var(--white);
+    border-color: var(--dark);
+  }
+  .radio-group label:hover,
+  .check-group label:hover {
+    border-color: var(--warm-brown);
+    color: var(--dark);
+  }
+
+  .range-wrap { position: relative; padding-top: 0.5rem; }
+  .q-range {
+    width: 100%; -webkit-appearance: none;
+    height: 2px; background: var(--sand);
+    outline: none; border-radius: 2px;
+    margin-bottom: 0.5rem;
+  }
+  .q-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #111111;
+    cursor: pointer;
+    border: 2px solid var(--white);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .range-labels {
+    display: flex; justify-content: space-between;
+    font-size: 0.65rem; color: var(--warm-brown); letter-spacing: 0.08em;
+  }
+  .range-val {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2.5rem; font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #111111; text-align: center;
+    display: block; margin-bottom: 0.3rem;
+  }
+
+  .q-nav {
+    display: flex; gap: 1rem; justify-content: flex-end;
+    margin-top: 3rem;
+  }
+  .btn-back {
+    padding: 0.85rem 1.8rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--warm-brown);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-back:hover { border-color: var(--warm-brown); color: var(--dark); }
+  .btn-next {
+    padding: 0.85rem 2rem;
+    background: #FFFFFF;
+    border: none;
+    border-radius: 100px;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--white);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-next:hover { background: #111111; }
+
+  .btn-diagnose {
+    padding: 1.1rem 3rem;
+    background: #111111;
+    border: none;
+    border-radius: 100px;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--white);
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: none;
+  }
+  .btn-diagnose:hover { background: #EDE9E3; transform: translateY(-2px); }
+
+  /* ── LOADING ── */
+  #loading {
+    display: none; position: fixed; inset: 0; z-index: 200;
+    background: #FFFFFF;
+    flex-direction: column; align-items: center; justify-content: center;
+    gap: 2.5rem;
+  }
+  #loading.on { display: flex; }
+  .ld-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    letter-spacing: 0.2em;
+    color: var(--dark);
+  }
+  .ld-steps { display: flex; flex-direction: column; gap: 0.8rem; width: 320px; }
+  .ld-step {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--sand);
+    transition: color 0.4s;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .ld-step::before {
+    content: '○';
+    font-size: 0.7rem;
+    transition: all 0.4s;
+  }
+  .ld-step.done { color: #111111; }
+  .ld-step.done::before { content: '◉'; }
+  .ld-bar-wrap {
+    width: 320px; height: 1px;
+    background: var(--sand);
+  }
+  #ldProg {
+    height: 100%;
+    background: #111111;
+    transition: width 0.6s cubic-bezier(0.22,1,0.36,1);
+    width: 0;
+  }
+  #ldSt {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--warm-brown);
+  }
+
+  /* ── RESULTS ── */
+  #results {
+    background: #FFFFFF;
+    border-top: none;
+    display: none;
+  }
+  #results.on { display: block; }
+  .results-inner { max-width: 1000px; margin: 0 auto; }
+
+  .result-title {
+    font-family: 'Cormorant Garamond', serif !important;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 3rem;
+  }
+  .result-title em { font-style: italic; color: #111111; }
+
+  .overall-row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 4rem;
+    margin-bottom: 4rem;
+    padding: 3.5rem 4rem;
+    background: #111111;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  .overall-row::before {
+    content: '';
+    position: absolute;
+    right: -80px; top: -80px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+  }
+  .ov-score-wrap { text-align: center; flex-shrink: 0; position: relative; }
+  #ovNum {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 7rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+    display: block;
+  }
+  #ovLbl {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-top: 0.5rem;
+    display: block;
+  }
+  #resSummary {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.7);
+  
+    letter-spacing: 0.05em;}
+
+  #scoresGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+  .sc {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.8rem;
+  }
+  .sc-cat {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--warm-brown);
+    display: block; margin-bottom: 1rem;
+  }
+  .sc-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem; color: var(--dark); line-height: 1;
+    margin-bottom: 0.8rem;
+  }
+  .sc-bar { height: 2px; background: var(--sand); border-radius: 2px; margin-bottom: 1rem; overflow: hidden; }
+  .sc-fill { height: 100%; background: #111111; transition: width 1s cubic-bezier(0.22,1,0.36,1); }
+  .sc-desc { font-size: 0.78rem; font-weight: 400; line-height: 1.6; color: #1a1a1a; }
+
+  .results-section { margin-bottom: 4rem; }
+  .results-section h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem; font-weight: 700; font-style: normal; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--dark); margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border); padding-bottom: 1rem;
+  }
+  #aiBody {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 0.88rem; font-weight: 400; line-height: 1.8;
+    color: #444444; white-space: pre-wrap;
+  }
+  #recList { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+  #recList li {
+    display: flex; gap: 1.2rem;
+    font-family: 'Barlow Condensed', sans-serif; font-size: 0.88rem; font-weight: 400; line-height: 1.7; color: #444444;
+  }
+  .r-dash { color: var(--accent); flex-shrink: 0; }
+
+  #prodGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+  }
+  .prod-card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.8rem;
+    text-decoration: none;
+    display: flex; flex-direction: column; gap: 0.6rem;
+    transition: border-color 0.3s, transform 0.2s, box-shadow 0.3s;
+  }
+  .prod-card:hover {
+    border-color: #111111;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(139,111,94,0.12);
+  }
+  .p-tag {
+    font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent);
+  }
+  .p-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem; font-weight: 700; font-style: normal; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--dark); line-height: 1.2;
+  }
+  .p-brand { font-size: 0.72rem; letter-spacing: 0.1em; color: #111111; }
+  .p-why { font-family: 'Barlow Condensed', sans-serif; font-size: 0.78rem; font-weight: 500; line-height: 1.7; color: #444444; margin-top: 0.5rem; flex: 1; 
+    letter-spacing: 0.05em;}
+  .p-link {
+    font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-top: 0.3rem;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #FFFFFF;
+    padding: 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem; letter-spacing: 0.15em;
+    color: var(--white);
+  }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a {
+    font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(0,0,0,0.3); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--white); }
+  .footer-copy { font-size: 0.68rem; color: rgba(255,255,255,0.3); }
+
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 1.5rem; }
+    section { padding: 5rem 1.5rem; }
+    .how-steps { grid-template-columns: repeat(2, 1fr); }
+    .how-head { flex-direction: column; align-items: flex-start; }
+    .upload-grid { grid-template-columns: 1fr; }
+    #scoresGrid { grid-template-columns: repeat(2, 1fr); }
+    #prodGrid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 1.5rem; text-align: center; }
+    .hero-title { font-size: clamp(4rem, 18vw, 6rem); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── EMAIL POPUP ── -->
+<div id="emailPopup" style="
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+">
+  <div style="
+    position: relative;
+    background: #F5F2EC;
+    max-width: 480px;
+    width: 90%;
+    padding: 3rem 3rem 2.5rem;
+    text-align: center;
+  ">
+    <!-- X close button -->
+    <button onclick="closePopup()" style="
+      position: absolute;
+      top: 1rem; right: 1.2rem;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      color: rgba(17,17,17,0.35);
+      cursor: pointer;
+      line-height: 1;
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: 0;
+    ">✕</button>
+
+    <!-- Content -->
+    <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.65rem; font-weight:700; letter-spacing:0.3em; text-transform:uppercase; color:rgba(17,17,17,0.4); margin-bottom:1.2rem;">Free Weekly Recipe</p>
+    <h2 style="font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:300; font-size:2rem; color:#111; line-height:1.25; margin-bottom:0.8rem;">A hair mask made for you,<br>every week.</h2>
+    <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.88rem; font-weight:500; letter-spacing:0.04em; color:rgba(17,17,17,0.5); margin-bottom:2rem; line-height:1.6;">DIY recipes matched to your hair type.<br>Ingredients you already have at home.</p>
+
+    <div style="display:flex; border-bottom:1px solid rgba(17,17,17,0.25); margin-bottom:0.6rem;">
+      <input id="popupEmail" type="email" placeholder="your@email.com" style="
+        flex:1; background:transparent; border:none; outline:none;
+        font-family:'Barlow Condensed',sans-serif; font-size:0.9rem;
+        font-weight:500; letter-spacing:0.08em; color:#111;
+        padding:0.6rem 0;
+      ">
+      <button onclick="submitPopupEmail()" style="
+        background:none; border:none; color:rgba(17,17,17,0.4);
+        font-size:1.1rem; cursor:pointer; padding:0.6rem 0 0.6rem 0.8rem;
+        transition:color 0.2s;
+      ">→</button>
+    </div>
+    <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.62rem; letter-spacing:0.1em; color:rgba(17,17,17,0.3); text-transform:uppercase;">No spam. Unsubscribe anytime.</p>
+  </div>
+</div>
+
+<style>
+@keyframes popupFadeIn { to { opacity: 1; } }
+</style>
+
+<script>
+// Popup scroll trigger — shows at 60% scroll
+let popupShown = false;
+window.addEventListener('scroll', function() {
+  if (popupShown) return;
+  const scrolled = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+  if (scrolled > 0.6) {
+    popupShown = true;
+    const popup = document.getElementById('emailPopup');
+    popup.style.opacity = '1';
+    popup.style.pointerEvents = 'auto';
+  }
+});
+
+function submitPopupEmail() {
+  const email = document.getElementById('popupEmail').value;
+  if (!email || !email.includes('@')) return;
+  closePopup();
+}
+
+function closePopup() {
+  const popup = document.getElementById('emailPopup');
+  popup.style.opacity = '0';
+  popup.style.pointerEvents = 'none';
+  setTimeout(() => popup.style.display = 'none', 600);
+}
+</script>
+
+<!-- ── NAV ── -->
+<nav id="mainNav">
+  <a href="index.html" class="nav-logo">Hebra</a>
+  <ul class="nav-links">
+    <li><a href="scan.html">Scan</a></li>
+    <li><a href="#" onclick="openPage('aboutPage'); return false;">About</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+
+  <!-- Video background — archivo: hero.mp4 en misma carpeta -->
+  <video id="heroVideo" autoplay muted loop playsinline poster="">
+    <source src="https://res.cloudinary.com/dgkacltrs/video/upload/v1772964600/hero_czna1z.mp4" type="video/mp4">
+  </video>
+
+  <!-- Dark overlay -->
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <p class="hero-label">Personalised Diagnosis · Hebra</p>
+
+    <h1 class="hero-h1">
+      <span class="hl">Decode</span>
+      <span class="hl">your hair</span>
+    </h1>
+
+    <p class="hero-sub">3 photos · 9 questions · 1 complete diagnosis</p>
+    <a href="scan.html" class="hero-cta-btn">Begin your diagnosis →</a>
+  </div>
+
+  <div class="hero-ticker">
+    <div class="hero-ticker-track">
+      <div class="hero-ticker-item">Personalised Diagnosis <span class="hero-ticker-dot"></span></div>
+      <div class="hero-ticker-item">Scalp Health <span class="hero-ticker-dot"></span></div>
+      <div class="hero-ticker-item">Strand Strength <span class="hero-ticker-dot"></span></div>
+      <div class="hero-ticker-item">Moisture Balance <span class="hero-ticker-dot"></span></div>
+      <div class="hero-ticker-item">Structural Integrity <span class="hero-ticker-dot"></span></div>
+      <div class="hero-ticker-item">Vitality Index <span class="hero-ticker-dot"></span></div>
+      <div class="hero-ticker-item">94% Satisfaction <span class="hero-ticker-dot"></span></div>
+      <div class="hero-ticker-item">Science-Backed <span class="hero-ticker-dot"></span></div>
+      <div class="hero-ticker-item">Personalised Diagnosis <span class="hero-ticker-dot"></span></div>
+      <div class="hero-ticker-item">Scalp Health <span class="hero-ticker-dot"></span></div>
+      <div class="hero-ticker-item">Strand Strength <span class="hero-ticker-dot"></span></div>
+      <div class="hero-ticker-item">Moisture Balance <span class="hero-ticker-dot"></span></div>
+      <div class="hero-ticker-item">Structural Integrity <span class="hero-ticker-dot"></span></div>
+      <div class="hero-ticker-item">Vitality Index <span class="hero-ticker-dot"></span></div>
+      <div class="hero-ticker-item">94% Satisfaction <span class="hero-ticker-dot"></span></div>
+      <div class="hero-ticker-item">Science-Backed <span class="hero-ticker-dot"></span></div>
+    </div>
+  </div>
+
+</section>
+
+
+
+
+
+
+
+<!-- ── HOW IT WORKS ── -->
+<section style="background:#F5F2EC; padding:8rem 4rem; border-top:1px solid rgba(0,0,0,0.06);">
+  <div style="max-width:1200px; margin:0 auto;">
+
+    <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.35em; text-transform:uppercase; color:rgba(0,0,0,0.25); margin-bottom:1rem;">How it works</p>
+    <h2 style="font-family:'Barlow Condensed',sans-serif; font-size:clamp(2.5rem,6vw,5.5rem); font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#111; line-height:0.95; margin-bottom:0.5rem;">Your most honest<br>hair diagnosis.</h2>
+    <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.3rem; color:rgba(17,17,17,0.35); margin-bottom:7rem;">In three minutes.</p>
+
+    <!-- Step 01 -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; padding:4rem 0; border-top:1px solid rgba(0,0,0,0.08);">
+      <div style="position:relative;">
+        <span style="font-family:'Barlow Condensed',sans-serif; font-size:clamp(7rem,15vw,13rem); font-weight:700; letter-spacing:-0.03em; color:rgba(17,17,17,0.04); line-height:1; display:block; user-select:none;">01</span>
+        <div style="position:absolute; top:50%; transform:translateY(-50%); left:2rem;">
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.35em;text-transform:uppercase;color:rgba(0,0,0,0.25);margin-bottom:0.6rem;">Step one</p>
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#111;line-height:1;">Photograph</p>
+        </div>
+      </div>
+      <p style="font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:300;line-height:1.85;color:rgba(17,17,17,0.55);">Three angles of your hair. Crown, side, ends. No special lighting, no preparation required.</p>
+    </div>
+
+    <!-- Step 02 -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; padding:4rem 0; border-top:1px solid rgba(0,0,0,0.08);">
+      <div style="position:relative;">
+        <span style="font-family:'Barlow Condensed',sans-serif; font-size:clamp(7rem,15vw,13rem); font-weight:700; letter-spacing:-0.03em; color:rgba(17,17,17,0.04); line-height:1; display:block; user-select:none;">02</span>
+        <div style="position:absolute; top:50%; transform:translateY(-50%); left:2rem;">
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.35em;text-transform:uppercase;color:rgba(0,0,0,0.25);margin-bottom:0.6rem;">Step two</p>
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#111;line-height:1;">Answer</p>
+        </div>
+      </div>
+      <p style="font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:300;line-height:1.85;color:rgba(17,17,17,0.55);">Nine questions about your history, habits and health. Takes under three minutes to complete.</p>
+    </div>
+
+    <!-- Step 03 -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; padding:4rem 0; border-top:1px solid rgba(0,0,0,0.08); border-bottom:1px solid rgba(0,0,0,0.08);">
+      <div style="position:relative;">
+        <span style="font-family:'Barlow Condensed',sans-serif; font-size:clamp(7rem,15vw,13rem); font-weight:700; letter-spacing:-0.03em; color:rgba(17,17,17,0.04); line-height:1; display:block; user-select:none;">03</span>
+        <div style="position:absolute; top:50%; transform:translateY(-50%); left:2rem;">
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.35em;text-transform:uppercase;color:rgba(0,0,0,0.25);margin-bottom:0.6rem;">Step three</p>
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#111;line-height:1;">Read</p>
+        </div>
+      </div>
+      <p style="font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:300;line-height:1.85;color:rgba(17,17,17,0.55);">Your complete diagnosis — five dimensions scored, a personalised routine and recommendations chosen specifically for you.</p>
+    </div>
+
+    <div style="text-align:center; margin-top:4rem;">
+      <a href="scan.html" style="display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:0.82rem;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:#FFF;background:#111;padding:1.1rem 3rem;text-decoration:none;border-radius:2px;">Begin your diagnosis →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer class="footer-byredo">
+  <div class="footer-top">
+    <div class="footer-brand-giant">HEBRA</div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-col">
+      <p class="footer-col-label">The App</p>
+      <a href="#" onclick="document.getElementById('scanOverlay').style.display='block'; window.scrollTo(0,0); return false;">Hair Scan</a>
+      <a href="#" onclick="document.getElementById('questOverlay').style.display='block'; window.scrollTo(0,0); return false;">Questionnaire</a>
+      <a href="results-preview.html">Your Results</a>
+    </div>
+    <div class="footer-col">
+      <p class="footer-col-label">Company</p>
+      <a href="#" onclick="openPage('aboutPage'); return false;">About Hebra</a>
+      <a href="#" onclick="openPage('privacyPage'); return false;">Privacy Policy</a>
+      <a href="#" onclick="openPage('termsPage'); return false;">Terms of Use</a>
+    </div>
+    <div class="footer-col">
+      <p class="footer-col-label">Philosophy</p>
+      <a href="#" onclick="openPage('hairPage'); return false;">Hair is a language.</a>
+      <a href="#" onclick="openPage('sciencePage'); return false;">Science, not guesswork.</a>
+      <a href="#" onclick="openPage('precisionPage'); return false;">Precision care.</a>
+    </div>
+    <div class="footer-col footer-col-right">
+      <p class="footer-col-label">Stay informed</p>
+      <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:0.95rem; color:rgba(255,255,255,0.45); margin-bottom:0.8rem; line-height:1.5;">Get a free DIY hair mask recipe every week — matched to your hair type.</p>
+      <div class="footer-email">
+        <input type="email" placeholder="your@email.com" class="footer-input">
+        <button class="footer-submit">→</button>
+      </div>
+      <p class="footer-fine">© 2025 HEBRA. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+// ── NAV scroll ──
+window.addEventListener('scroll', () => {
+  document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ── UPLOADS ──
+const photos = { f: null, e: null, l: null };
+function trigUp(k) { document.getElementById('file-' + k).click(); }
+function onFile(k) {
+  const file = document.getElementById('file-' + k).files[0];
+  if (!file) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    photos[k] = ev.target.result;
+    const img = document.getElementById('img-' + k);
+    img.src = ev.target.result;
+    img.classList.add('shown');
+    document.getElementById('card-' + k).querySelector('.card-sym').style.display = 'none';
+    document.getElementById('card-' + k).classList.add('ready');
+    if (photos.f && photos.e && photos.l) document.getElementById('btnCont').classList.add('active');
+  };
+  r.readAsDataURL(file);
+}
+function scrollToQ() { 
+    document.getElementById('scanOverlay').style.display = 'none';
+    document.getElementById('questOverlay').style.display = 'block'; 
+    window.scrollTo(0,0); 
+}
+
+// ── QUESTIONNAIRE ──
+let curP = 1;
+function goP(n) {
+  document.querySelectorAll('.sb-item').forEach((el, i) => {
+    el.classList.toggle('active', i + 1 === n);
+    el.classList.toggle('done', i + 1 < n);
+  });
+  document.getElementById('qp' + curP).classList.remove('active');
+  curP = n;
+  document.getElementById('qp' + n).classList.add('active');
+  const pct = Math.round(((n - 1) / 4) * 100);
+  document.getElementById('sbFill').style.width = pct + '%';
+  document.getElementById('sbPct').textContent = pct + '% complete';
+  document.getElementById('questOverlay').style.display = 'block'; window.scrollTo(0,0);
+}
+
+// ── COLLECT ──
+function collectSurvey() {
+  const gv = id => { const el = document.getElementById(id); return (el && el.value) ? el.value : 'not specified'; };
+  return {
+    name: gv('qName'),
+    age: gv('qAge'),
+    hairType: gv('qHairType'),
+    length: gv('qLength'),
+    density: 'not specified',
+    wash: gv('qWash'),
+    heat: gv('qHeat'),
+    products: [],
+    chemicals: [],
+    issues: gv('qIssues') !== 'not specified' ? gv('qIssues').split(', ') : [],
+    health: [],
+    diet: gv('qDiet'),
+    shedding: 'not specified',
+    goals: gv('qGoal') !== 'not specified' ? [gv('qGoal')] : [],
+    urgency: 5,
+    notes: ''
+  };
+}
+
+// ── LOADING ──
+function setLoad(step, pct, txt) {
+  document.getElementById('ldSt').textContent = txt;
+  document.getElementById('ldProg').style.width = pct + '%';
+  for (let i = 1; i <= 4; i++) document.getElementById('ls' + i).classList.toggle('done', i < step);
+}
+const wait = ms => new Promise(r => setTimeout(r, ms));
+
+// ── AFFILIATE TAG ──
+const TAG = 'hebrahair20-20';
+
+// ── DIAGNOSIS ──
+async function runDiagnosis() {
+  const sv = collectSurvey();
+  document.getElementById('loading').classList.add('on');
+  setLoad(1, 8, 'scanning your photographs…');
+
+  const imgBlocks = [];
+  for (const [k, lbl] of [['f','Follicle / scalp close-up'],['e','Hair ends'],['l','Full length view']]) {
+    if (photos[k]) {
+      const [hdr, b64] = photos[k].split(',');
+      const mime = (hdr.match(/data:([^;]+)/) || [])[1] || 'image/jpeg';
+      imgBlocks.push({ type: 'text', text: `--- ${lbl} ---` });
+      imgBlocks.push({ type: 'image', source: { type: 'base64', media_type: mime, data: b64 } });
+    }
+  }
+
+  setLoad(2, 32, 'reading your questionnaire answers…');
+  const surveyText = `
+QUESTIONNAIRE:
+Name: ${sv.name} | Age: ${sv.age}
+Hair type: ${sv.hairType} | Length: ${sv.length} | Density: ${sv.density}
+Wash frequency: ${sv.wash} | Heat styling: ${sv.heat}
+Products used: ${sv.products.join(', ') || 'none'}
+Chemical treatments: ${sv.chemicals.join(', ') || 'none'}
+Current issues: ${sv.issues.join(', ') || 'none'}
+Health conditions: ${sv.health.join(', ') || 'none'}
+Diet / hydration: ${sv.diet}/10 | Shedding: ${sv.shedding}
+Goals: ${sv.goals.join(', ') || 'none'} | Urgency: ${sv.urgency}/10
+Notes: ${sv.notes || 'none'}`;
+
+  setLoad(3, 60, 'generating your personalised diagnosis…');
+
+  const SYSTEM = `You are Hebra, a professional AI hair health analyst. Analyse the hair photographs and questionnaire to deliver a precise, personalised diagnosis. Respond ONLY with valid JSON — no markdown, no backticks, no text outside the JSON.
+
+Schema: {"overallScore":<integer 0-100>,"overallLabel":<"excellent"|"good"|"fair"|"needs attention"|"critical">,"summary":<2-3 sentence personalised overview mentioning the person's name and specific photo observations>,"photoAnalysis":<detailed multi-paragraph professional analysis of all 3 photos>,"categories":[{"name":"hydration","score":<0-100>,"description":<1-2 sentences>},{"name":"strength","score":<0-100>,"description":<1-2 sentences>},{"name":"scalp health","score":<0-100>,"description":<1-2 sentences>},{"name":"vitality","score":<0-100>,"description":<1-2 sentences>}],"recommendations":[<5 strings>],"products":[{"tag":<category>,"name":<real product name>,"brand":<brand>,"why":<1-2 sentences>,"amazonQuery":<Amazon search string>}]}
+
+Rules: exactly 5 recommendations, exactly 6 products. Use real purchasable products. Match to this person's specific hair type, issues and goals.`;
+
+  let result = null;
+  try {
+    const res = await fetch('/.netlify/functions/diagnose', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 2000,
+        system: SYSTEM,
+        messages: [{ role: 'user', content: [
+          ...imgBlocks,
+          { type: 'text', text: surveyText },
+          { type: 'text', text: 'Analyse all photos and questionnaire data and return my complete hair diagnosis as JSON.' }
+        ]}]
+      })
+    });
+    const data = await res.json();
+    const raw = (data.content || []).map(b => b.text || '').join('');
+    result = JSON.parse(raw.replace(/```json|```/g, '').trim());
+  } catch(e) {
+    console.error(e);
+    result = fallback(sv);
+  }
+
+  setLoad(4, 92, 'curating your product recommendations…');
+  await wait(600);
+  setLoad(4, 100, 'diagnosis complete');
+  await wait(500);
+  document.getElementById('loading').classList.remove('on');
+  render(result, sv);
+}
+
+// ── FALLBACK ──
+function fallback(sv) {
+  const hp = sv.heat === 'daily' ? 18 : sv.heat === 'frequently' ? 9 : 0;
+  const cp = sv.chemicals.includes('color / bleach') ? 11 : 0;
+  const diet = parseInt(sv.diet);
+  const shedP = sv.shedding.includes('severe') ? 22 : sv.shedding.includes('significant') ? 12 : 0;
+  return {
+    overallScore: Math.min(94, Math.max(36, 74 - hp - cp + (diet - 5))),
+    overallLabel: 'fair',
+    summary: `${sv.name}, your questionnaire reveals hair experiencing routine-related stress. The diagnosis below identifies key recovery areas tailored to your goals and hair type.`,
+    photoAnalysis: 'Photo analysis requires a valid API connection.\n\nThe scores and recommendations below are based entirely on your questionnaire answers.',
+    categories: [
+      { name: 'hydration', score: Math.max(30, 72 - hp - cp), description: 'Moisture levels appear compromised based on your routine.' },
+      { name: 'strength', score: Math.max(30, 70 - cp - hp/2), description: 'Hair fibre integrity may be weakened. Protein-based treatments can help.' },
+      { name: 'scalp health', score: Math.max(40, 68 + (diet - 5)), description: 'Scalp health correlates with your reported diet and care habits.' },
+      { name: 'vitality', score: Math.max(35, 70 - shedP), description: 'Growth cycle appears impacted by current stress factors in your routine.' }
+    ],
+    recommendations: [
+      'Reduce heat styling frequency and always apply a professional heat protectant.',
+      'Introduce a weekly deep conditioning mask focused on moisture and elasticity.',
+      'A protein treatment every 4–6 weeks can reinforce the hair\'s internal structure.',
+      'Massage your scalp for 3–5 minutes before each wash to stimulate circulation.',
+      'Review your diet for adequate iron, zinc and biotin — deficiencies impact hair density.'
+    ],
+    products: [
+      { tag: 'bond repair', name: 'Bond Maintenance No.3', brand: 'Olaplex', why: 'Rebuilds broken disulfide bonds — essential for heat-damaged or chemically treated hair.', amazonQuery: 'Olaplex No.3 Hair Perfector' },
+      { tag: 'deep hydration', name: 'Don\'t Despair Repair Mask', brand: 'Briogeo', why: 'Intensive moisture recovery without weighing fine hair down.', amazonQuery: 'Briogeo Dont Despair Repair Deep Conditioning Mask' },
+      { tag: 'scalp treatment', name: 'Multi-Peptide Hair Serum', brand: 'The Ordinary', why: 'Peptide complex to support follicle density and reduce visible shedding.', amazonQuery: 'The Ordinary Multi-Peptide Serum for Hair Density' },
+      { tag: 'shine & finish', name: 'Moroccanoil Treatment', brand: 'Moroccanoil', why: 'Argan oil formula that tames frizz and restores luminosity.', amazonQuery: 'Moroccanoil Treatment Original' },
+      { tag: 'growth support', name: 'GRO Hair Serum', brand: 'Vegamour', why: 'Plant-based phyto-actives to stimulate growth and reduce visible shedding.', amazonQuery: 'Vegamour GRO Hair Serum' },
+      { tag: 'protein repair', name: 'Molecular Repair Hair Mask', brand: 'K18', why: 'Patented biomimetic peptide that reverses 4 types of internal hair damage.', amazonQuery: 'K18 Molecular Repair Hair Mask' }
+    ]
+  };
+}
+
+
+  // ── ARCHETYPE LOGIC ──
+  function getArchetype(categories) {
+    const scores = {};
+    categories.forEach(c => { scores[c.name.toLowerCase()] = c.score; });
+    const hydration = scores['hydration'] || scores['moisture'] || 50;
+    const strength  = scores['strength'] || 50;
+    const scalp     = scores['scalp health'] || scores['scalp'] || 50;
+    const vitality  = scores['vitality'] || 50;
+    const avg = (hydration + strength + scalp + vitality) / 4;
+
+    if (avg >= 75) return {
+      name: 'The Balanced Mane',
+      icon: '✦',
+      pill: 'Thriving',
+      desc: 'Your hair is in excellent overall health. All five pillars are well above average — you have a strong foundation and just need a mindful maintenance routine to keep it this way.',
+      traits: ['High Resilience', 'Optimal Moisture', 'Strong Follicles']
+    };
+    if (strength < 50 && hydration < 50) return {
+      name: 'The Fragile Crown',
+      icon: '◇',
+      pill: 'Needs Rebuilding',
+      desc: 'Your hair has experienced structural damage — likely from heat, chemical treatments or environmental stress. Your strands are calling for deep protein repair and intensive hydration.',
+      traits: ['Protein Deficit', 'High Porosity', 'Cuticle Damage']
+    };
+    if (hydration < 55 && vitality >= 60) return {
+      name: 'The Wild Strand',
+      icon: '◈',
+      pill: 'Untamed Energy',
+      desc: 'Your hair has incredible natural density and vitality, but it craves moisture. Frizz, texture and volume are your hair\'s personality — the right hydration routine will make them your superpower.',
+      traits: ['High Vitality', 'Low Moisture', 'Textured']
+    };
+    if (scalp >= 70 && strength >= 70) return {
+      name: 'The Resilient Root',
+      icon: '◉',
+      pill: 'Structurally Strong',
+      desc: 'Your scalp and strand structure are your greatest assets. You have a healthy foundation with strong roots — focus on maintaining moisture balance and protecting your ends.',
+      traits: ['Strong Scalp', 'Resilient Core', 'Stable Growth']
+    };
+    return {
+      name: 'The Silk Type',
+      icon: '◌',
+      pill: 'Delicate & Fine',
+      desc: 'Your hair is fine, smooth and delicate. It responds well to lightweight products and gentle care. Avoid heavy formulas — your strands need protection and volume, not weight.',
+      traits: ['Fine Texture', 'Low Density', 'Sensitive Cuticle']
+    };
+  }
+
+// ── RENDER ──
+function render(d, sv) {
+  document.getElementById('resName').innerHTML = `${sv.name}'s <em>Analysis</em>`;
+  document.getElementById('resSummary').textContent = d.summary;
+  // Animated score counter
+  const ovEl = document.getElementById('ovNum');
+  ovEl.textContent = '0';
+  const target = d.overallScore;
+  const duration = 1800;
+  const start = performance.now();
+  function countUp(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    // Ease out cubic
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(eased * target);
+    ovEl.textContent = current;
+    if (progress < 1) requestAnimationFrame(countUp);
+    else ovEl.textContent = target;
+  }
+  requestAnimationFrame(countUp);
+  document.getElementById('ovLbl').textContent = d.overallLabel;
+
+  // Archetype
+  const arch = getArchetype(d.categories);
+  const arcEl = document.getElementById('archetypeReveal');
+  arcEl.style.display = 'grid';
+  arcEl.innerHTML = `
+    <div class="archetype-left">
+      <div class="archetype-badge-label">Your Hair Archetype</div>
+      <span class="archetype-icon">${arch.icon}</span>
+      <div class="archetype-name-big">${arch.name}</div>
+      <span class="archetype-pill">${arch.pill}</span>
+    </div>
+    <div class="archetype-right">
+      <p class="archetype-desc">${arch.desc}</p>
+      <div class="archetype-traits">
+        ${arch.traits.map(t => `<span class="archetype-trait">${t}</span>`).join('')}
+      </div>
+    </div>
+  `;
+  document.getElementById('scoresGrid').innerHTML = d.categories.map(c => `
+    <div class="sc">
+      <span class="sc-cat">${c.name}</span>
+      <div class="sc-num">${c.score}</div>
+      <div class="sc-bar"><div class="sc-fill" style="width:0"></div></div>
+      <p class="sc-desc">${c.description}</p>
+    </div>`).join('');
+  document.getElementById('aiBody').textContent = d.photoAnalysis;
+  document.getElementById('recList').innerHTML = d.recommendations.map(r => `<li><span class="r-dash">—</span>${r}</li>`).join('');
+  document.getElementById('prodGrid').innerHTML = d.products.map(p => `
+    <a class="prod-card" href="https://www.amazon.com/s?k=${encodeURIComponent(p.amazonQuery)}&tag=${TAG}" target="_blank" rel="noopener noreferrer">
+      <span class="p-tag">${p.tag}</span>
+      <div class="p-name">${p.name}</div>
+      <div class="p-brand">${p.brand}</div>
+      <p class="p-why">${p.why}</p>
+      <span class="p-link">view on amazon →</span>
+    </a>`).join('');
+
+  // Populate shareable card
+  document.getElementById('shareScore').textContent = d.overallScore;
+  document.getElementById('shareArchetype').textContent = arch.name;
+  document.getElementById('shareTraits').innerHTML = arch.traits
+    .map(t => `<span class="share-card-trait">${t}</span>`).join('');
+  document.getElementById('shareCats').innerHTML = d.categories
+    .map(c => `
+      <div class="share-card-cat-row">
+        <div class="share-card-cat-name">${c.name}</div>
+        <div class="share-card-bar"><div class="share-card-bar-fill" style="width:${c.score}%"></div></div>
+        <div class="share-card-cat-score">${c.score}</div>
+      </div>`).join('');
+  document.getElementById('shareSection').style.display = 'block';
+
+  const sec = document.getElementById('results');
+  sec.classList.add('on');
+  sec.scrollIntoView({ behavior: 'smooth' });
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    document.querySelectorAll('.sc-fill').forEach((el, i) => {
+      const target = d.categories[i]?.score || 0;
+      setTimeout(() => { el.style.width = target + '%'; }, 80 + i * 120);
+    });
+  }));
+}
+</script>
+
+<script>
+  // ── SCROLL ANIMATIONS ──
+  const animatedEls = document.querySelectorAll('.fade-up, .fade-in, .slide-left, .slide-right, .scale-in');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target); // animate once
+      }
+    });
+  }, {
+    threshold: 0.12,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  animatedEls.forEach(el => observer.observe(el));
+
+  // Re-run on dynamic content (results section)
+  const resultsObserver = new MutationObserver(() => {
+    document.querySelectorAll('.fade-up:not(.visible), .fade-in:not(.visible), .scale-in:not(.visible)').forEach(el => {
+      observer.observe(el);
+    });
+  });
+  resultsObserver.observe(document.body, { childList: true, subtree: true });
+</script>
+
+
+<script>
+  // Animate sample result bars on scroll
+  const barObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.sample-bar-fill').forEach((bar, i) => {
+          setTimeout(() => bar.classList.add('animate'), i * 120);
+        });
+        barObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const sampleCard = document.querySelector('.sample-card');
+  if (sampleCard) barObserver.observe(sampleCard);
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+async function downloadShareCard() {
+  const card = document.getElementById('shareCard');
+  const btn = document.querySelector('.share-btn');
+  btn.textContent = 'Generating...';
+  btn.disabled = true;
+
+  try {
+    const canvas = await html2canvas(card, {
+      backgroundColor: '#111111',
+      scale: 3,
+      useCORS: true,
+      logging: false
+    });
+    const link = document.createElement('a');
+    link.download = 'hebra-hair-profile.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    btn.textContent = '✓ Saved!';
+    setTimeout(() => {
+      btn.textContent = '↓ Save my profile';
+      btn.disabled = false;
+    }, 2500);
+  } catch(e) {
+    btn.textContent = '↓ Save my profile';
+    btn.disabled = false;
+  }
+}
+</script>
+
+
+
+<script>
+  // ── HAIR STRANDS ANIMATION ──
+  const hairCanvas = document.getElementById('hairCanvas');
+  const hero = document.getElementById('hero');
+
+  function resizeCanvas() {
+    hairCanvas.width = window.innerWidth;
+    hairCanvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+  const hctx = hairCanvas.getContext('2d');
+
+  const TYPES = ['straight', 'wavy', 'curly', 'coily'];
+
+  function makeStrand() {
+    const W = window.innerWidth, H = window.innerHeight;
+    const type = TYPES[Math.floor(Math.random() * TYPES.length)];
+    return {
+      x: Math.random() * W,
+      y: -30 + Math.random() * (H + 60),
+      type,
+      length: type === 'coily' ? 60 + Math.random() * 80 : 100 + Math.random() * 180,
+      thickness: 0.3 + Math.random() * 0.8,
+      opacity: 0.05 + Math.random() * 0.11,
+      angle: (Math.PI / 2) + (Math.random() - 0.5) * 0.5,
+      phase: Math.random() * Math.PI * 2,
+      driftSpeed: 0.00012 + Math.random() * 0.00025,
+      driftAmp: 6 + Math.random() * 16,
+      waveFreq: 0.12 + Math.random() * 0.2,
+      waveAmp: type === 'wavy' ? 8 + Math.random() * 14 :
+               type === 'curly' ? 14 + Math.random() * 20 :
+               type === 'coily' ? 20 + Math.random() * 28 : 1 + Math.random() * 3,
+      coilTightness: 0.18 + Math.random() * 0.28,
+      segments: type === 'coily' ? 40 : 32,
+      animSpeed: 0.0003 + Math.random() * 0.0006,
+    };
+  }
+
+  // Ensure strands are spread across full width — divide canvas into columns
+  function makeStrands(count) {
+    const W = window.innerWidth, H = window.innerHeight;
+    const cols = 12;
+    const colW = W / cols;
+    const arr = [];
+    for (let i = 0; i < count; i++) {
+      const s = makeStrand();
+      // Force even distribution across columns
+      const col = i % cols;
+      s.x = col * colW + Math.random() * colW;
+      arr.push(s);
+    }
+    return arr;
+  }
+
+  let strands = makeStrands(96);
+
+  window.addEventListener('resize', () => {
+    strands = makeStrands(96);
+  });
+
+  function drawStrand(s, t) {
+    const segLen = s.length / s.segments;
+    const rootX = s.x + Math.sin(t * s.driftSpeed + s.phase) * s.driftAmp;
+    const rootY = s.y + Math.cos(t * s.driftSpeed * 0.6 + s.phase) * (s.driftAmp * 0.3);
+
+    hctx.beginPath();
+    hctx.strokeStyle = `rgba(17,17,17,${s.opacity})`;
+    hctx.lineWidth = s.thickness;
+    hctx.lineCap = 'round';
+    hctx.lineJoin = 'round';
+    hctx.moveTo(rootX, rootY);
+
+    let px = rootX, py = rootY;
+
+    for (let i = 1; i <= s.segments; i++) {
+      let dx, dy;
+      if (s.type === 'straight') {
+        const bend = Math.sin(t * s.animSpeed + s.phase) * 0.06;
+        dx = Math.cos(s.angle + bend) * segLen;
+        dy = Math.sin(s.angle + bend) * segLen;
+      } else if (s.type === 'wavy') {
+        const wave = Math.sin(i * s.waveFreq + t * s.animSpeed + s.phase) * s.waveAmp;
+        dx = Math.cos(s.angle) * segLen + wave * 0.15;
+        dy = Math.sin(s.angle) * segLen;
+      } else if (s.type === 'curly') {
+        const curl = Math.sin(i * s.waveFreq * 1.4 + t * s.animSpeed + s.phase) * s.waveAmp;
+        const curlY = Math.cos(i * s.waveFreq * 0.8 + s.phase) * (s.waveAmp * 0.4);
+        dx = Math.cos(s.angle) * segLen + curl * 0.2;
+        dy = Math.sin(s.angle) * segLen + curlY * 0.15;
+      } else {
+        const spiral = Math.sin(i * s.coilTightness * Math.PI * 2 + t * s.animSpeed * 0.5 + s.phase);
+        const spiralCross = Math.cos(i * s.coilTightness * Math.PI * 2 + s.phase) * 0.5;
+        dx = Math.cos(s.angle + spiralCross) * segLen + spiral * s.waveAmp * 0.25;
+        dy = Math.sin(s.angle) * segLen * 0.85;
+      }
+      px += dx; py += dy;
+      hctx.lineTo(px, py);
+    }
+    hctx.stroke();
+  }
+
+  function animateHair(t) {
+    hctx.clearRect(0, 0, hairCanvas.width, hairCanvas.height);
+    strands.forEach(s => drawStrand(s, t));
+    requestAnimationFrame(animateHair);
+  }
+  requestAnimationFrame(animateHair);
+</script>
+
+
+<script>
+  // ── QUESTIONNAIRE DYNAMIC ──
+  let currentQ = 1;
+  const totalQ = 9;
+  const multiSelections = {};
+
+  function qNext(n) {
+    const cur = document.getElementById('qs' + currentQ);
+    const next = document.getElementById('qs' + n);
+    if (!next) return;
+    cur.classList.add('exit');
+    setTimeout(() => {
+      cur.classList.remove('active', 'exit');
+      next.classList.add('active');
+      currentQ = n;
+      document.getElementById('qCounter').textContent = n + ' / ' + totalQ;
+      document.getElementById('qProgressBar').style.width = ((n-1) / totalQ * 100) + '%';
+    }, 400);
+  }
+
+  function qBack() {
+    if (currentQ > 1) {
+      qNext(currentQ - 1);
+    } else {
+      document.getElementById('questOverlay').style.display = 'none';
+      document.getElementById('scanOverlay').style.display = 'block';
+      window.scrollTo(0,0);
+    }
+  }
+
+  function qSelect(el, field, val) {
+    el.closest('.q-cards').querySelectorAll('.q-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById(field).value = val;
+  }
+
+  function qMulti(el, field, val) {
+    if (!multiSelections[field]) multiSelections[field] = [];
+    const idx = multiSelections[field].indexOf(val);
+    if (idx > -1) {
+      multiSelections[field].splice(idx, 1);
+      el.classList.remove('selected');
+    } else {
+      if (multiSelections[field].length >= 3) return;
+      multiSelections[field].push(val);
+      el.classList.add('selected');
+    }
+    document.getElementById(field).value = multiSelections[field].join(', ');
+  }
+</script>
+
+
+
+<!-- ── ABOUT PAGE OVERLAY ── -->
+<div id="aboutPage" style="display:none; position:fixed; inset:0; background:#FFFFFF; z-index:9000; overflow-y:auto;">
+
+  <!-- NAV inside overlay -->
+  <nav style="position:sticky; top:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:1.4rem 3rem; background:#FFFFFF; box-shadow:0 2px 24px rgba(0,0,0,0.06);">
+    <a href="#" onclick="closePage('aboutPage')" style="font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:0.15em; color:#111; text-decoration:none;">Hebra</a>
+    <ul style="display:flex; gap:2.5rem; list-style:none;">
+      <li><a href="#" onclick="closePage('aboutPage')" style="font-family:'Barlow Condensed',sans-serif; font-size:0.85rem; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:rgba(0,0,0,0.6); text-decoration:none;">← Back</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div style="background:#111111; padding:8rem 4rem 6rem; position:relative; overflow:hidden;">
+    <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 1px,rgba(255,255,255,0.015) 1px,rgba(255,255,255,0.015) 2px);pointer-events:none;"></div>
+    <div style="max-width:1200px; margin:0 auto; position:relative; z-index:1;">
+      <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.35em; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:1.5rem;">About Hebra</p>
+      <h1 style="font-family:'Barlow Condensed',sans-serif; font-size:clamp(4rem,10vw,9rem); font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#FFFFFF; line-height:0.95; margin-bottom:2rem;">Hair is not<br>a problem.<br>It is a <span style="font-style:italic;font-family:'Cormorant Garamond',serif;font-weight:300;color:rgba(255,255,255,0.5);">language.</span></h1>
+      <p style="font-family:'Cormorant Garamond',serif; font-size:clamp(1.2rem,2.5vw,1.7rem); font-weight:300; font-style:italic; color:rgba(255,255,255,0.45); max-width:540px; line-height:1.6;">Built for those who want to understand their hair — not just manage it.</p>
+    </div>
+  </div>
+
+  <!-- MANIFESTO -->
+  <div style="padding:8rem 4rem; background:#FFFFFF; border-bottom:1px solid rgba(0,0,0,0.08);">
+    <div style="max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:8rem; align-items:start;">
+      <div>
+        <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.8rem; font-weight:600; letter-spacing:0.3em; text-transform:uppercase; color:rgba(0,0,0,0.35); margin-bottom:1.2rem;">Our belief</p>
+        <h2 style="font-family:'Barlow Condensed',sans-serif; font-size:clamp(1.8rem,3vw,2.6rem); font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#111; line-height:1.15; margin-top:1rem;">Hair is not<br>a problem<br>to be solved.<br>It is a language<br>to be understood.</h2>
+      </div>
+      <div style="padding-top:0.5rem;">
+        <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.95rem; font-weight:500; line-height:1.85; color:rgba(17,17,17,0.7); margin-bottom:1.8rem; letter-spacing:0.05em;">Hebra was built on a simple belief — that most people have never truly understood their hair. Not because they haven't tried, but because the tools available to them were designed for the average, not the individual.</p>
+        <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.95rem; font-weight:500; line-height:1.85; color:rgba(17,17,17,0.7); margin-bottom:1.8rem; letter-spacing:0.05em;">We combine image analysis with personal data to produce a diagnosis that is precise, private and genuinely useful. No generic advice. No products pushed without reason. Just a clear, honest picture of what your hair needs — and why.</p>
+        <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.95rem; font-weight:500; line-height:1.85; color:rgba(17,17,17,0.7); letter-spacing:0.05em;">Most hair care is built around assumptions. Hebra is built around you — your biology, your environment, your history with your hair. We believe precision is the highest form of care.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOUR PRINCIPLES -->
+  <div style="padding:8rem 4rem; background:#F5F2EC; border-top:1px solid rgba(0,0,0,0.08);">
+    <div style="max-width:1200px; margin:0 auto;">
+      <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.8rem; font-weight:600; letter-spacing:0.3em; text-transform:uppercase; color:rgba(0,0,0,0.35); margin-bottom:1.2rem;">What we stand for</p>
+      <h2 style="font-family:'Barlow Condensed',sans-serif; font-size:clamp(2.2rem,5vw,4rem); font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#111; margin-bottom:4rem; line-height:1.1;">Our four principles</h2>
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:0; border:1px solid rgba(0,0,0,0.08); border-radius:4px; overflow:hidden;">
+        <div style="padding:3rem 2.5rem; background:#F5F2EC; border-right:1px solid rgba(0,0,0,0.08);">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.25em;color:rgba(0,0,0,0.25);margin-bottom:2rem;">01</div>
+          <div style="font-size:1.8rem;margin-bottom:1.5rem;opacity:0.4;">◎</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#111;margin-bottom:0.8rem;">Precision</div>
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:500;line-height:1.7;color:#666;">Every diagnosis is built around your hair — not a template. We analyse what we actually see, not what statistics predict.</p>
+        </div>
+        <div style="padding:3rem 2.5rem; background:#F5F2EC; border-right:1px solid rgba(0,0,0,0.08);">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.25em;color:rgba(0,0,0,0.25);margin-bottom:2rem;">02</div>
+          <div style="font-size:1.8rem;margin-bottom:1.5rem;opacity:0.4;">◌</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#111;margin-bottom:0.8rem;">Privacy</div>
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:500;line-height:1.7;color:#666;">Your photographs are processed in real time and never stored or shared. Your data belongs to you alone.</p>
+        </div>
+        <div style="padding:3rem 2.5rem; background:#F5F2EC; border-right:1px solid rgba(0,0,0,0.08);">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.25em;color:rgba(0,0,0,0.25);margin-bottom:2rem;">03</div>
+          <div style="font-size:1.8rem;margin-bottom:1.5rem;opacity:0.4;">◍</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#111;margin-bottom:0.8rem;">Honesty</div>
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:500;line-height:1.7;color:#666;">No upsells. No filler. Only what your hair actually needs — with clear reasoning behind every recommendation.</p>
+        </div>
+        <div style="padding:3rem 2.5rem; background:#F5F2EC;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.25em;color:rgba(0,0,0,0.25);margin-bottom:2rem;">04</div>
+          <div style="font-size:1.8rem;margin-bottom:1.5rem;opacity:0.4;">○</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#111;margin-bottom:0.8rem;">Intelligence</div>
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:500;line-height:1.7;color:#666;">Science-backed analysis, expressed in language that is human, clear and genuinely useful — not clinical jargon.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div style="padding:8rem 4rem; background:#F5F2EC; text-align:center; border-top:1px solid rgba(0,0,0,0.08);">
+    <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:600;letter-spacing:0.3em;text-transform:uppercase;color:rgba(0,0,0,0.35);margin-bottom:1.2rem;">Your diagnosis awaits</p>
+    <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#111;line-height:1.1;margin-bottom:1.5rem;">Ready to know your hair?</h2>
+    <p style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:rgba(0,0,0,0.5);margin-bottom:3rem;line-height:1.6;">Three photographs. A personal questionnaire. A complete diagnosis — in minutes.</p>
+    <a href="#" onclick="closePage('aboutPage'); document.getElementById('scanOverlay').style.display='block'; window.scrollTo(0,0); return false;" style="display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:#FFF;background:#111;padding:1.1rem 3rem;text-decoration:none;border-radius:2px;transition:background 0.3s;">Begin your diagnosis →</a>
+  </div>
+
+</div>
+
+<!-- ── PRIVACY PAGE OVERLAY ── -->
+<div id="privacyPage" style="display:none; position:fixed; inset:0; background:#FFFFFF; z-index:9000; overflow-y:auto;">
+
+  <nav style="position:sticky; top:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:1.4rem 3rem; background:#FFFFFF; box-shadow:0 2px 24px rgba(0,0,0,0.06);">
+    <a href="#" onclick="closePage('privacyPage')" style="font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:0.15em; color:#111; text-decoration:none;">Hebra</a>
+    <ul style="display:flex; gap:2.5rem; list-style:none;">
+      <li><a href="#" onclick="closePage('privacyPage')" style="font-family:'Barlow Condensed',sans-serif; font-size:0.85rem; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:rgba(0,0,0,0.6); text-decoration:none;">← Back</a></li>
+    </ul>
+  </nav>
+
+  <div style="background:#111111; padding:8rem 4rem 6rem; position:relative; overflow:hidden;">
+    <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 1px,rgba(255,255,255,0.015) 1px,rgba(255,255,255,0.015) 2px);pointer-events:none;"></div>
+    <div style="max-width:900px; margin:0 auto; position:relative; z-index:1;">
+      <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.35em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:1.5rem;">Legal</p>
+      <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(3.5rem,8vw,7rem);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#FFF;line-height:0.95;margin-bottom:2rem;">Privacy<br>Policy</h1>
+      <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);">Last updated: January 2025</p>
+    </div>
+  </div>
+
+  <div style="padding:6rem 4rem 8rem;">
+    <div style="max-width:760px; margin:0 auto;">
+      <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:rgba(0,0,0,0.3);margin-bottom:4rem;padding-bottom:2rem;border-bottom:1px solid rgba(0,0,0,0.08);">Effective date: 1 January 2025</p>
+
+      <div style="margin-bottom:3.5rem;">
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:rgba(0,0,0,0.25);margin-bottom:0.8rem;">01</p>
+        <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#111;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(0,0,0,0.08);">Introduction</h2>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.92rem;font-weight:500;line-height:1.85;color:rgba(17,17,17,0.7);letter-spacing:0.04em;margin-bottom:1.2rem;">Hebra is committed to protecting your personal information and your right to privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our hair diagnosis service.</p>
+      </div>
+
+      <div style="margin-bottom:3.5rem;">
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:rgba(0,0,0,0.25);margin-bottom:0.8rem;">02</p>
+        <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#111;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(0,0,0,0.08);">Image Processing & Storage</h2>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.92rem;font-weight:500;line-height:1.85;color:rgba(17,17,17,0.7);letter-spacing:0.04em;margin-bottom:1rem;">Your photographs are our highest privacy priority. All images you upload are:</p>
+        <ul style="margin:0 0 1rem 0;">
+          <li style="font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:500;line-height:1.8;color:rgba(17,17,17,0.7);letter-spacing:0.04em;margin-bottom:0.5rem;list-style:none;padding-left:1.2rem;position:relative;"><span style="position:absolute;left:0;color:rgba(0,0,0,0.25);">—</span> Transmitted using end-to-end encryption (TLS 1.3)</li>
+          <li style="font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:500;line-height:1.8;color:rgba(17,17,17,0.7);letter-spacing:0.04em;margin-bottom:0.5rem;list-style:none;padding-left:1.2rem;position:relative;"><span style="position:absolute;left:0;color:rgba(0,0,0,0.25);">—</span> Processed in real time — never written to disk</li>
+          <li style="font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:500;line-height:1.8;color:rgba(17,17,17,0.7);letter-spacing:0.04em;margin-bottom:0.5rem;list-style:none;padding-left:1.2rem;position:relative;"><span style="position:absolute;left:0;color:rgba(0,0,0,0.25);">—</span> Never shared with third parties, advertisers, or data brokers</li>
+          <li style="font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:500;line-height:1.8;color:rgba(17,17,17,0.7);letter-spacing:0.04em;margin-bottom:0.5rem;list-style:none;padding-left:1.2rem;position:relative;"><span style="position:absolute;left:0;color:rgba(0,0,0,0.25);">—</span> Permanently discarded immediately after your diagnosis is generated</li>
+        </ul>
+      </div>
+
+      <div style="margin-bottom:3.5rem;">
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:rgba(0,0,0,0.25);margin-bottom:0.8rem;">03</p>
+        <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#111;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(0,0,0,0.08);">Affiliate Disclosure</h2>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.92rem;font-weight:500;line-height:1.85;color:rgba(17,17,17,0.7);letter-spacing:0.04em;">Hebra participates in the Amazon Associates programme. Product recommendations may contain affiliate links. When you purchase through these links, Hebra may earn a small commission at no extra cost to you. Affiliate relationships do not influence our recommendations — all products are selected based solely on your hair diagnosis.</p>
+      </div>
+
+      <div style="margin-bottom:3.5rem;">
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:rgba(0,0,0,0.25);margin-bottom:0.8rem;">04</p>
+        <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#111;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(0,0,0,0.08);">Contact</h2>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.92rem;font-weight:500;line-height:1.85;color:rgba(17,17,17,0.7);letter-spacing:0.04em;">For questions about this Privacy Policy, contact us at <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="91e1e3f8e7f0f2e8d1f9f4f3e3f0bff2fefc">[email&#160;protected]</a>.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── TERMS PAGE OVERLAY ── -->
+<div id="termsPage" style="display:none; position:fixed; inset:0; background:#FFFFFF; z-index:9000; overflow-y:auto;">
+
+  <nav style="position:sticky; top:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:1.4rem 3rem; background:#FFFFFF; box-shadow:0 2px 24px rgba(0,0,0,0.06);">
+    <a href="#" onclick="closePage('termsPage')" style="font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:0.15em; color:#111; text-decoration:none;">Hebra</a>
+    <ul style="display:flex; gap:2.5rem; list-style:none;">
+      <li><a href="#" onclick="closePage('termsPage')" style="font-family:'Barlow Condensed',sans-serif; font-size:0.85rem; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:rgba(0,0,0,0.6); text-decoration:none;">← Back</a></li>
+    </ul>
+  </nav>
+
+  <div style="background:#111111; padding:8rem 4rem 6rem; position:relative; overflow:hidden;">
+    <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 1px,rgba(255,255,255,0.015) 1px,rgba(255,255,255,0.015) 2px);pointer-events:none;"></div>
+    <div style="max-width:900px; margin:0 auto; position:relative; z-index:1;">
+      <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.35em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:1.5rem;">Legal</p>
+      <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(3.5rem,8vw,7rem);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#FFF;line-height:0.95;margin-bottom:2rem;">Terms<br>of Use</h1>
+      <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);">Last updated: January 2025</p>
+    </div>
+  </div>
+
+  <div style="padding:6rem 4rem 8rem;">
+    <div style="max-width:760px; margin:0 auto;">
+      <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:rgba(0,0,0,0.3);margin-bottom:4rem;padding-bottom:2rem;border-bottom:1px solid rgba(0,0,0,0.08);">Effective date: 1 January 2025</p>
+
+      <div style="margin-bottom:3.5rem;">
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:rgba(0,0,0,0.25);margin-bottom:0.8rem;">01</p>
+        <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#111;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(0,0,0,0.08);">Acceptance of Terms</h2>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.92rem;font-weight:500;line-height:1.85;color:rgba(17,17,17,0.7);letter-spacing:0.04em;">By accessing or using the Hebra hair diagnosis service, you agree to be bound by these Terms of Use. If you do not agree, you may not use the Service.</p>
+      </div>
+
+      <div style="margin-bottom:3.5rem;">
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:rgba(0,0,0,0.25);margin-bottom:0.8rem;">02</p>
+        <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#111;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(0,0,0,0.08);">Not Medical Advice</h2>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.92rem;font-weight:500;line-height:1.85;color:rgba(17,17,17,0.7);letter-spacing:0.04em;">The diagnosis and recommendations provided by Hebra are for informational purposes only and do not constitute medical or dermatological advice. If you have concerns about a scalp or hair condition that may be medical in nature, please consult a qualified healthcare professional.</p>
+      </div>
+
+      <div style="margin-bottom:3.5rem;">
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:rgba(0,0,0,0.25);margin-bottom:0.8rem;">03</p>
+        <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#111;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(0,0,0,0.08);">Affiliate Disclosure</h2>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.92rem;font-weight:500;line-height:1.85;color:rgba(17,17,17,0.7);letter-spacing:0.04em;">Hebra participates in the Amazon Associates affiliate programme. Product recommendations may contain affiliate links. When you purchase a product through these links, Hebra may earn a small commission at no additional cost to you. This does not influence our product recommendations.</p>
+      </div>
+
+      <div style="margin-bottom:3.5rem;">
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:rgba(0,0,0,0.25);margin-bottom:0.8rem;">04</p>
+        <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#111;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(0,0,0,0.08);">Limitation of Liability</h2>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.92rem;font-weight:500;line-height:1.85;color:rgba(17,17,17,0.7);letter-spacing:0.04em;">To the maximum extent permitted by law, Hebra shall not be liable for any indirect, incidental, or consequential damages arising from your use of the Service, including decisions made based on hair diagnosis results or product recommendations.</p>
+      </div>
+
+      <div style="margin-bottom:3.5rem;">
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:rgba(0,0,0,0.25);margin-bottom:0.8rem;">05</p>
+        <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#111;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(0,0,0,0.08);">Contact</h2>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.92rem;font-weight:500;line-height:1.85;color:rgba(17,17,17,0.7);letter-spacing:0.04em;">For questions regarding these Terms of Use, please contact us at <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="046861636568446c616676652a676b69">[email&#160;protected]</a>.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── HAIR IS A LANGUAGE PAGE ── -->
+<div id="hairPage" style="display:none; position:fixed; inset:0; background:#111111; z-index:9000; overflow-y:auto;">
+  <nav style="position:sticky; top:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:1.4rem 3rem; background:#111111; border-bottom:1px solid rgba(255,255,255,0.08);">
+    <a href="#" onclick="closePage('hairPage')" style="font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:0.15em; color:#FFFFFF; text-decoration:none;">Hebra</a>
+    <a href="#" onclick="closePage('hairPage')" style="font-family:'Barlow Condensed',sans-serif; font-size:0.82rem; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.4); text-decoration:none;">← Back</a>
+  </nav>
+  <div style="padding:8rem 4rem 6rem; max-width:1200px; margin:0 auto;">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.35em; text-transform:uppercase; color:rgba(255,255,255,0.25); margin-bottom:2rem;">Philosophy — 01</p>
+    <h1 style="font-family:'Barlow Condensed',sans-serif; font-size:clamp(3.5rem,9vw,8rem); font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#FFFFFF; line-height:0.95; margin-bottom:3rem;">Hair is a<br><span style="font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:300; color:rgba(255,255,255,0.4);">language.</span></h1>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:6rem; margin-bottom:6rem;">
+      <p style="font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:300; font-style:italic; line-height:1.7; color:rgba(255,255,255,0.55);">Your hair speaks before you do. It carries the record of every decision, every season, every chapter of your life — written in texture, density and shine.</p>
+      <div>
+        <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.95rem; font-weight:500; line-height:1.85; color:rgba(255,255,255,0.5); margin-bottom:1.5rem; letter-spacing:0.04em;">Breakage after a difficult year. Thinning after a pregnancy. Dullness after months of poor sleep. None of this is coincidence. Your hair is a biological diary — precise, honest, and deeply personal.</p>
+        <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.95rem; font-weight:500; line-height:1.85; color:rgba(255,255,255,0.5); letter-spacing:0.04em;">Hebra was built to read that language — and to translate it into something actionable. Not to make you feel that something is wrong, but to give you the clarity to make it right.</p>
+      </div>
+    </div>
+    <!-- 6 Pillars -->
+    <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.35em; text-transform:uppercase; color:rgba(255,255,255,0.25); margin-bottom:2.5rem;">The Six Pillars We Measure</p>
+    <div style="display:grid; grid-template-columns:repeat(6,1fr); gap:1px; background:rgba(255,255,255,0.08); border-radius:4px; overflow:hidden;">
+
+      <div style="background:#1a1a1a; display:flex; flex-direction:column;">
+        <div style="aspect-ratio:3/4; overflow:hidden;">
+          <img src="https://res.cloudinary.com/dgkacltrs/image/upload/v1772967571/WhatsApp_Image_2026-03-06_at_17.53.21_j6hjyf.jpg" alt="Scalp Health" style="width:100%;height:100%;object-fit:cover;opacity:0.85;filter:grayscale(30%);">
+        </div>
+        <div style="padding:1.4rem 1.2rem; flex:1;">
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#FFFFFF;margin-bottom:0.6rem;">Scalp Health</p>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:300;line-height:1.65;color:rgba(255,255,255,0.45);">follicle density, sebum balance and inflammation signals from your root zone</p>
+        </div>
+      </div>
+
+      <div style="background:#1a1a1a; display:flex; flex-direction:column;">
+        <div style="aspect-ratio:3/4; overflow:hidden;">
+          <img src="https://res.cloudinary.com/dgkacltrs/image/upload/v1772967566/f9d85f2fd97cf2ad91c8e4f94f7cb109529b0bcbf67edc1417fa5676554666c3_o5kbo5.png" alt="Strength" style="width:100%;height:100%;object-fit:cover;opacity:0.85;filter:grayscale(30%);">
+        </div>
+        <div style="padding:1.4rem 1.2rem; flex:1;">
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#FFFFFF;margin-bottom:0.6rem;">Strength</p>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:300;line-height:1.65;color:rgba(255,255,255,0.45);">cortex resilience, protein bond integrity and breakage risk along the shaft</p>
+        </div>
+      </div>
+
+      <div style="background:#1a1a1a; display:flex; flex-direction:column;">
+        <div style="aspect-ratio:3/4; overflow:hidden;">
+          <img src="https://res.cloudinary.com/dgkacltrs/image/upload/v1772967565/c3fea9f7a4ce9e2d525ff4f9eefffef77fb6f8c0869e1137dbd76db04e8eb44d_ozonhx.png" alt="Moisture" style="width:100%;height:100%;object-fit:cover;opacity:0.85;filter:grayscale(30%);">
+        </div>
+        <div style="padding:1.4rem 1.2rem; flex:1;">
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#FFFFFF;margin-bottom:0.6rem;">Moisture</p>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:300;line-height:1.65;color:rgba(255,255,255,0.45);">porosity patterns, hydration capacity and dryness markers from root to tip</p>
+        </div>
+      </div>
+
+      <div style="background:#1a1a1a; display:flex; flex-direction:column;">
+        <div style="aspect-ratio:3/4; overflow:hidden;">
+          <img src="https://res.cloudinary.com/dgkacltrs/image/upload/v1772967576/65e59cfee78975e684d38eb55efbd91283e1b3d160e236084dbda33b557fac7c_iz1d9o.png" alt="Integrity" style="width:100%;height:100%;object-fit:cover;opacity:0.85;filter:grayscale(30%);">
+        </div>
+        <div style="padding:1.4rem 1.2rem; flex:1;">
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#FFFFFF;margin-bottom:0.6rem;">Integrity</p>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:300;line-height:1.65;color:rgba(255,255,255,0.45);">split ends, cuticle lift and surface damage — the cumulative record of your hair history</p>
+        </div>
+      </div>
+
+      <div style="background:#1a1a1a; display:flex; flex-direction:column;">
+        <div style="aspect-ratio:3/4; overflow:hidden;">
+          <img src="https://res.cloudinary.com/dgkacltrs/image/upload/v1772967578/0af6c4a49e4f37da44ed43a7c0b90589d98db78b0f0275f4fd2604f1355a3e1a_xheedg.png" alt="Vitality" style="width:100%;height:100%;object-fit:cover;opacity:0.85;filter:grayscale(30%);">
+        </div>
+        <div style="padding:1.4rem 1.2rem; flex:1;">
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#FFFFFF;margin-bottom:0.6rem;">Vitality</p>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:300;line-height:1.65;color:rgba(255,255,255,0.45);">growth cycle activity, shedding patterns and overall strand density over time</p>
+        </div>
+      </div>
+
+      <div style="background:#1a1a1a; display:flex; flex-direction:column;">
+        <div style="aspect-ratio:3/4; overflow:hidden;">
+          <img src="https://res.cloudinary.com/dgkacltrs/image/upload/v1772967567/94f1d62f93b6f0b990b32661eea9f1cd7f1356b718daddcb2ddbfdf42ae9c529_jwg5ig.png" alt="Ingredients" style="width:100%;height:100%;object-fit:cover;opacity:0.85;filter:grayscale(30%);">
+        </div>
+        <div style="padding:1.4rem 1.2rem; flex:1;">
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#FFFFFF;margin-bottom:0.6rem;">Ingredients</p>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:300;line-height:1.65;color:rgba(255,255,255,0.45);">every product recommendation is matched to your diagnosis using clean, evidence-based actives</p>
+        </div>
+      </div>
+
+    </div>
+    <div style="text-align:center; margin-top:5rem;">
+      <a href="scan.html" style="display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:#111;background:#FFF;padding:1.1rem 3rem;text-decoration:none;border-radius:2px;">Begin your diagnosis →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── SCIENCE NOT GUESSWORK PAGE ── -->
+<div id="sciencePage" style="display:none; position:fixed; inset:0; background:#F5F2EC; z-index:9000; overflow-y:auto;">
+  <nav style="position:sticky; top:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:1.4rem 3rem; background:#F5F2EC; border-bottom:1px solid rgba(0,0,0,0.08);">
+    <a href="#" onclick="closePage('sciencePage')" style="font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:0.15em; color:#111; text-decoration:none;">Hebra</a>
+    <a href="#" onclick="closePage('sciencePage')" style="font-family:'Barlow Condensed',sans-serif; font-size:0.82rem; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:rgba(0,0,0,0.4); text-decoration:none;">← Back</a>
+  </nav>
+  <div style="padding:8rem 4rem 6rem; max-width:1200px; margin:0 auto;">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.35em; text-transform:uppercase; color:rgba(0,0,0,0.25); margin-bottom:2rem;">Philosophy — 02</p>
+    <h1 style="font-family:'Barlow Condensed',sans-serif; font-size:clamp(3rem,8vw,7rem); font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#111; line-height:0.95; margin-bottom:3rem;">Science,<br>not <span style="font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:300; color:rgba(0,0,0,0.3);">guesswork.</span></h1>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:6rem; margin-bottom:6rem;">
+      <p style="font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:300; font-style:italic; line-height:1.7; color:rgba(0,0,0,0.45);">Most hair advice is built on generalisation. Hebra is built on analysis — real image data, real answers, real science applied to your specific biology.</p>
+      <div>
+        <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.95rem; font-weight:500; line-height:1.85; color:rgba(17,17,17,0.6); margin-bottom:1.5rem; letter-spacing:0.04em;">We analyse porosity, elasticity, cuticle integrity, scalp condition and strand density using visual AI trained on thousands of hair types. Combined with your personal history, the result is a diagnosis that reflects your actual condition — not the average.</p>
+        <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.95rem; font-weight:500; line-height:1.85; color:rgba(17,17,17,0.6); letter-spacing:0.04em;">Every recommendation is backed by trichological research. Every product is selected because it addresses a specific deficiency we identified in your profile — not because it is trending or sponsored.</p>
+      </div>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(0,0,0,0.08); border:1px solid rgba(0,0,0,0.08); border-radius:4px; overflow:hidden; margin-bottom:5rem;">
+      <div style="background:#FFFFFF; padding:3rem 2.5rem;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(3rem,5vw,4.5rem);font-weight:700;letter-spacing:-0.02em;color:#111;line-height:1;margin-bottom:0.8rem;">5</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:rgba(0,0,0,0.3);margin-bottom:1rem;">Dimensions analysed</div>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:500;line-height:1.7;color:#666;">Scalp, strength, moisture, structure and vitality — scored independently, then synthesised into one complete profile.</p>
+      </div>
+      <div style="background:#FFFFFF; padding:3rem 2.5rem;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(3rem,5vw,4.5rem);font-weight:700;letter-spacing:-0.02em;color:#111;line-height:1;margin-bottom:0.8rem;">3</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:rgba(0,0,0,0.3);margin-bottom:1rem;">Photos required</div>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:500;line-height:1.7;color:#666;">Crown, profile and ends — three angles that together reveal what a single photograph never could.</p>
+      </div>
+      <div style="background:#FFFFFF; padding:3rem 2.5rem;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(3rem,5vw,4.5rem);font-weight:700;letter-spacing:-0.02em;color:#111;line-height:1;margin-bottom:0.8rem;">9</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:rgba(0,0,0,0.3);margin-bottom:1rem;">Questions asked</div>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:500;line-height:1.7;color:#666;">Designed to surface what images cannot see — lifestyle, history, environment and internal health signals.</p>
+      </div>
+    </div>
+    <div style="text-align:center;">
+      <a href="scan.html" style="display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:#FFF;background:#111;padding:1.1rem 3rem;text-decoration:none;border-radius:2px;">Begin your diagnosis →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── PRECISION CARE PAGE ── -->
+<div id="precisionPage" style="display:none; position:fixed; inset:0; background:#FFFFFF; z-index:9000; overflow-y:auto;">
+  <nav style="position:sticky; top:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:1.4rem 3rem; background:#FFFFFF; border-bottom:1px solid rgba(0,0,0,0.08);">
+    <a href="#" onclick="closePage('precisionPage')" style="font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:0.15em; color:#111; text-decoration:none;">Hebra</a>
+    <a href="#" onclick="closePage('precisionPage')" style="font-family:'Barlow Condensed',sans-serif; font-size:0.82rem; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:rgba(0,0,0,0.4); text-decoration:none;">← Back</a>
+  </nav>
+  <div style="padding:8rem 4rem 6rem; max-width:1200px; margin:0 auto;">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.35em; text-transform:uppercase; color:rgba(0,0,0,0.25); margin-bottom:2rem;">Philosophy — 03</p>
+    <h1 style="font-family:'Barlow Condensed',sans-serif; font-size:clamp(3rem,8vw,7rem); font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#111; line-height:0.95; margin-bottom:3rem;">Precision<br><span style="font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:300; color:rgba(0,0,0,0.3);">care.</span></h1>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:6rem; margin-bottom:6rem;">
+      <p style="font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:300; font-style:italic; line-height:1.7; color:rgba(0,0,0,0.45);">Generic routines produce generic results. Hebra gives you exactly what your hair needs — nothing more, nothing less.</p>
+      <div>
+        <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.95rem; font-weight:500; line-height:1.85; color:rgba(17,17,17,0.6); margin-bottom:1.5rem; letter-spacing:0.04em;">Precision care means understanding that what works for one person actively harms another. Protein treatments that restore one hair type will make another brittle. The moisturiser that transforms dry hair will weigh down fine hair for days.</p>
+        <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.95rem; font-weight:500; line-height:1.85; color:rgba(17,17,17,0.6); letter-spacing:0.04em;">Hebra does not give you a shortlist of popular products. It gives you the specific intervention your hair requires right now — ranked by impact, filtered by what you already own, calibrated to the time you have available.</p>
+      </div>
+    </div>
+    <div style="background:#F5F2EC; border-radius:4px; padding:5rem 4rem; margin-bottom:5rem;">
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:3rem;">
+        <div>
+          <div style="width:2px;height:40px;background:#111;margin-bottom:1.5rem;"></div>
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#111;margin-bottom:0.6rem;">Diagnose</p>
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.82rem;font-weight:500;line-height:1.7;color:#888;">We analyse your photos and questionnaire to score five dimensions of hair health.</p>
+        </div>
+        <div>
+          <div style="width:2px;height:40px;background:#111;margin-bottom:1.5rem;"></div>
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#111;margin-bottom:0.6rem;">Prioritise</p>
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.82rem;font-weight:500;line-height:1.7;color:#888;">We identify your most critical deficiencies and rank interventions by expected impact.</p>
+        </div>
+        <div>
+          <div style="width:2px;height:40px;background:#111;margin-bottom:1.5rem;"></div>
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#111;margin-bottom:0.6rem;">Prescribe</p>
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.82rem;font-weight:500;line-height:1.7;color:#888;">We recommend only products you don't already own, matched to your exact hair type and goals.</p>
+        </div>
+        <div>
+          <div style="width:2px;height:40px;background:#111;margin-bottom:1.5rem;"></div>
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#111;margin-bottom:0.6rem;">Evolve</p>
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.82rem;font-weight:500;line-height:1.7;color:#888;">As your hair changes, your diagnosis changes. Repeat the scan any time to track your progress.</p>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;">
+      <a href="scan.html" style="display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:#FFF;background:#111;padding:1.1rem 3rem;text-decoration:none;border-radius:2px;">Begin your diagnosis →</a>
+    </div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+function openPage(id) {
+  document.getElementById(id).style.display = 'block';
+  document.getElementById(id).scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+function closePage(id) {
+  document.getElementById(id).style.display = 'none';
+  document.body.style.overflow = '';
+}
+</script>
+
+
+
+</body>
+</html>

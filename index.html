@@ -2198,12 +2198,19 @@
 
 <script>
 // Popup scroll trigger — shows at 60% scroll
-let popupShown = false;
+// Only show popup once ever — remember with sessionStorage
+let popupShown = sessionStorage.getItem('hebraPopupSeen') === '1';
+
+if (popupShown) {
+  document.getElementById('emailPopup').style.display = 'none';
+}
+
 window.addEventListener('scroll', function() {
   if (popupShown) return;
   const scrolled = window.scrollY / (document.body.scrollHeight - window.innerHeight);
   if (scrolled > 0.6) {
     popupShown = true;
+    sessionStorage.setItem('hebraPopupSeen', '1');
     const popup = document.getElementById('emailPopup');
     popup.style.opacity = '1';
     popup.style.pointerEvents = 'auto';
@@ -2217,6 +2224,7 @@ function submitPopupEmail() {
 }
 
 function closePopup() {
+  sessionStorage.setItem('hebraPopupSeen', '1');
   const popup = document.getElementById('emailPopup');
   popup.style.opacity = '0';
   popup.style.pointerEvents = 'none';
@@ -2377,6 +2385,39 @@ function closePopup() {
 
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ── PAGE OVERLAYS ──
+function openPage(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = 'block';
+  window.scrollTo(0, 0);
+  document.body.style.overflow = 'hidden';
+}
+
+function closePage(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+// ── PAGE OVERLAYS ──
+function openPage(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.style.display = 'block';
+    window.scrollTo(0, 0);
+    document.body.style.overflow = 'hidden';
+  }
+}
+function closePage(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+}
+
 // ── NAV scroll ──
 window.addEventListener('scroll', () => {
   document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 60);

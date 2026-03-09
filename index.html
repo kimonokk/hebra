@@ -2217,9 +2217,27 @@ window.addEventListener('scroll', function() {
   }
 });
 
-function submitPopupEmail() {
-  const email = document.getElementById('popupEmail').value;
+async function submitPopupEmail() {
+  const emailEl = document.getElementById('popupEmail');
+  const email = emailEl.value.trim();
   if (!email || !email.includes('@')) return;
+
+  try {
+    await fetch('https://connect.mailerlite.com/api/subscribers', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiZmNhOTY4NTdlMWExMzllZjJlMThiYTliMWRlZjY4MGIxOGYwY2U5OWQ0MWU4MjRkNTFhNGY5NjY2ZDE1ODMyMWRmYjBlMzZlODg0M2IzM2EiLCJpYXQiOjE3NzMwMjg5ODcuODczMTM5LCJuYmYiOjE3NzMwMjg5ODcuODczMTQyLCJleHAiOjQ5Mjg3MDI1ODcuODY2NDAxLCJzdWIiOiIyMTkyNzk2Iiwic2NvcGVzIjpbXX0.N7XwCChaYReKhCML_6JjTjowKM8rFJ2LHu21lAAYBeeAL91NPYmdidSvHOUEq1E_3jL42C8qGr8o3tTtxZO0l484V5Ob0iF2_p4VnlwcejDfkQNP0vTLpmR4rn_51mfuU5jc4QpZiigG8pkOlOJ6WN8uCgbqpI28vFLvlXDfoKuzpxcVbrZ0K67L1SQrvBXMyNDlhzSMX1oRe94OeLQmaVYkDX63vC12CalvWVtgcWO5kWj2HP_p-YRuW27FyHIBv0wCniVyjPiVGS0EPIFJiuqUm1oDU029RH0KyDnVXb87_t0G25lwpugYEwLdLcZtp7fG-6qWzlEfD4LQ3Mst4CGdvwhi4eiq_KBQ7s_vMgfr1QCAqQJV-boS0MRMfBr4T-ELwyJuQlE9oQmvyb6nCMR9sagetfTxdURtq70o4lBppN4vPW5PJnTiVBi1SdKMWBnh7DktAIgj8m1LcbTJf7bOHQwaaSNmhcEx5k3eVsg6hNgEQcs8meiHSpTEPj86Nw0dOrKxIv9M7b-ssGTkddxfp540Kqp27b_S-cWhrlrlzXrI4sXL2Xco5x3_K2Lu5P1gPGPelKUzrC-F1AGMnbYuxtNVlHSlceiqD_ZmZQJqcn8-92cxZR4-_3CmI_H9_mLbnA8Plf2A29nVb5DneHp2oOhmron-NHfdasClH5U'
+      },
+      body: JSON.stringify({
+        email: email,
+        groups: ['181434268294055127']
+      })
+    });
+  } catch(e) {
+    // Silent fail — don't block UX
+  }
+
   closePopup();
 }
 
@@ -2361,7 +2379,7 @@ function closePopup() {
       <a href="#" onclick="openPage('aboutPage'); return false;">About Hebra</a>
       <a href="#" onclick="openPage('privacyPage'); return false;">Privacy Policy</a>
       <a href="#" onclick="openPage('termsPage'); return false;">Terms of Use</a>
-      <a href="mailto:hebrahair@gmail.com" style="color:#111;">hebrahair@gmail.com</a>
+      <a href="/cdn-cgi/l/email-protection#b8d0dddacad9d0d9d1caf8dfd5d9d1d496dbd7d5" style="color:#111;"><span class="__cf_email__" data-cfemail="deb6bbbcacbfb6bfb7ac9eb9b3bfb7b2f0bdb1b3">[email&#160;protected]</span></a>
     </div>
     <div class="footer-col">
       <p class="footer-col-label">Philosophy</p>
@@ -2384,7 +2402,7 @@ function closePopup() {
 
 
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── PAGE OVERLAYS ──
 function openPage(id) {
   const el = document.getElementById(id);
@@ -3108,7 +3126,7 @@ async function downloadShareCard() {
       <div style="margin-bottom:3.5rem;">
         <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:rgba(0,0,0,0.25);margin-bottom:0.8rem;">04</p>
         <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#111;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(0,0,0,0.08);">Contact</h2>
-        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.92rem;font-weight:500;line-height:1.85;color:rgba(17,17,17,0.7);letter-spacing:0.04em;">For questions about this Privacy Policy, contact us at <a href="mailto:hebrahair@gmail.com" style="color:#111;">hebrahair@gmail.com</a>.</p>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.92rem;font-weight:500;line-height:1.85;color:rgba(17,17,17,0.7);letter-spacing:0.04em;">For questions about this Privacy Policy, contact us at <a href="/cdn-cgi/l/email-protection#127a777060737a737b6052757f737b7e3c717d7f" style="color:#111;"><span class="__cf_email__" data-cfemail="b0d8d5d2c2d1d8d1d9c2f0d7ddd1d9dc9ed3dfdd">[email&#160;protected]</span></a>.</p>
       </div>
     </div>
   </div>
@@ -3164,7 +3182,7 @@ async function downloadShareCard() {
       <div style="margin-bottom:3.5rem;">
         <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:rgba(0,0,0,0.25);margin-bottom:0.8rem;">05</p>
         <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#111;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(0,0,0,0.08);">Contact</h2>
-        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.92rem;font-weight:500;line-height:1.85;color:rgba(17,17,17,0.7);letter-spacing:0.04em;">For questions regarding these Terms of Use, please contact us at <a href="mailto:hebrahair@gmail.com" style="color:#111;">hebrahair@gmail.com</a>.</p>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.92rem;font-weight:500;line-height:1.85;color:rgba(17,17,17,0.7);letter-spacing:0.04em;">For questions regarding these Terms of Use, please contact us at <a href="/cdn-cgi/l/email-protection#2d45484f5f4c454c445f6d4a404c4441034e4240" style="color:#111;"><span class="__cf_email__" data-cfemail="c9a1acabbba8a1a8a0bb89aea4a8a0a5e7aaa6a4">[email&#160;protected]</span></a>.</p>
       </div>
     </div>
   </div>
@@ -3330,10 +3348,4 @@ async function downloadShareCard() {
           <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.82rem;font-weight:500;line-height:1.7;color:#888;">We recommend only products you don't already own, matched to your exact hair type and goals.</p>
         </div>
         <div>
-          <div style="width:2px;height:40px;background:#111;margin-bottom:1.5rem;"></div>
-          <p style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#111;margin-bottom:0.6rem;">Evolve</p>
-          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.82rem;font-weight:500;line-height:1.7;color:#888;">As your hair changes, your diagnosis changes. Repeat the scan any time to track your progress.</p>
-        </div>
-      </div>
-    </div>
-    <div style="text-align:center;">
+          <div style="width:2px;height:40px;background:#111;mar

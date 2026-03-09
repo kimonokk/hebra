@@ -1190,10 +1190,48 @@ function submitEmail() {
     return;
   }
   S.email = val;
+  sendToMailerLite(val, S.results, S.name);
   renderResults(S.results);
   showPanel('step-results');
   document.getElementById('navStep').textContent = 'Your Diagnosis';
   setTimeout(animateScoreBars, 400);
+}
+
+async function sendToMailerLite(email, data, name) {
+  if (!data) return;
+  const s = data.scores || {};
+  const products = data.products || [];
+
+  const fields = {
+    hair_type:        data.hair_type_label || '',
+    overall_score:    data.overall || 0,
+    scalp_health:     s.scalp_health || 0,
+    strand_strength:  s.strand_strength || 0,
+    moisture_balance: s.moisture_balance || 0,
+    key_finding:      (data.key_finding || '').substring(0, 255),
+    product_1:        products[0] ? products[0].name + ' — ' + products[0].brand : '',
+    product_2:        products[1] ? products[1].name + ' — ' + products[1].brand : '',
+    product_3:        products[2] ? products[2].name + ' — ' + products[2].brand : '',
+  };
+
+  if (name) fields.name = name;
+
+  try {
+    await fetch('https://connect.mailerlite.com/api/subscribers', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiZmNhOTY4NTdlMWExMzllZjJlMThiYTliMWRlZjY4MGIxOGYwY2U5OWQ0MWU4MjRkNTFhNGY5NjY2ZDE1ODMyMWRmYjBlMzZlODg0M2IzM2EiLCJpYXQiOjE3NzMwMjg5ODcuODczMTM5LCJuYmYiOjE3NzMwMjg5ODcuODczMTQyLCJleHAiOjQ5Mjg3MDI1ODcuODY2NDAxLCJzdWIiOiIyMTkyNzk2Iiwic2NvcGVzIjpbXX0.N7XwCChaYReKhCML_6JjTjowKM8rFJ2LHu21lAAYBeeAL91NPYmdidSvHOUEq1E_3jL42C8qGr8o3tTtxZO0l484V5Ob0iF2_p4VnlwcejDfkQNP0vTLpmR4rn_51mfuU5jc4QpZiigG8pkOlOJ6WN8uCgbqpI28vFLvlXDfoKuzpxcVbrZ0K67L1SQrvBXMyNDlhzSMX1oRe94OeLQmaVYkDX63vC12CalvWVtgcWO5kWj2HP_p-YRuW27FyHIBv0wCniVyjPiVGS0EPIFJiuqUm1oDU029RH0KyDnVXb87_t0G25lwpugYEwLdLcZtp7fG-6qWzlEfD4LQ3Mst4CGdvwhi4eiq_KBQ7s_vMgfr1QCAqQJV-boS0MRMfBr4T-ELwyJuQlE9oQmvyb6nCMR9sagetfTxdURtq70o4lBppN4vPW5PJnTiVBi1SdKMWBnh7DktAIgj8m1LcbTJf7bOHQwaaSNmhcEx5k3eVsg6hNgEQcs8meiHSpTEPj86Nw0dOrKxIv9M7b-ssGTkddxfp540Kqp27b_S-cWhrlrlzXrI4sXL2Xco5x3_K2Lu5P1gPGPelKUzrC-F1AGMnbYuxtNVlHSlceiqD_ZmZQJqcn8-92cxZR4-_3CmI_H9_mLbnA8Plf2A29nVb5DneHp2oOhmron-NHfdasClH5U'
+      },
+      body: JSON.stringify({
+        email: email,
+        fields: fields,
+        groups: ['181434268294055127']
+      })
+    });
+  } catch(e) {
+    // Silent fail — don't block UX
+  }
 }
 
 /* ══════════════════════════════════════════
@@ -1280,7 +1318,8 @@ function renderResults(data) {
       </div>
     </div>
 
-    <div class="results-actions">
+
+        <div class="results-actions">
       <button class="btn-primary" onclick="window.print()">Save Results</button>
       <a href="index.html" class="btn-secondary">← Back to Hebra</a>
       <button class="btn-secondary" onclick="startOver()">New Diagnosis</button>

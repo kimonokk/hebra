@@ -1171,6 +1171,13 @@ async function startDiagnosis() {
   animateLoadingSteps(async () => {
     while (!apiDone) await new Promise(r => setTimeout(r, 200));
     stopLoadingAnimation();
+
+    // Check for photo validation errors
+    if (resultData && resultData.error === 'invalid_photos') {
+      showPhotoError(resultData.message);
+      return;
+    }
+
     S.results = resultData;
     showPanel('step-email');
     document.getElementById('navStep').textContent = 'Almost there';
@@ -1183,6 +1190,38 @@ async function startDiagnosis() {
 /* ══════════════════════════════════════════
    EMAIL GATE
 ══════════════════════════════════════════ */
+function showPhotoError(message) {
+  // Go back to photo upload step with error message
+  showPanel('step-photos');
+  document.getElementById('navStep').textContent = 'Upload Photos';
+
+  // Show error banner
+  let banner = document.getElementById('photoErrorBanner');
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'photoErrorBanner';
+    banner.style.cssText = `
+      background: rgba(17,17,17,0.06);
+      border-left: 3px solid #111111;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1.5rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.88rem;
+      letter-spacing: 0.04em;
+      color: #111111;
+      line-height: 1.6;
+    `;
+    const photoPanel = document.getElementById('step-photos');
+    const firstChild = photoPanel.querySelector('.step-inner') || photoPanel.firstElementChild;
+    photoPanel.insertBefore(banner, firstChild);
+  }
+  banner.textContent = message;
+  banner.style.display = 'block';
+
+  // Reset photos so user can re-upload
+  S.photos = {};
+}
+
 function submitEmail() {
   const val = document.getElementById('emailInput').value.trim();
   if (!val || !val.includes('@')) {

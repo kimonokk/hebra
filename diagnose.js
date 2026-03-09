@@ -119,6 +119,25 @@ The user's self-reported profile:
 - Main concerns: ${(a.concerns || []).join(', ') || 'none'}
 - Routine time available: ${a.time || 'unknown'}
 
+PHOTO VALIDATION — CHECK FIRST BEFORE ANYTHING ELSE:
+Before analysing, validate all three photos. If ANY of the following issues are detected, return ONLY this JSON and nothing else:
+
+1. NOT HUMAN HAIR — the image shows a pet, animal, face without hair, body part, landscape, object, or anything that is not clearly human hair on a human head:
+{"error": "invalid_photos", "message": "One or more of your photos doesn't appear to show human hair. Please upload clear photos of your crown, side profile, and ends."}
+
+2. POOR QUALITY — the image is too dark, too blurry, heavily filtered, or too low resolution to assess hair condition:
+{"error": "invalid_photos", "message": "One or more photos is too dark or blurry to analyse. Please take new photos in good natural light without filters."}
+
+3. DIFFERENT PEOPLE — the three photos clearly show hair from different people (different textures, colours, or styles that couldn't belong to the same person):
+{"error": "invalid_photos", "message": "Your three photos appear to show different people's hair. Please make sure all three photos are of your own hair."}
+
+4. ALREADY STYLED WITH HEAVY PRODUCTS — the hair is visibly coated in heavy styling products, wet gel, or has extreme styling that masks its natural condition. Gently note this in the summary but continue the analysis.
+
+5. WIG OR EXTENSIONS — if the hair appears to clearly be a wig or synthetic extensions, return:
+{"error": "invalid_photos", "message": "Your photos appear to show a wig or synthetic extensions. Hebra analyses natural hair only. Please upload photos of your natural hair."}
+
+If photos pass validation, proceed with full analysis:
+
 PHOTO ANALYSIS INSTRUCTIONS:
 - Photo 1 is the CROWN — analyse root density, scalp condition, new growth, sebum distribution
 - Photo 2 is the SIDE PROFILE — analyse mid-length texture, cuticle condition, wave/curl pattern, volume

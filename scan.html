@@ -221,9 +221,9 @@ nav {
 .cam-video-wrap {
   position: relative;
   background: #000;
-  border-radius: 3px; overflow: hidden;
+  border-radius: 2px; overflow: hidden;
   aspect-ratio: 4/3;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.06);
 }
 #camVideo {
   width: 100%; height: 100%;
@@ -232,102 +232,171 @@ nav {
 }
 #camCanvas { display: none; }
 
-/* Scan lines */
-.cam-scan-lines { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
-.cam-scan-line {
-  position: absolute; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15) 30%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.15) 70%, transparent);
-  animation: camScanDown 3.2s linear infinite; opacity: 0;
-}
-.cam-scan-line:nth-child(2) { animation-delay: 1.1s; }
-.cam-scan-line:nth-child(3) { animation-delay: 2.2s; }
-@keyframes camScanDown {
-  0%   { top: -2px; opacity: 0; }
-  5%   { opacity: 1; }
-  95%  { opacity: 0.5; }
-  100% { top: 100%; opacity: 0; }
+/* ── Scanner grid overlay ── */
+.cam-grid {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
 }
 
-/* Corners */
+/* ── Main scan beam ── */
+.cam-beam {
+  position: absolute; left: 0; right: 0; height: 2px; pointer-events: none;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255,255,255,0.0) 10%,
+    rgba(255,255,255,0.5) 40%,
+    rgba(255,255,255,0.9) 50%,
+    rgba(255,255,255,0.5) 60%,
+    rgba(255,255,255,0.0) 90%,
+    transparent 100%);
+  box-shadow: 0 0 12px 2px rgba(255,255,255,0.25);
+  animation: beamSweep 2.4s cubic-bezier(0.4,0,0.6,1) infinite;
+}
+.cam-beam-trail {
+  position: absolute; left: 0; right: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 100%);
+  animation: beamTrail 2.4s cubic-bezier(0.4,0,0.6,1) infinite;
+}
+@keyframes beamSweep {
+  0%   { top: 0%; }
+  100% { top: 100%; }
+}
+@keyframes beamTrail {
+  0%   { top: 0%; height: 0px; }
+  50%  { height: 60px; }
+  100% { top: 100%; height: 0px; }
+}
+
+/* ── Corner brackets (bigger, more visible) ── */
 .cam-corner {
-  position: absolute; width: 18px; height: 18px; pointer-events: none;
+  position: absolute; width: 22px; height: 22px; pointer-events: none;
+  transition: opacity 0.3s;
 }
-.cam-corner-tl { top: 10px; left: 10px; border-top: 1.5px solid rgba(255,255,255,0.5); border-left: 1.5px solid rgba(255,255,255,0.5); }
-.cam-corner-tr { top: 10px; right: 10px; border-top: 1.5px solid rgba(255,255,255,0.5); border-right: 1.5px solid rgba(255,255,255,0.5); }
-.cam-corner-bl { bottom: 10px; left: 10px; border-bottom: 1.5px solid rgba(255,255,255,0.5); border-left: 1.5px solid rgba(255,255,255,0.5); }
-.cam-corner-br { bottom: 10px; right: 10px; border-bottom: 1.5px solid rgba(255,255,255,0.5); border-right: 1.5px solid rgba(255,255,255,0.5); }
+.cam-corner-tl { top: 12px; left: 12px; border-top: 2px solid rgba(255,255,255,0.7); border-left: 2px solid rgba(255,255,255,0.7); }
+.cam-corner-tr { top: 12px; right: 12px; border-top: 2px solid rgba(255,255,255,0.7); border-right: 2px solid rgba(255,255,255,0.7); }
+.cam-corner-bl { bottom: 70px; left: 12px; border-bottom: 2px solid rgba(255,255,255,0.7); border-left: 2px solid rgba(255,255,255,0.7); }
+.cam-corner-br { bottom: 70px; right: 12px; border-bottom: 2px solid rgba(255,255,255,0.7); border-right: 2px solid rgba(255,255,255,0.7); }
 
-/* Status dot */
-.cam-live-badge {
-  position: absolute; top: 12px; left: 36px;
-  display: flex; align-items: center; gap: 5px; pointer-events: none;
+/* ── Top bar inside video ── */
+.cam-topbar {
+  position: absolute; top: 0; left: 0; right: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; pointer-events: none;
+  background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, transparent 100%);
 }
+.cam-live-badge { display: flex; align-items: center; gap: 5px; }
 .cam-live-dot {
   width: 5px; height: 5px; border-radius: 50%;
   background: #fff; animation: camBlink 1.4s ease-in-out infinite;
 }
-@keyframes camBlink { 0%,100%{opacity:1} 50%{opacity:0.15} }
+@keyframes camBlink { 0%,100%{opacity:1} 50%{opacity:0.2} }
 .cam-live-text {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 0.58rem; font-weight: 700;
-  letter-spacing: 0.28em; text-transform: uppercase;
-  color: rgba(255,255,255,0.7);
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: rgba(255,255,255,0.8);
 }
-
-/* Timer */
-.cam-timer {
-  position: absolute; top: 12px; right: 36px;
+.cam-status-text {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.58rem; font-weight: 700;
+  font-size: 0.55rem; font-weight: 600;
   letter-spacing: 0.2em; text-transform: uppercase;
-  color: rgba(255,255,255,0.35); pointer-events: none;
+  color: rgba(255,255,255,0.4);
+  animation: statusCycle 9s steps(1) infinite;
 }
-#camTimerVal { color: rgba(255,255,255,0.7); }
+@keyframes statusCycle {
+  0%   { content: ''; }
+}
+#camStatusLabel { color: rgba(255,255,255,0.45); }
 
-/* HUD metrics bar at bottom of video */
+/* ── Analysis progress bar ── */
+.cam-progress-wrap {
+  position: absolute; bottom: 58px; left: 0; right: 0;
+  height: 1px; background: rgba(255,255,255,0.08); pointer-events: none;
+}
+.cam-progress-fill {
+  height: 100%; width: 0%;
+  background: rgba(255,255,255,0.5);
+  transition: width 2.8s linear;
+}
+
+/* ── HUD metrics bar ── */
 .cam-hud {
   position: absolute; bottom: 0; left: 0; right: 0;
-  background: rgba(0,0,0,0.78);
-  backdrop-filter: blur(6px);
-  border-top: 1px solid rgba(255,255,255,0.08);
-  padding: 0.8rem 1rem;
+  background: rgba(0,0,0,0.82);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding: 0.65rem 1rem 0.7rem;
   display: grid; grid-template-columns: repeat(4,1fr);
-  gap: 0.5rem; pointer-events: none;
+  gap: 0.4rem; pointer-events: none;
 }
-.cam-metric { display: flex; flex-direction: column; gap: 2px; }
+.cam-metric { display: flex; flex-direction: column; gap: 3px; }
 .cam-metric-lbl {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.48rem; font-weight: 700;
-  letter-spacing: 0.22em; text-transform: uppercase;
-  color: rgba(255,255,255,0.35);
+  font-size: 0.45rem; font-weight: 700;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
 }
 .cam-metric-val {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1.25rem; font-weight: 700;
-  letter-spacing: 0.02em; color: rgba(255,255,255,0.9);
-  line-height: 1; transition: color 0.4s;
+  font-size: 1.3rem; font-weight: 700;
+  letter-spacing: -0.01em; color: rgba(255,255,255,0.92);
+  line-height: 1;
+  transition: color 1.2s ease;
 }
 .cam-metric-val.warn { color: #F5C842; }
 .cam-metric-val.bad  { color: #E8826A; }
 .cam-metric-bar {
-  height: 1.5px; background: rgba(255,255,255,0.1);
+  height: 2px; background: rgba(255,255,255,0.08);
   border-radius: 1px; overflow: hidden;
 }
 .cam-metric-fill {
   height: 100%; border-radius: 1px;
-  background: rgba(255,255,255,0.6);
-  width: 0%; transition: width 0.8s cubic-bezier(0.16,1,0.3,1), background 0.4s;
+  background: rgba(255,255,255,0.55);
+  width: 0%;
+  transition: width 1.8s cubic-bezier(0.16,1,0.3,1), background 1.2s ease;
 }
 .cam-metric-fill.warn { background: #F5C842; }
 .cam-metric-fill.bad  { background: #E8826A; }
 .cam-metric-sub {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.44rem; font-weight: 600;
+  font-size: 0.42rem; font-weight: 600;
   letter-spacing: 0.15em; text-transform: uppercase;
-  color: rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.22);
 }
 
-/* Capture button */
+/* ── Floating scan label ── */
+.cam-scan-label {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(0,0,0,0.65);
+  border: 1px solid rgba(255,255,255,0.12);
+  backdrop-filter: blur(6px);
+  padding: 0.5rem 1rem;
+  border-radius: 2px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  white-space: nowrap;
+}
+.cam-scan-label.visible { opacity: 1; }
+.cam-scan-label-dot {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: #fff; flex-shrink: 0;
+  animation: camBlink 0.8s ease-in-out infinite;
+}
+#camScanLabelText {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(255,255,255,0.85);
+}
+
+/* ── Flash ── */
 .cam-capture-btn {
   width: 100%;
   font-family: 'Barlow Condensed', sans-serif;
@@ -1876,14 +1945,52 @@ function showPanel(id) {
 let _camStream = null;
 let _camSlot = null;
 let _camAnalysisInterval = null;
-let _camTimerInterval = null;
-let _camCountdown = 3;
+let _camSeqInterval = null;
+let _camProgressInterval = null;
 
-const SLOT_LABELS = { 1: '01 — Crown', 2: '02 — Side profile', 3: '03 — Ends & tips' };
+// Smoothing: rolling average over last N readings
+const _CAM_SMOOTH = 10;
+const _camHistory = { porosity: [], moisture: [], damage: [], strength: [] };
+
+// Sequence of scan phases shown on screen
+const CAM_SEQUENCE = [
+  { label: 'Detecting hair structure',    metric: null },
+  { label: 'Analysing porosity level',    metric: 'porosity' },
+  { label: 'Measuring moisture index',    metric: 'moisture' },
+  { label: 'Scanning for damage markers', metric: 'damage' },
+  { label: 'Calculating strand strength', metric: 'strength' },
+  { label: 'Refining analysis',           metric: null },
+];
+let _camSeqIdx = 0;
+
+const SLOT_LABELS = { 1: '01 — Crown', 2: '02 — Side', 3: '03 — Ends' };
 
 async function openCam(slot) {
   _camSlot = slot;
   document.getElementById('camSlotLabel').textContent = SLOT_LABELS[slot] || slot;
+
+  // Reset history
+  Object.keys(_camHistory).forEach(k => _camHistory[k] = []);
+  _camSeqIdx = 0;
+
+  // Reset metrics display
+  ['cmPorosity','cmMoisture','cmDamage','cmStrength'].forEach(id => {
+    document.getElementById(id).textContent = '—';
+    document.getElementById(id).className = 'cam-metric-val';
+  });
+  ['cmPorosityBar','cmMoistureBar','cmDamageBar','cmStrengthBar'].forEach(id => {
+    document.getElementById(id).style.width = '0%';
+    document.getElementById(id).className = 'cam-metric-fill';
+  });
+  ['cmPorosityLvl','cmMoistureLvl','cmDamageLvl','cmStrengthLvl'].forEach(id => {
+    document.getElementById(id).textContent = '·';
+  });
+
+  document.getElementById('camScanLabel').classList.remove('visible');
+  document.getElementById('camProgressFill').style.transition = 'none';
+  document.getElementById('camProgressFill').style.width = '0%';
+  document.getElementById('camStatusLabel').textContent = 'Initialising...';
+
   document.getElementById('camOverlay').classList.add('active');
   document.body.style.overflow = 'hidden';
 
@@ -1896,9 +2003,9 @@ async function openCam(slot) {
     vid.srcObject = _camStream;
     await vid.play();
     setTimeout(() => {
-      _camRunAnalysis();
-      _camStartLoop();
-    }, 900);
+      _camStartSequence();
+      _camAnalysisInterval = setInterval(_camRunAnalysis, 1200);
+    }, 800);
   } catch (err) {
     closeCam();
     const msg = err.name === 'NotAllowedError'
@@ -1913,38 +2020,70 @@ async function openCam(slot) {
 function closeCam() {
   if (_camStream) { _camStream.getTracks().forEach(t => t.stop()); _camStream = null; }
   clearInterval(_camAnalysisInterval);
-  clearInterval(_camTimerInterval);
-  _camAnalysisInterval = null; _camTimerInterval = null;
+  clearInterval(_camSeqInterval);
+  clearInterval(_camProgressInterval);
+  _camAnalysisInterval = null; _camSeqInterval = null; _camProgressInterval = null;
   document.getElementById('camOverlay').classList.remove('active');
   document.body.style.overflow = '';
 }
 
-/* ── Frame pixel analysis ── */
+/* ── Sequence: cycle through scan phases ── */
+function _camStartSequence() {
+  _camShowPhase(0);
+  _camSeqInterval = setInterval(() => {
+    _camSeqIdx = (_camSeqIdx + 1) % CAM_SEQUENCE.length;
+    _camShowPhase(_camSeqIdx);
+  }, 2200);
+}
+
+function _camShowPhase(idx) {
+  const phase = CAM_SEQUENCE[idx];
+  const label = document.getElementById('camScanLabel');
+  const labelText = document.getElementById('camScanLabelText');
+  const statusEl = document.getElementById('camStatusLabel');
+
+  // Fade out, change text, fade in
+  label.classList.remove('visible');
+  setTimeout(() => {
+    labelText.textContent = phase.label;
+    label.classList.add('visible');
+  }, 300);
+
+  statusEl.textContent = 'Scan ' + String(Math.floor(idx / CAM_SEQUENCE.length * 100) + 10) + '% complete';
+
+  // Highlight the relevant metric block
+  ['porosity','moisture','damage','strength'].forEach(m => {
+    const block = document.getElementById('cm-' + m + '-block');
+    if (block) block.style.opacity = (phase.metric === m) ? '1' : '0.4';
+  });
+}
+
+/* ── Pixel analysis with smoothing ── */
 function _camAnalyseFrame() {
   const vid = document.getElementById('camVideo');
   if (!vid.videoWidth) return null;
 
   const cvs = document.getElementById('camCanvas');
-  const W = 280, H = 210;
+  const W = 320, H = 240;
   cvs.width = W; cvs.height = H;
   const ctx = cvs.getContext('2d');
   ctx.save(); ctx.scale(-1,1); ctx.drawImage(vid, -W, 0, W, H); ctx.restore();
 
-  const d = ctx.getImageData(0,0,W,H).data;
+  const d = ctx.getImageData(0, 0, W, H).data;
   const N = W * H;
   let lumSum = 0, lumSqSum = 0, rSum = 0, gSum = 0, edgeE = 0;
 
-  for (let i = 0; i < d.length; i += 16) {
+  for (let i = 0; i < d.length; i += 12) {
     const r = d[i], g = d[i+1], b = d[i+2];
     const lum = 0.299*r + 0.587*g + 0.114*b;
     lumSum += lum; lumSqSum += lum*lum; rSum += r; gSum += g;
   }
-  const samples = N/4;
-  const avgLum = lumSum/samples;
+  const samples = N / 3;
+  const avgLum = lumSum / samples;
   const stdDev = Math.sqrt(Math.max(0, lumSqSum/samples - avgLum*avgLum));
   const warmth = (rSum/samples) / ((gSum/samples) + 1);
 
-  const cx = Math.floor(W/2), strip = 50;
+  const cx = Math.floor(W/2), strip = 60;
   for (let y = H/4; y < 3*H/4; y++) {
     for (let x = cx-strip; x < cx+strip-1; x++) {
       const i = (y*W+x)*4;
@@ -1953,90 +2092,88 @@ function _camAnalyseFrame() {
   }
   const edgeN = edgeE / (H/2 * strip * 255);
 
-  const clamp = (v,lo,hi) => Math.max(lo,Math.min(hi,v));
-  const norm  = (v,mn,mx) => clamp((v-mn)/(mx-mn)*100,0,100);
-  const jit   = () => (Math.random()-0.5)*6;
+  const clamp = (v,lo,hi) => Math.max(lo, Math.min(hi, v));
+  const norm  = (v,mn,mx) => clamp((v-mn)/(mx-mn)*100, 0, 100);
 
-  const porosity = clamp(Math.round(0.4*(edgeN*100) + 0.3*(100-norm(avgLum,60,200)) + 0.3*(stdDev/80*100) + jit()), 5, 98);
-  const moisture = clamp(Math.round(0.4*norm(avgLum,80,210) + 0.3*(100-stdDev/80*100) + 0.3*norm(warmth,0.8,1.6) + jit()), 5, 98);
-  const damage   = clamp(Math.round(0.4*(edgeN*100) + 0.3*(stdDev/80*100) + 0.3*(100-norm(gSum/samples,60,180)) + jit()), 5, 98);
-  const strength = clamp(Math.round(100 - damage*0.6 + norm(avgLum,100,220)*0.2 + jit()), 10, 98);
-
-  return { porosity, moisture, damage, strength };
+  return {
+    porosity: clamp(Math.round(0.45*(edgeN*100) + 0.3*(100-norm(avgLum,60,200)) + 0.25*(stdDev/80*100)), 5, 97),
+    moisture: clamp(Math.round(0.4*norm(avgLum,80,210) + 0.35*(100-stdDev/80*100) + 0.25*norm(warmth,0.8,1.6)), 5, 97),
+    damage:   clamp(Math.round(0.4*(edgeN*100) + 0.35*(stdDev/80*100) + 0.25*(100-norm(gSum/samples,60,180))), 5, 97),
+    strength: clamp(Math.round(0.5*(100-edgeN*100) + 0.3*norm(avgLum,100,220) + 0.2*(100-stdDev/80*100)), 10, 97),
+  };
 }
 
-/* ── HUD update ── */
-function _camRunAnalysis() {
-  const m = _camAnalyseFrame();
-  if (!m) return;
+function _smooth(key, raw) {
+  const h = _camHistory[key];
+  h.push(raw);
+  if (h.length > _CAM_SMOOTH) h.shift();
+  return Math.round(h.reduce((a,b) => a+b, 0) / h.length);
+}
 
-  _camSetMetric('cmPorosity','cmPorosityBar','cmPorosityLvl', m.porosity,
+function _camRunAnalysis() {
+  const raw = _camAnalyseFrame();
+  if (!raw) return;
+
+  const m = {
+    porosity: _smooth('porosity', raw.porosity),
+    moisture: _smooth('moisture', raw.moisture),
+    damage:   _smooth('damage',   raw.damage),
+    strength: _smooth('strength', raw.strength),
+  };
+
+  // Only update metrics that have enough history (at least 3 readings) to show
+  const ready = (key) => _camHistory[key].length >= 3;
+
+  if (ready('porosity')) _camSetMetric('cmPorosity','cmPorosityBar','cmPorosityLvl', m.porosity,
     [[30,'Low',''], [60,'Medium','warn'], [100,'High','bad']]);
-  _camSetMetric('cmMoisture','cmMoistureBar','cmMoistureLvl', m.moisture,
+  if (ready('moisture')) _camSetMetric('cmMoisture','cmMoistureBar','cmMoistureLvl', m.moisture,
     [[40,'Low','bad'], [70,'Moderate','warn'], [100,'Good','']]);
-  _camSetMetric('cmDamage','cmDamageBar','cmDamageLvl', m.damage,
+  if (ready('damage'))   _camSetMetric('cmDamage','cmDamageBar','cmDamageLvl', m.damage,
     [[30,'Minimal',''], [60,'Moderate','warn'], [100,'High','bad']]);
-  _camSetMetric('cmStrength','cmStrengthBar','cmStrengthLvl', m.strength,
+  if (ready('strength')) _camSetMetric('cmStrength','cmStrengthBar','cmStrengthLvl', m.strength,
     [[40,'Weak','bad'], [65,'Fair','warn'], [100,'Strong','']]);
 }
 
 function _camSetMetric(valId, barId, lvlId, value, thresholds) {
-  document.getElementById(valId).textContent = value;
-  document.getElementById(barId).style.width = value + '%';
+  const valEl = document.getElementById(valId);
+  const barEl = document.getElementById(barId);
+  const lvlEl = document.getElementById(lvlId);
+
+  // Only update if value changed by more than 1 to avoid flicker
+  const current = parseInt(valEl.textContent) || 0;
+  if (Math.abs(current - value) < 2 && valEl.textContent !== '—') return;
+
   let txt = '', cls = '';
   for (const [lim, t, c] of thresholds) { if (value <= lim) { txt = t; cls = c; break; } }
-  document.getElementById(lvlId).textContent = txt;
-  document.getElementById(valId).className = 'cam-metric-val' + (cls ? ' '+cls : '');
-  document.getElementById(barId).className  = 'cam-metric-fill' + (cls ? ' '+cls : '');
-}
 
-function _camStartLoop() {
-  _camCountdown = 3;
-  document.getElementById('camTimerVal').textContent = _camCountdown;
-  _camTimerInterval = setInterval(() => {
-    _camCountdown--;
-    const el = document.getElementById('camTimerVal');
-    if (el) el.textContent = Math.max(0, _camCountdown);
-    if (_camCountdown <= 0) _camCountdown = 3;
-  }, 1000);
-  _camAnalysisInterval = setInterval(() => {
-    _camRunAnalysis();
-    _camCountdown = 3;
-  }, 3000);
+  valEl.textContent = value;
+  barEl.style.width = value + '%';
+  lvlEl.textContent = txt;
+  valEl.className = 'cam-metric-val' + (cls ? ' '+cls : '');
+  barEl.className  = 'cam-metric-fill' + (cls ? ' '+cls : '');
 }
 
 /* ── Capture ── */
 function camCapture() {
   const vid = document.getElementById('camVideo');
   const cvs = document.getElementById('camCanvas');
-
-  // Use video dimensions or fallback to 640x480
-  const W = vid.videoWidth  || 640;
+  const W = vid.videoWidth || 640;
   const H = vid.videoHeight || 480;
   cvs.width = W; cvs.height = H;
-
   const ctx = cvs.getContext('2d');
-  ctx.save();
-  ctx.scale(-1, 1);
-  ctx.drawImage(vid, -W, 0, W, H);
-  ctx.restore();
-
+  ctx.save(); ctx.scale(-1,1); ctx.drawImage(vid, -W, 0, W, H); ctx.restore();
   const dataUrl = cvs.toDataURL('image/jpeg', 0.92);
 
-  // Flash
   const flash = document.getElementById('camFlash');
   flash.classList.remove('pop');
   void flash.offsetWidth;
   flash.classList.add('pop');
 
-  // Insert into the correct slot
   S.photos[_camSlot] = dataUrl;
   const img = document.getElementById('preview' + _camSlot);
   img.src = dataUrl;
   img.style.display = 'block';
   document.getElementById('zone' + _camSlot).classList.add('has-image');
-
-  // Close overlay after flash
   setTimeout(closeCam, 320);
 }
 
@@ -2063,52 +2200,68 @@ function startOver() {
   <div class="cam-inner">
 
     <div class="cam-header">
-      <p class="cam-title">Capturing slot <span id="camSlotLabel">—</span></p>
-      <button class="cam-close" onclick="closeCam()">✕ Close</button>
+      <p class="cam-title">Slot <span id="camSlotLabel">—</span></p>
+      <button class="cam-close" onclick="closeCam()" touch-action="manipulation">✕ Close</button>
     </div>
 
     <div class="cam-video-wrap">
       <video id="camVideo" autoplay playsinline muted></video>
       <canvas id="camCanvas"></canvas>
 
-      <div class="cam-scan-lines">
-        <div class="cam-scan-line"></div>
-        <div class="cam-scan-line"></div>
-        <div class="cam-scan-line"></div>
-      </div>
+      <!-- grid overlay -->
+      <div class="cam-grid"></div>
 
+      <!-- scan beam -->
+      <div class="cam-beam" id="camBeam"></div>
+      <div class="cam-beam-trail" id="camBeamTrail"></div>
+
+      <!-- corners -->
       <div class="cam-corner cam-corner-tl"></div>
       <div class="cam-corner cam-corner-tr"></div>
       <div class="cam-corner cam-corner-bl"></div>
       <div class="cam-corner cam-corner-br"></div>
 
-      <div class="cam-live-badge">
-        <div class="cam-live-dot"></div>
-        <span class="cam-live-text">Live</span>
+      <!-- top bar -->
+      <div class="cam-topbar">
+        <div class="cam-live-badge">
+          <div class="cam-live-dot"></div>
+          <span class="cam-live-text">Scanning</span>
+        </div>
+        <span id="camStatusLabel">Initialising...</span>
       </div>
 
-      <div class="cam-timer">Next scan <span id="camTimerVal">3</span>s</div>
+      <!-- floating scan label — shows current criterion being analysed -->
+      <div class="cam-scan-label" id="camScanLabel">
+        <span class="cam-scan-label-dot"></span>
+        <span id="camScanLabelText">Detecting hair structure</span>
+      </div>
 
+      <!-- progress bar -->
+      <div class="cam-progress-wrap">
+        <div class="cam-progress-fill" id="camProgressFill"></div>
+      </div>
+
+      <!-- HUD metrics -->
       <div class="cam-hud">
-        <div class="cam-metric">
+        <div class="cam-metric" id="cm-porosity-block">
           <span class="cam-metric-lbl">Porosity</span>
           <span class="cam-metric-val" id="cmPorosity">—</span>
           <div class="cam-metric-bar"><div class="cam-metric-fill" id="cmPorosityBar"></div></div>
           <span class="cam-metric-sub" id="cmPorosityLvl">·</span>
         </div>
-        <div class="cam-metric">
+        <div class="cam-metric" id="cm-moisture-block">
           <span class="cam-metric-lbl">Moisture</span>
           <span class="cam-metric-val" id="cmMoisture">—</span>
           <div class="cam-metric-bar"><div class="cam-metric-fill" id="cmMoistureBar"></div></div>
           <span class="cam-metric-sub" id="cmMoistureLvl">·</span>
         </div>
-        <div class="cam-metric">
+        <div class="cam-metric" id="cm-damage-block">
           <span class="cam-metric-lbl">Damage</span>
           <span class="cam-metric-val" id="cmDamage">—</span>
           <div class="cam-metric-bar"><div class="cam-metric-fill" id="cmDamageBar"></div></div>
           <span class="cam-metric-sub" id="cmDamageLvl">·</span>
         </div>
-        <div class="cam-metric">
+        <div class="cam-metric" id="cm-strength-block">
           <span class="cam-metric-lbl">Strength</span>
           <span class="cam-metric-val" id="cmStrength">—</span>
           <div class="cam-metric-bar"><div class="cam-metric-fill" id="cmStrengthBar"></div></div>

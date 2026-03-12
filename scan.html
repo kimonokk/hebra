@@ -112,6 +112,7 @@ nav {
   display: grid; grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem; margin-bottom: 2.5rem;
 }
+.upload-slot { display: flex; flex-direction: column; gap: 0.5rem; }
 .upload-zone {
   aspect-ratio: 3/4;
   border: 1.5px dashed rgba(17,17,17,0.18);
@@ -155,6 +156,189 @@ nav {
 .upload-zone.has-image .upload-remove { opacity: 1; }
 .upload-zone.has-image .upload-icon,
 .upload-zone.has-image .upload-label-text { display: none; }
+
+/* ── Live camera link under each slot ── */
+.live-cam-link {
+  display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--ink30); background: none; border: none;
+  cursor: pointer; padding: 0.25rem 0;
+  transition: color 0.2s;
+}
+.live-cam-link:hover { color: var(--ink); }
+.live-cam-link svg { flex-shrink: 0; }
+
+/* ════════ CAMERA HUD OVERLAY ════════ */
+#camOverlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(0,0,0,0.92);
+  flex-direction: column; align-items: center; justify-content: center;
+  padding: 1.5rem;
+}
+#camOverlay.active { display: flex; }
+
+.cam-inner {
+  position: relative;
+  width: 100%; max-width: 520px;
+  display: flex; flex-direction: column; gap: 1rem;
+}
+
+/* Header bar */
+.cam-header {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.cam-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+}
+.cam-title span { color: rgba(255,255,255,0.9); }
+.cam-close {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(255,255,255,0.35); background: none;
+  border: none; cursor: pointer; padding: 0.3rem 0;
+  transition: color 0.2s;
+}
+.cam-close:hover { color: rgba(255,255,255,0.8); }
+
+/* Video frame */
+.cam-video-wrap {
+  position: relative;
+  background: #000;
+  border-radius: 3px; overflow: hidden;
+  aspect-ratio: 4/3;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+#camVideo {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  transform: scaleX(-1);
+}
+#camCanvas { display: none; }
+
+/* Scan lines */
+.cam-scan-lines { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.cam-scan-line {
+  position: absolute; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15) 30%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.15) 70%, transparent);
+  animation: camScanDown 3.2s linear infinite; opacity: 0;
+}
+.cam-scan-line:nth-child(2) { animation-delay: 1.1s; }
+.cam-scan-line:nth-child(3) { animation-delay: 2.2s; }
+@keyframes camScanDown {
+  0%   { top: -2px; opacity: 0; }
+  5%   { opacity: 1; }
+  95%  { opacity: 0.5; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* Corners */
+.cam-corner {
+  position: absolute; width: 18px; height: 18px; pointer-events: none;
+}
+.cam-corner-tl { top: 10px; left: 10px; border-top: 1.5px solid rgba(255,255,255,0.5); border-left: 1.5px solid rgba(255,255,255,0.5); }
+.cam-corner-tr { top: 10px; right: 10px; border-top: 1.5px solid rgba(255,255,255,0.5); border-right: 1.5px solid rgba(255,255,255,0.5); }
+.cam-corner-bl { bottom: 10px; left: 10px; border-bottom: 1.5px solid rgba(255,255,255,0.5); border-left: 1.5px solid rgba(255,255,255,0.5); }
+.cam-corner-br { bottom: 10px; right: 10px; border-bottom: 1.5px solid rgba(255,255,255,0.5); border-right: 1.5px solid rgba(255,255,255,0.5); }
+
+/* Status dot */
+.cam-live-badge {
+  position: absolute; top: 12px; left: 36px;
+  display: flex; align-items: center; gap: 5px; pointer-events: none;
+}
+.cam-live-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: #fff; animation: camBlink 1.4s ease-in-out infinite;
+}
+@keyframes camBlink { 0%,100%{opacity:1} 50%{opacity:0.15} }
+.cam-live-text {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.58rem; font-weight: 700;
+  letter-spacing: 0.28em; text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+}
+
+/* Timer */
+.cam-timer {
+  position: absolute; top: 12px; right: 36px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.58rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(255,255,255,0.35); pointer-events: none;
+}
+#camTimerVal { color: rgba(255,255,255,0.7); }
+
+/* HUD metrics bar at bottom of video */
+.cam-hud {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: rgba(0,0,0,0.78);
+  backdrop-filter: blur(6px);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: 0.8rem 1rem;
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 0.5rem; pointer-events: none;
+}
+.cam-metric { display: flex; flex-direction: column; gap: 2px; }
+.cam-metric-lbl {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.48rem; font-weight: 700;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+}
+.cam-metric-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.25rem; font-weight: 700;
+  letter-spacing: 0.02em; color: rgba(255,255,255,0.9);
+  line-height: 1; transition: color 0.4s;
+}
+.cam-metric-val.warn { color: #F5C842; }
+.cam-metric-val.bad  { color: #E8826A; }
+.cam-metric-bar {
+  height: 1.5px; background: rgba(255,255,255,0.1);
+  border-radius: 1px; overflow: hidden;
+}
+.cam-metric-fill {
+  height: 100%; border-radius: 1px;
+  background: rgba(255,255,255,0.6);
+  width: 0%; transition: width 0.8s cubic-bezier(0.16,1,0.3,1), background 0.4s;
+}
+.cam-metric-fill.warn { background: #F5C842; }
+.cam-metric-fill.bad  { background: #E8826A; }
+.cam-metric-sub {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.44rem; font-weight: 600;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+}
+
+/* Capture button */
+.cam-capture-btn {
+  width: 100%;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.82rem; font-weight: 700;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--ink); background: var(--white);
+  border: none; padding: 1.05rem;
+  border-radius: 2px; cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+}
+.cam-capture-btn:hover { background: #e8e4dd; transform: translateY(-1px); }
+
+/* Flash on capture */
+.cam-flash {
+  position: absolute; inset: 0;
+  background: #fff; opacity: 0; pointer-events: none;
+  border-radius: 3px;
+}
+.cam-flash.pop { animation: flashPop 0.3s ease-out forwards; }
+@keyframes flashPop { 0%{opacity:0.85} 100%{opacity:0} }
 
 .upload-tips {
   background: var(--white); border-radius: 3px;
@@ -640,29 +824,47 @@ nav {
   </div>
 
   <div class="upload-grid">
-    <div class="upload-zone" id="zone1" onclick="triggerUpload(1)">
-      <span class="upload-zone-num">01</span>
-      <input type="file" id="file1" accept="image/*" onchange="handleFile(1,this)" style="display:none">
-      <img class="preview-img" id="preview1" alt="">
-      <svg class="upload-icon" viewBox="0 0 28 28" fill="none"><path d="M14 20V8M14 8L9 13M14 8L19 13" stroke="#111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="3" width="22" height="22" rx="3" stroke="#111" stroke-width="1.5"/></svg>
-      <span class="upload-label-text">Crown<br>top of head</span>
-      <button class="upload-remove" onclick="removeFile(event,1)">✕</button>
+    <div class="upload-slot">
+      <div class="upload-zone" id="zone1" onclick="triggerUpload(1)">
+        <span class="upload-zone-num">01</span>
+        <input type="file" id="file1" accept="image/*" onchange="handleFile(1,this)" style="display:none">
+        <img class="preview-img" id="preview1" alt="">
+        <svg class="upload-icon" viewBox="0 0 28 28" fill="none"><path d="M14 20V8M14 8L9 13M14 8L19 13" stroke="#111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="3" width="22" height="22" rx="3" stroke="#111" stroke-width="1.5"/></svg>
+        <span class="upload-label-text">Crown<br>top of head</span>
+        <button class="upload-remove" onclick="removeFile(event,1)">✕</button>
+      </div>
+      <button class="live-cam-link" onclick="openCam(1)">
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="5.5" r="4.5" stroke="currentColor" stroke-width="1.1"/><circle cx="5.5" cy="5.5" r="1.8" fill="currentColor"/></svg>
+        Use live camera
+      </button>
     </div>
-    <div class="upload-zone" id="zone2" onclick="triggerUpload(2)">
-      <span class="upload-zone-num">02</span>
-      <input type="file" id="file2" accept="image/*" onchange="handleFile(2,this)" style="display:none">
-      <img class="preview-img" id="preview2" alt="">
-      <svg class="upload-icon" viewBox="0 0 28 28" fill="none"><path d="M14 20V8M14 8L9 13M14 8L19 13" stroke="#111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="3" width="22" height="22" rx="3" stroke="#111" stroke-width="1.5"/></svg>
-      <span class="upload-label-text">Side profile<br>mid-lengths</span>
-      <button class="upload-remove" onclick="removeFile(event,2)">✕</button>
+    <div class="upload-slot">
+      <div class="upload-zone" id="zone2" onclick="triggerUpload(2)">
+        <span class="upload-zone-num">02</span>
+        <input type="file" id="file2" accept="image/*" onchange="handleFile(2,this)" style="display:none">
+        <img class="preview-img" id="preview2" alt="">
+        <svg class="upload-icon" viewBox="0 0 28 28" fill="none"><path d="M14 20V8M14 8L9 13M14 8L19 13" stroke="#111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="3" width="22" height="22" rx="3" stroke="#111" stroke-width="1.5"/></svg>
+        <span class="upload-label-text">Side profile<br>mid-lengths</span>
+        <button class="upload-remove" onclick="removeFile(event,2)">✕</button>
+      </div>
+      <button class="live-cam-link" onclick="openCam(2)">
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="5.5" r="4.5" stroke="currentColor" stroke-width="1.1"/><circle cx="5.5" cy="5.5" r="1.8" fill="currentColor"/></svg>
+        Use live camera
+      </button>
     </div>
-    <div class="upload-zone" id="zone3" onclick="triggerUpload(3)">
-      <span class="upload-zone-num">03</span>
-      <input type="file" id="file3" accept="image/*" onchange="handleFile(3,this)" style="display:none">
-      <img class="preview-img" id="preview3" alt="">
-      <svg class="upload-icon" viewBox="0 0 28 28" fill="none"><path d="M14 20V8M14 8L9 13M14 8L19 13" stroke="#111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="3" width="22" height="22" rx="3" stroke="#111" stroke-width="1.5"/></svg>
-      <span class="upload-label-text">Ends &amp; tips<br>close-up</span>
-      <button class="upload-remove" onclick="removeFile(event,3)">✕</button>
+    <div class="upload-slot">
+      <div class="upload-zone" id="zone3" onclick="triggerUpload(3)">
+        <span class="upload-zone-num">03</span>
+        <input type="file" id="file3" accept="image/*" onchange="handleFile(3,this)" style="display:none">
+        <img class="preview-img" id="preview3" alt="">
+        <svg class="upload-icon" viewBox="0 0 28 28" fill="none"><path d="M14 20V8M14 8L9 13M14 8L19 13" stroke="#111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="3" width="22" height="22" rx="3" stroke="#111" stroke-width="1.5"/></svg>
+        <span class="upload-label-text">Ends &amp; tips<br>close-up</span>
+        <button class="upload-remove" onclick="removeFile(event,3)">✕</button>
+      </div>
+      <button class="live-cam-link" onclick="openCam(3)">
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="5.5" r="4.5" stroke="currentColor" stroke-width="1.1"/><circle cx="5.5" cy="5.5" r="1.8" fill="currentColor"/></svg>
+        Use live camera
+      </button>
     </div>
   </div>
 
@@ -1655,7 +1857,171 @@ function showPanel(id) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function startOver() {
+/* ══════════════════════════════════════════
+   CAMERA HUD
+══════════════════════════════════════════ */
+let _camStream = null;
+let _camSlot = null;
+let _camAnalysisInterval = null;
+let _camTimerInterval = null;
+let _camCountdown = 3;
+
+const SLOT_LABELS = { 1: '01 — Crown', 2: '02 — Side profile', 3: '03 — Ends & tips' };
+
+async function openCam(slot) {
+  _camSlot = slot;
+  document.getElementById('camSlotLabel').textContent = SLOT_LABELS[slot] || slot;
+  document.getElementById('camOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+
+  try {
+    _camStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 960 } },
+      audio: false
+    });
+    const vid = document.getElementById('camVideo');
+    vid.srcObject = _camStream;
+    await vid.play();
+    setTimeout(() => {
+      _camRunAnalysis();
+      _camStartLoop();
+    }, 900);
+  } catch (err) {
+    closeCam();
+    const msg = err.name === 'NotAllowedError'
+      ? 'Camera access denied — please allow camera access in your browser settings.'
+      : 'Could not access camera: ' + err.message;
+    const errEl = document.getElementById('uploadError');
+    errEl.textContent = msg;
+    errEl.style.display = 'block';
+  }
+}
+
+function closeCam() {
+  if (_camStream) { _camStream.getTracks().forEach(t => t.stop()); _camStream = null; }
+  clearInterval(_camAnalysisInterval);
+  clearInterval(_camTimerInterval);
+  _camAnalysisInterval = null; _camTimerInterval = null;
+  document.getElementById('camOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+/* ── Frame pixel analysis ── */
+function _camAnalyseFrame() {
+  const vid = document.getElementById('camVideo');
+  if (!vid.videoWidth) return null;
+
+  const cvs = document.getElementById('camCanvas');
+  const W = 280, H = 210;
+  cvs.width = W; cvs.height = H;
+  const ctx = cvs.getContext('2d');
+  ctx.save(); ctx.scale(-1,1); ctx.drawImage(vid, -W, 0, W, H); ctx.restore();
+
+  const d = ctx.getImageData(0,0,W,H).data;
+  const N = W * H;
+  let lumSum = 0, lumSqSum = 0, rSum = 0, gSum = 0, edgeE = 0;
+
+  for (let i = 0; i < d.length; i += 16) {
+    const r = d[i], g = d[i+1], b = d[i+2];
+    const lum = 0.299*r + 0.587*g + 0.114*b;
+    lumSum += lum; lumSqSum += lum*lum; rSum += r; gSum += g;
+  }
+  const samples = N/4;
+  const avgLum = lumSum/samples;
+  const stdDev = Math.sqrt(Math.max(0, lumSqSum/samples - avgLum*avgLum));
+  const warmth = (rSum/samples) / ((gSum/samples) + 1);
+
+  const cx = Math.floor(W/2), strip = 50;
+  for (let y = H/4; y < 3*H/4; y++) {
+    for (let x = cx-strip; x < cx+strip-1; x++) {
+      const i = (y*W+x)*4;
+      edgeE += Math.abs((0.299*d[i]+0.587*d[i+1]+0.114*d[i+2]) - (0.299*d[i+4]+0.587*d[i+5]+0.114*d[i+6]));
+    }
+  }
+  const edgeN = edgeE / (H/2 * strip * 255);
+
+  const clamp = (v,lo,hi) => Math.max(lo,Math.min(hi,v));
+  const norm  = (v,mn,mx) => clamp((v-mn)/(mx-mn)*100,0,100);
+  const jit   = () => (Math.random()-0.5)*6;
+
+  const porosity = clamp(Math.round(0.4*(edgeN*100) + 0.3*(100-norm(avgLum,60,200)) + 0.3*(stdDev/80*100) + jit()), 5, 98);
+  const moisture = clamp(Math.round(0.4*norm(avgLum,80,210) + 0.3*(100-stdDev/80*100) + 0.3*norm(warmth,0.8,1.6) + jit()), 5, 98);
+  const damage   = clamp(Math.round(0.4*(edgeN*100) + 0.3*(stdDev/80*100) + 0.3*(100-norm(gSum/samples,60,180)) + jit()), 5, 98);
+  const strength = clamp(Math.round(100 - damage*0.6 + norm(avgLum,100,220)*0.2 + jit()), 10, 98);
+
+  return { porosity, moisture, damage, strength };
+}
+
+/* ── HUD update ── */
+function _camRunAnalysis() {
+  const m = _camAnalyseFrame();
+  if (!m) return;
+
+  _camSetMetric('cmPorosity','cmPorosityBar','cmPorosityLvl', m.porosity,
+    [[30,'Low',''], [60,'Medium','warn'], [100,'High','bad']]);
+  _camSetMetric('cmMoisture','cmMoistureBar','cmMoistureLvl', m.moisture,
+    [[40,'Low','bad'], [70,'Moderate','warn'], [100,'Good','']]);
+  _camSetMetric('cmDamage','cmDamageBar','cmDamageLvl', m.damage,
+    [[30,'Minimal',''], [60,'Moderate','warn'], [100,'High','bad']]);
+  _camSetMetric('cmStrength','cmStrengthBar','cmStrengthLvl', m.strength,
+    [[40,'Weak','bad'], [65,'Fair','warn'], [100,'Strong','']]);
+}
+
+function _camSetMetric(valId, barId, lvlId, value, thresholds) {
+  document.getElementById(valId).textContent = value;
+  document.getElementById(barId).style.width = value + '%';
+  let txt = '', cls = '';
+  for (const [lim, t, c] of thresholds) { if (value <= lim) { txt = t; cls = c; break; } }
+  document.getElementById(lvlId).textContent = txt;
+  document.getElementById(valId).className = 'cam-metric-val' + (cls ? ' '+cls : '');
+  document.getElementById(barId).className  = 'cam-metric-fill' + (cls ? ' '+cls : '');
+}
+
+function _camStartLoop() {
+  _camCountdown = 3;
+  document.getElementById('camTimerVal').textContent = _camCountdown;
+  _camTimerInterval = setInterval(() => {
+    _camCountdown--;
+    const el = document.getElementById('camTimerVal');
+    if (el) el.textContent = Math.max(0, _camCountdown);
+    if (_camCountdown <= 0) _camCountdown = 3;
+  }, 1000);
+  _camAnalysisInterval = setInterval(() => {
+    _camRunAnalysis();
+    _camCountdown = 3;
+  }, 3000);
+}
+
+/* ── Capture ── */
+function camCapture() {
+  const vid = document.getElementById('camVideo');
+  if (!vid.videoWidth) return;
+
+  // Flash
+  const flash = document.getElementById('camFlash');
+  flash.classList.remove('pop');
+  void flash.offsetWidth;
+  flash.classList.add('pop');
+
+  // Draw frame to canvas at full resolution
+  const cvs = document.getElementById('camCanvas');
+  cvs.width = vid.videoWidth; cvs.height = vid.videoHeight;
+  const ctx = cvs.getContext('2d');
+  ctx.save(); ctx.scale(-1,1); ctx.drawImage(vid, -cvs.width, 0, cvs.width, cvs.height); ctx.restore();
+
+  const dataUrl = cvs.toDataURL('image/jpeg', 0.92);
+
+  // Insert into the correct slot exactly like handleFile() does
+  S.photos[_camSlot] = dataUrl;
+  const img = document.getElementById('preview' + _camSlot);
+  img.src = dataUrl;
+  img.style.display = 'block';
+  document.getElementById('zone' + _camSlot).classList.add('has-image');
+
+  // Close overlay after short delay so user sees the flash
+  setTimeout(closeCam, 280);
+}
+
   S.photos = {1:null,2:null,3:null};
   S.answers = {}; S.currentQ = 0; S.results = null;
   S.city = ''; S.waterHardness = null;
@@ -1673,5 +2039,77 @@ function startOver() {
   document.getElementById('navStep').textContent = 'Step 1 of 3';
 }
 </script>
+<!-- ════════ CAMERA HUD OVERLAY ════════ -->
+<div id="camOverlay">
+  <div class="cam-inner">
+
+    <div class="cam-header">
+      <p class="cam-title">Capturing slot <span id="camSlotLabel">—</span></p>
+      <button class="cam-close" onclick="closeCam()">✕ Close</button>
+    </div>
+
+    <div class="cam-video-wrap">
+      <video id="camVideo" autoplay playsinline muted></video>
+      <canvas id="camCanvas"></canvas>
+
+      <div class="cam-scan-lines">
+        <div class="cam-scan-line"></div>
+        <div class="cam-scan-line"></div>
+        <div class="cam-scan-line"></div>
+      </div>
+
+      <div class="cam-corner cam-corner-tl"></div>
+      <div class="cam-corner cam-corner-tr"></div>
+      <div class="cam-corner cam-corner-bl"></div>
+      <div class="cam-corner cam-corner-br"></div>
+
+      <div class="cam-live-badge">
+        <div class="cam-live-dot"></div>
+        <span class="cam-live-text">Live</span>
+      </div>
+
+      <div class="cam-timer">Next scan <span id="camTimerVal">3</span>s</div>
+
+      <div class="cam-hud">
+        <div class="cam-metric">
+          <span class="cam-metric-lbl">Porosity</span>
+          <span class="cam-metric-val" id="cmPorosity">—</span>
+          <div class="cam-metric-bar"><div class="cam-metric-fill" id="cmPorosityBar"></div></div>
+          <span class="cam-metric-sub" id="cmPorosityLvl">·</span>
+        </div>
+        <div class="cam-metric">
+          <span class="cam-metric-lbl">Moisture</span>
+          <span class="cam-metric-val" id="cmMoisture">—</span>
+          <div class="cam-metric-bar"><div class="cam-metric-fill" id="cmMoistureBar"></div></div>
+          <span class="cam-metric-sub" id="cmMoistureLvl">·</span>
+        </div>
+        <div class="cam-metric">
+          <span class="cam-metric-lbl">Damage</span>
+          <span class="cam-metric-val" id="cmDamage">—</span>
+          <div class="cam-metric-bar"><div class="cam-metric-fill" id="cmDamageBar"></div></div>
+          <span class="cam-metric-sub" id="cmDamageLvl">·</span>
+        </div>
+        <div class="cam-metric">
+          <span class="cam-metric-lbl">Strength</span>
+          <span class="cam-metric-val" id="cmStrength">—</span>
+          <div class="cam-metric-bar"><div class="cam-metric-fill" id="cmStrengthBar"></div></div>
+          <span class="cam-metric-sub" id="cmStrengthLvl">·</span>
+        </div>
+      </div>
+
+      <div class="cam-flash" id="camFlash"></div>
+    </div>
+
+    <button class="cam-capture-btn" onclick="camCapture()">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.3"/>
+        <circle cx="7" cy="7" r="2.5" fill="currentColor"/>
+      </svg>
+      Capture Photo
+    </button>
+
+  </div>
+</div>
+
 </body>
 </html>

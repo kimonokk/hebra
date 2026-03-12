@@ -543,7 +543,7 @@ nav {
       <a href="index.html#about">About Hebra</a>
       <a href="index.html#privacy">Privacy Policy</a>
       <a href="index.html#terms">Terms of Use</a>
-      <a href="mailto:hello@hebrahair.com" style="color:rgba(255,255,255,0.65);">hello@hebrahair.com</a>
+      <a href="/cdn-cgi/l/email-protection#5038353c3c3f103835322231383139227e333f3d" style="color:rgba(255,255,255,0.65);"><span class="__cf_email__" data-cfemail="2048454c4c4f604845425241484149520e434f4d">[email&#160;protected]</span></a>
     </div>
     <div class="footer-col">
       <p class="footer-col-label">Philosophy</p>
@@ -563,7 +563,7 @@ nav {
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ══════════════════════════════════════════
    STATE
 ══════════════════════════════════════════ */
@@ -642,42 +642,17 @@ Rules:
 - Output ONLY the raw JSON object. No markdown, no backticks, no preamble.`;
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch('/api/scanner', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{
-          role: 'user',
-          content: [
-            {
-              type: 'image',
-              source: {
-                type: 'base64',
-                media_type: imageMediaType,
-                data: imageBase64
-              }
-            },
-            {
-              type: 'text',
-              text: PROMPT
-            }
-          ]
-        }]
+        image: imageBase64,
+        mediaType: imageMediaType
       })
     });
 
     if (!response.ok) throw new Error(`API error ${response.status}`);
-    const data = await response.json();
-
-    const raw = data.content
-      .filter(b => b.type === 'text')
-      .map(b => b.text)
-      .join('');
-
-    const clean = raw.replace(/```json|```/g, '').trim();
-    const parsed = JSON.parse(clean);
+    const parsed = await response.json();
 
     renderResults(parsed);
 
@@ -742,17 +717,4 @@ function renderResults(data) {
 function showError(msg) {
   document.getElementById('uploadSection').style.display = 'block';
   const el = document.getElementById('errorState');
-  el.textContent = 'Could not analyse the label: ' + msg + ' — make sure the ingredients list is clearly visible and try again.';
-  el.classList.add('active');
-}
-
-function escapeHtml(str) {
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
-</script>
-</body>
-</html>
+  el.textContent = 'Could not analyse the label: ' + msg + ' — make sure the ingredients list is clearly vis

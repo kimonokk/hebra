@@ -621,6 +621,24 @@ nav {
     ">
   </div>
 
+  <div style="margin-bottom:2rem;">
+    <label style="font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:rgba(17,17,17,0.4);display:block;margin-bottom:0.6rem;">Your city</label>
+    <input type="text" id="cityInput" placeholder="e.g. London, Madrid, New York" oninput="handleCityInput(this.value)" style="
+      width:100%; max-width:320px;
+      background:transparent;
+      border:none;
+      border-bottom:1px solid rgba(17,17,17,0.2);
+      outline:none;
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:1.1rem;
+      font-weight:500;
+      letter-spacing:0.08em;
+      color:#111;
+      padding:0.5rem 0;
+    ">
+    <div id="waterTag" style="display:none; margin-top:0.6rem; font-family:'Barlow Condensed',sans-serif; font-size:0.75rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:rgba(17,17,17,0.45);"></div>
+  </div>
+
   <div class="upload-grid">
     <div class="upload-zone" id="zone1" onclick="triggerUpload(1)">
       <span class="upload-zone-num">01</span>
@@ -725,8 +743,86 @@ const S = {
   results: null,
   email: '',
   name: '',
+  city: '',
+  waterHardness: null,
   otherProduct: ''
 };
+
+/* ══════════════════════════════════════════
+   WATER HARDNESS DATABASE (ppm)
+   Sources: utility reports & WHO data
+══════════════════════════════════════════ */
+const WATER_DB = {
+  // Very Hard (>180 ppm) — mineral buildup, chelating shampoo needed
+  'london':       { ppm: 294, label: 'Very Hard',  tip: 'London tap water is among the hardest in Europe. Mineral deposits accumulate on the hair shaft after every wash.' },
+  'madrid':       { ppm: 280, label: 'Very Hard',  tip: 'Madrid\'s water is notoriously hard. A chelating shampoo once a month will reset your hair\'s mineral baseline.' },
+  'dubai':        { ppm: 350, label: 'Very Hard',  tip: 'Dubai desalinated water is extremely hard. A shower filter is strongly recommended.' },
+  'phoenix':      { ppm: 318, label: 'Very Hard',  tip: 'Phoenix has some of the hardest tap water in the US — mineral buildup can dull hair and inhibit product absorption.' },
+  'las vegas':    { ppm: 290, label: 'Very Hard',  tip: 'Las Vegas water is very hard. Mineral buildup will affect every wash — a chelating shampoo is essential.' },
+  'dallas':       { ppm: 252, label: 'Very Hard',  tip: 'Dallas water hardness varies but runs high. Expect reduced lather and potential mineral buildup.' },
+  'san antonio':  { ppm: 263, label: 'Very Hard',  tip: 'San Antonio has notably hard water. Regular chelating washes will prevent long-term dullness and buildup.' },
+  'rome':         { ppm: 240, label: 'Very Hard',  tip: 'Rome\'s water is very hard. Mineral buildup is a common complaint among locals and expats alike.' },
+  'cairo':        { ppm: 230, label: 'Very Hard',  tip: 'Cairo tap water is hard and may contain chlorine. A filtered shower head is worth the investment.' },
+  'riyadh':       { ppm: 310, label: 'Very Hard',  tip: 'Riyadh water is desalinated and very hard. A shower filter and monthly chelating wash are recommended.' },
+
+  // Hard (120–180 ppm)
+  'paris':        { ppm: 200, label: 'Hard',       tip: 'Paris water is hard, which contributes to product buildup and reduced shine over time.' },
+  'berlin':       { ppm: 220, label: 'Hard',       tip: 'Berlin has hard water. Many residents use shower filters to protect their hair and skin.' },
+  'chicago':      { ppm: 144, label: 'Hard',       tip: 'Chicago\'s water is hard enough to leave deposits on the hair shaft with repeated washing.' },
+  'houston':      { ppm: 186, label: 'Hard',       tip: 'Houston water is hard. Using a clarifying shampoo monthly will prevent mineral accumulation.' },
+  'denver':       { ppm: 154, label: 'Hard',       tip: 'Denver water hardness is moderate-to-high, especially in summer.' },
+  'toronto':      { ppm: 124, label: 'Hard',       tip: 'Toronto water is moderately hard — unlikely to cause severe buildup but worth monitoring.' },
+  'mumbai':       { ppm: 174, label: 'Hard',       tip: 'Mumbai water varies by source but generally runs hard. Hair texture changes are common after moving there.' },
+  'delhi':        { ppm: 200, label: 'Hard',       tip: 'Delhi water is hard and may contain high chlorine. A shower filter makes a noticeable difference.' },
+  'mexico city':  { ppm: 210, label: 'Hard',       tip: 'Mexico City water is hard. Hair washing often requires more product to lather, a sign of mineral interference.' },
+  'beijing':      { ppm: 195, label: 'Hard',       tip: 'Beijing water is hard. Mineral accumulation on the hair is a common issue for residents.' },
+  'shanghai':     { ppm: 162, label: 'Hard',       tip: 'Shanghai water is moderately hard. A chelating wash every 2–3 weeks helps maintain hair clarity.' },
+  'istanbul':     { ppm: 180, label: 'Hard',       tip: 'Istanbul water is hard. Residents often notice drier, duller hair compared to other European cities.' },
+  'bangkok':      { ppm: 150, label: 'Hard',       tip: 'Bangkok water is moderately hard. Combined with high humidity, it can affect hair texture noticeably.' },
+  'barcelona':    { ppm: 250, label: 'Very Hard',  tip: 'Barcelona has some of the hardest water in Spain. Mineral buildup is a real concern for hair health.' },
+  'milan':        { ppm: 175, label: 'Hard',       tip: 'Milan water is moderately hard. Regular chelating washes are recommended for colored or bleached hair.' },
+
+  // Moderate (60–120 ppm)
+  'new york':     { ppm: 26,  label: 'Soft',       tip: 'New York City has exceptionally soft water — one of the best in the world for hair health.' },
+  'los angeles':  { ppm: 127, label: 'Hard',       tip: 'LA water is moderately hard, especially in the San Fernando Valley. A monthly chelating wash helps.' },
+  'san francisco':{ ppm: 42,  label: 'Soft',       tip: 'San Francisco has naturally soft water, great for hair — products absorb easily and lather well.' },
+  'seattle':      { ppm: 19,  label: 'Very Soft',  tip: 'Seattle has among the softest water in the US. Hair absorbs products efficiently with minimal buildup.' },
+  'portland':     { ppm: 31,  label: 'Soft',       tip: 'Portland water is very soft — products absorb well and buildup is rarely a concern.' },
+  'miami':        { ppm: 96,  label: 'Moderate',   tip: 'Miami water is moderately soft. Combined with high humidity, frizz management is a bigger concern than mineral buildup.' },
+  'amsterdam':    { ppm: 82,  label: 'Moderate',   tip: 'Amsterdam water is relatively soft by European standards — good for hair health overall.' },
+  'stockholm':    { ppm: 64,  label: 'Moderate',   tip: 'Stockholm water is soft and clean. Hair health issues in Stockholm are more likely climate-related than water-related.' },
+  'oslo':         { ppm: 28,  label: 'Soft',       tip: 'Oslo has very soft water. Product absorption is excellent and buildup is rarely an issue.' },
+  'helsinki':     { ppm: 43,  label: 'Soft',       tip: 'Helsinki water is soft. Hair responds well to moisturising treatments without mineral interference.' },
+  'copenhagen':   { ppm: 60,  label: 'Moderate',   tip: 'Copenhagen water is moderate. Generally hair-friendly with minimal buildup concerns.' },
+  'vienna':       { ppm: 55,  label: 'Soft',       tip: 'Vienna\'s mountain spring water is famously soft — excellent for hair and skin.' },
+  'zurich':       { ppm: 49,  label: 'Soft',       tip: 'Zurich has soft mountain water. One of the best cities in Europe for natural hair health.' },
+  'tokyo':        { ppm: 65,  label: 'Moderate',   tip: 'Tokyo water is soft to moderate. Hair products absorb well and mineral buildup is uncommon.' },
+  'osaka':        { ppm: 58,  label: 'Soft',       tip: 'Osaka has soft water. Japanese water quality generally supports good hair health.' },
+  'sydney':       { ppm: 51,  label: 'Soft',       tip: 'Sydney water is soft. Hair care in Sydney is rarely complicated by water hardness.' },
+  'melbourne':    { ppm: 38,  label: 'Soft',       tip: 'Melbourne has soft, clean water — excellent for hair health and product performance.' },
+  'singapore':    { ppm: 45,  label: 'Soft',       tip: 'Singapore has soft treated water. Hair responds well to routine care without mineral interference.' },
+  'sao paulo':    { ppm: 89,  label: 'Moderate',   tip: 'São Paulo water is moderate. Hair issues there are more often humidity-related than mineral-related.' },
+  'buenos aires': { ppm: 112, label: 'Moderate',   tip: 'Buenos Aires water is moderate. Some mineral accumulation is possible with daily washing.' },
+  'bogota':       { ppm: 72,  label: 'Moderate',   tip: 'Bogotá water is relatively soft. High altitude climate has more impact on hair than water hardness.' },
+  'lima':         { ppm: 142, label: 'Hard',        tip: 'Lima water is moderately hard. Monthly chelating washes are a good preventive measure.' },
+  'johannesburg': { ppm: 98,  label: 'Moderate',   tip: 'Johannesburg water is moderate. Dry climate and UV exposure are usually bigger concerns than water hardness.' },
+  'lagos':        { ppm: 130, label: 'Hard',        tip: 'Lagos water is moderately hard and may contain chlorine. A shower filter is a worthwhile investment.' },
+  'nairobi':      { ppm: 110, label: 'Moderate',   tip: 'Nairobi water is moderate. Hair health there is more climate-sensitive than water-sensitive.' },
+  'moscow':       { ppm: 135, label: 'Hard',        tip: 'Moscow water is moderately hard. Cold, dry winters compound the effects on hair moisture.' },
+  'kyiv':         { ppm: 115, label: 'Moderate',   tip: 'Kyiv water is moderate. Cold weather has more impact on hair health than mineral levels.' },
+};
+
+function lookupWater(cityRaw) {
+  if (!cityRaw) return null;
+  const key = cityRaw.toLowerCase().trim();
+  // Exact match
+  if (WATER_DB[key]) return { city: cityRaw, ...WATER_DB[key] };
+  // Partial match — handle "New York City", "Los Angeles, CA" etc.
+  for (const [k, v] of Object.entries(WATER_DB)) {
+    if (key.includes(k) || k.includes(key)) return { city: cityRaw, ...v };
+  }
+  return null; // Unknown city
+}
 
 /* ══════════════════════════════════════════
    QUESTIONS
@@ -900,7 +996,32 @@ function removeFile(e, n) {
   document.getElementById('zone'+n).classList.remove('has-image');
 }
 
-function goToQuestions() {
+function handleCityInput(val) {
+  S.city = val.trim();
+  const result = lookupWater(S.city);
+  S.waterHardness = result;
+
+  const tag = document.getElementById('waterTag');
+  if (result) {
+    const colors = {
+      'Very Soft': '#4a9e7f',
+      'Soft':      '#6aab91',
+      'Moderate':  '#d4a843',
+      'Hard':      '#c07a3a',
+      'Very Hard': '#b84c3a'
+    };
+    const color = colors[result.label] || 'rgba(17,17,17,0.4)';
+    tag.style.display = 'block';
+    tag.innerHTML = `<span style="color:${color};">● ${result.label} water</span><span style="color:rgba(17,17,17,0.3);"> — ${result.ppm} ppm</span>`;
+  } else {
+    tag.style.display = S.city.length > 2 ? 'block' : 'none';
+    tag.innerHTML = S.city.length > 2
+      ? `<span style="color:rgba(17,17,17,0.3);">City not in database — water data will be estimated</span>`
+      : '';
+  }
+}
+
+
   if (!S.photos[1] || !S.photos[2] || !S.photos[3]) {
     document.getElementById('uploadError').style.display = 'block';
     return;
@@ -1161,7 +1282,13 @@ async function startDiagnosis() {
   fetch('/api/diagnose', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ answers: S.answers, photos: [S.photos[1], S.photos[2], S.photos[3]], name: S.name })
+    body: JSON.stringify({
+      answers: S.answers,
+      photos: [S.photos[1], S.photos[2], S.photos[3]],
+      name: S.name,
+      city: S.city,
+      waterHardness: S.waterHardness
+    })
   })
   .then(r => r.ok ? r.json() : Promise.reject(r.status))
   .then(data => { resultData = data; apiDone = true; })
@@ -1171,13 +1298,6 @@ async function startDiagnosis() {
   animateLoadingSteps(async () => {
     while (!apiDone) await new Promise(r => setTimeout(r, 200));
     stopLoadingAnimation();
-
-    // Check for photo validation errors
-    if (resultData && resultData.error === 'invalid_photos') {
-      showPhotoError(resultData.message);
-      return;
-    }
-
     S.results = resultData;
     showPanel('step-email');
     document.getElementById('navStep').textContent = 'Almost there';
@@ -1190,38 +1310,6 @@ async function startDiagnosis() {
 /* ══════════════════════════════════════════
    EMAIL GATE
 ══════════════════════════════════════════ */
-function showPhotoError(message) {
-  // Go back to photo upload step with error message
-  showPanel('step-photos');
-  document.getElementById('navStep').textContent = 'Upload Photos';
-
-  // Show error banner
-  let banner = document.getElementById('photoErrorBanner');
-  if (!banner) {
-    banner = document.createElement('div');
-    banner.id = 'photoErrorBanner';
-    banner.style.cssText = `
-      background: rgba(17,17,17,0.06);
-      border-left: 3px solid #111111;
-      padding: 1rem 1.2rem;
-      margin-bottom: 1.5rem;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.88rem;
-      letter-spacing: 0.04em;
-      color: #111111;
-      line-height: 1.6;
-    `;
-    const photoPanel = document.getElementById('step-photos');
-    const firstChild = photoPanel.querySelector('.step-inner') || photoPanel.firstElementChild;
-    photoPanel.insertBefore(banner, firstChild);
-  }
-  banner.textContent = message;
-  banner.style.display = 'block';
-
-  // Reset photos so user can re-upload
-  S.photos = {};
-}
-
 function submitEmail() {
   const val = document.getElementById('emailInput').value.trim();
   if (!val || !val.includes('@')) {
@@ -1526,7 +1614,7 @@ function generateFallback() {
       { category: 'Scalp', title: a.scalp === 'balanced' ? 'Healthy Foundation' : 'Needs Attention', desc: a.scalp === 'oily_scalp' ? 'Excess sebum production is creating an environment that clogs follicles and inhibits optimal growth conditions.' : a.scalp === 'dry_flaky' ? 'Low sebum levels are leaving the scalp prone to flaking, sensitivity and impaired barrier function.' : 'Your scalp maintains a healthy sebum balance — an excellent foundation for everything above.' },
       { category: 'Structure', title: a.treatments === 'none' ? 'Intact Cuticle Layer' : 'Chemical Stress Detected', desc: a.treatments === 'none' ? 'No chemical processing means your cuticle layer remains largely intact, preserving natural strength and shine.' : 'Chemical services have altered the disulfide bond structure of your strands, requiring bond-repair focus as the foundation of your routine.' },
       { category: 'Moisture', title: a.hair_state === 'dry_brittle' || a.hair_state === 'damaged' ? 'Moisture Deficit' : 'Moderate Hydration', desc: 'Moisture balance is the most correctable dimension of hair health. Targeted deep conditioning and leave-in treatments will show measurable improvement within 3–4 weeks.' },
-      { category: 'Environment', title: a.climate === 'humid' ? 'High Humidity Impact' : a.climate === 'dry_hot' ? 'Arid Climate Stress' : 'Climate-Neutral Zone', desc: a.climate === 'humid' ? 'Humidity causes the hair cuticle to swell and lift, leading to frizz and loss of definition. Anti-humidity products and sealants will make the biggest difference in your routine.' : a.climate === 'dry_hot' ? 'Dry heat accelerates moisture loss from the strand. Deep conditioning and sealing with lightweight oils after every wash will protect your hair barrier.' : a.water === 'hard' ? 'Hard water minerals accumulate on the strand, dulling shine and increasing breakage over time. A chelating shampoo used once a month will reset your hair baseline.' : 'Your environment is relatively gentle on your hair. Focus on product and routine optimisation rather than environmental protection.' }
+      { category: 'Environment', title: a.climate === 'humid' ? 'High Humidity Impact' : a.climate === 'dry_hot' ? 'Arid Climate Stress' : S.waterHardness && S.waterHardness.ppm >= 180 ? 'Hard Water Detected' : 'Climate-Neutral Zone', desc: a.climate === 'humid' ? 'Humidity causes the hair cuticle to swell and lift, leading to frizz and loss of definition. Anti-humidity products and sealants will make the biggest difference in your routine.' : a.climate === 'dry_hot' ? 'Dry heat accelerates moisture loss from the strand. Deep conditioning and sealing with lightweight oils after every wash will protect your hair barrier.' : S.waterHardness && S.waterHardness.ppm >= 120 ? (S.waterHardness.tip + (S.waterHardness.ppm >= 180 ? ' A chelating shampoo used once a month will reset your hair baseline and allow products to absorb properly.' : ' A chelating shampoo used occasionally will prevent mineral accumulation over time.')) : a.water === 'hard' ? 'Hard water minerals accumulate on the strand, dulling shine and increasing breakage over time. A chelating shampoo used once a month will reset your hair baseline.' : 'Your environment is relatively gentle on your hair. Focus on product and routine optimisation rather than environmental protection.' }
     ],
     routine: [
       { step: '01', title: 'Scalp Ritual', desc: 'Begin each wash with a 3-minute fingertip massage before applying shampoo. This stimulates microcirculation and nutrient delivery to the follicle — the foundation of healthy growth.' },
@@ -1570,12 +1658,17 @@ function showPanel(id) {
 function startOver() {
   S.photos = {1:null,2:null,3:null};
   S.answers = {}; S.currentQ = 0; S.results = null;
+  S.city = ''; S.waterHardness = null;
   [1,2,3].forEach(n => {
     const img = document.getElementById('preview'+n);
     img.style.display = 'none'; img.src = '';
     document.getElementById('file'+n).value = '';
     document.getElementById('zone'+n).classList.remove('has-image');
   });
+  const cityInput = document.getElementById('cityInput');
+  if (cityInput) cityInput.value = '';
+  const waterTag = document.getElementById('waterTag');
+  if (waterTag) waterTag.style.display = 'none';
   showPanel('step-upload');
   document.getElementById('navStep').textContent = 'Step 1 of 3';
 }

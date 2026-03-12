@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hebra</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap');
@@ -914,8 +917,12 @@
   .footer-col-right { }
   .footer-email {
     display: flex;
-    border-bottom: 1px solid rgba(255,255,255,0.25);
+    align-items: center;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 2px;
     margin-bottom: 1rem;
+    padding: 0 0.75rem;
+    background: rgba(255,255,255,0.05);
   }
   .footer-input {
     flex: 1;
@@ -927,9 +934,9 @@
     font-weight: 500;
     letter-spacing: 0.1em;
     color: #FFFFFF;
-    padding: 0.5rem 0;
+    padding: 0.75rem 0;
   }
-  .footer-input::placeholder { color: rgba(0,0,0,0.3); }
+  .footer-input::placeholder { color: rgba(255,255,255,0.3); }
   .footer-submit {
     background: none;
     border: none;
@@ -1107,8 +1114,8 @@
 
   .hero-label {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.6rem; font-weight: 700;
-    letter-spacing: 0.5em; text-transform: uppercase;
+    font-size: 1rem; font-weight: 700;
+    letter-spacing: 0.35em; text-transform: uppercase;
     color: rgba(255,255,255,0.55);
     margin-bottom: 2rem;
     opacity: 0;
@@ -1152,10 +1159,10 @@
 
   .hero-sub {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.78rem; font-weight: 600;
-    letter-spacing: 0.28em; text-transform: uppercase;
+    font-size: 1.1rem; font-weight: 700;
+    letter-spacing: 0.22em; text-transform: uppercase;
     color: rgba(255,255,255,0.65);
-    margin-bottom: 2.5rem; line-height: 2;
+    margin-top: 1.8rem; margin-bottom: 2.5rem; line-height: 2;
     opacity: 0;
     animation: hIn 0.8s 1s cubic-bezier(0.16,1,0.3,1) forwards;
   }
@@ -1163,7 +1170,7 @@
   .hero-cta-btn {
     display: inline-flex; align-items: center; gap: 0.7rem;
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.8rem; font-weight: 700;
+    font-size: 0.95rem; font-weight: 700;
     letter-spacing: 0.3em; text-transform: uppercase;
     color: #111; background: #FFFFFF;
     padding: 1.2rem 3.5rem;
@@ -2053,17 +2060,202 @@
     footer { flex-direction: column; gap: 1.5rem; text-align: center; }
     .hero-title { font-size: clamp(4rem, 18vw, 6rem); }
   }
+
+  /* ── GLOBAL MOBILE RESPONSIVE ── */
+  @media (max-width: 600px) {
+
+    /* All overlay pages padding */
+    #aboutPage > div:not(nav),
+    #sciencePage > div:not(nav),
+    #hairPage > div:not(nav),
+    #precisionPage > div:not(nav),
+    #termsPage > div:not(nav),
+    #privacyPage > div:not(nav) { padding: 3rem 1.4rem 4rem !important; }
+
+    /* All 2-column inline grids → 1 column */
+    [style*="grid-template-columns: 1fr 1fr"],
+    [style*="grid-template-columns:1fr 1fr"],
+    [style*="grid-template-columns: 1fr 1.6fr"],
+    [style*="grid-template-columns: 1fr 1.8fr"],
+    [style*="grid-template-columns: auto 1fr"] {
+      grid-template-columns: 1fr !important;
+      gap: 2rem !important;
+    }
+
+    /* All 3-4 column grids → 1 column */
+    [style*="grid-template-columns: repeat(3"],
+    [style*="grid-template-columns: repeat(4"],
+    [style*="grid-template-columns:repeat(3"],
+    [style*="grid-template-columns:repeat(4"] {
+      grid-template-columns: 1fr !important;
+      gap: 1rem !important;
+    }
+
+    /* 6-column pillars grid → 2 columns */
+    [style*="grid-template-columns: repeat(6"],
+    [style*="grid-template-columns:repeat(6"] {
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 1px !important;
+    }
+
+    /* How it works steps */
+    .how-steps { grid-template-columns: 1fr !important; }
+
+    /* Footer columns */
+    .footer-bottom { grid-template-columns: 1fr 1fr !important; gap: 2rem !important; padding: 2.5rem 1.4rem !important; }
+
+    /* Hero */
+    .hero-h1 { font-size: clamp(3rem, 15vw, 5rem) !important; }
+
+    /* Nav in overlays */
+    #aboutPage nav,
+    #sciencePage nav,
+    #hairPage nav,
+    #precisionPage nav,
+    #termsPage nav,
+    #privacyPage nav { padding: 1.2rem 1.4rem !important; }
+
+    /* Big titles in overlays */
+    #sciencePage h1,
+    #hairPage h1,
+    #precisionPage h1,
+    #aboutPage h1 { font-size: clamp(2.5rem, 12vw, 5rem) !important; }
+
+    /* Prevent text overflow */
+    p, h1, h2, h3, span, a { word-break: break-word; overflow-wrap: break-word; }
+
+    /* Pillar images aspect ratio */
+    [style*="aspect-ratio:3/4"] { aspect-ratio: 4/3 !important; }
+
+    /* How it works section */
+    .how-row { grid-template-columns: 1fr !important; gap: 1rem !important; }
+  }
 </style>
 </head>
 <body>
 
+<!-- ── EMAIL POPUP ── -->
+<div id="emailPopup" style="
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+">
+  <div style="
+    position: relative;
+    background: #F5F2EC;
+    max-width: 480px;
+    width: 90%;
+    padding: 3rem 3rem 2.5rem;
+    text-align: center;
+  ">
+    <!-- X close button -->
+    <button onclick="closePopup()" style="
+      position: absolute;
+      top: 1rem; right: 1.2rem;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      color: rgba(17,17,17,0.35);
+      cursor: pointer;
+      line-height: 1;
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: 0;
+    ">✕</button>
+
+    <!-- Content -->
+    <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.65rem; font-weight:700; letter-spacing:0.3em; text-transform:uppercase; color:rgba(17,17,17,0.4); margin-bottom:1.2rem;">Free Weekly Recipe</p>
+    <h2 style="font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:300; font-size:2rem; color:#111; line-height:1.25; margin-bottom:0.8rem;">A hair mask made for you,<br>every week.</h2>
+    <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.88rem; font-weight:500; letter-spacing:0.04em; color:rgba(17,17,17,0.5); margin-bottom:2rem; line-height:1.6;">DIY recipes matched to your hair type.<br>Ingredients you already have at home.</p>
+
+    <div style="display:flex; border-bottom:1px solid rgba(17,17,17,0.25); margin-bottom:0.6rem;">
+      <input id="popupEmail" type="email" placeholder="your@email.com" style="
+        flex:1; background:transparent; border:none; outline:none;
+        font-family:'Barlow Condensed',sans-serif; font-size:0.9rem;
+        font-weight:500; letter-spacing:0.08em; color:#111;
+        padding:0.6rem 0;
+      ">
+      <button onclick="submitPopupEmail()" style="
+        background:none; border:none; color:rgba(17,17,17,0.4);
+        font-size:1.1rem; cursor:pointer; padding:0.6rem 0 0.6rem 0.8rem;
+        transition:color 0.2s;
+      ">→</button>
+    </div>
+    <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.62rem; letter-spacing:0.1em; color:rgba(17,17,17,0.3); text-transform:uppercase;">No spam. Unsubscribe anytime.</p>
+  </div>
+</div>
+
+<style>
+@keyframes popupFadeIn { to { opacity: 1; } }
+</style>
+
+<script>
+// Popup scroll trigger — shows at 60% scroll
+// Only show popup once ever — remember with sessionStorage
+let popupShown = sessionStorage.getItem('hebraPopupSeen') === '1';
+
+if (popupShown) {
+  document.getElementById('emailPopup').style.display = 'none';
+}
+
+window.addEventListener('scroll', function() {
+  if (popupShown) return;
+  const scrolled = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+  if (scrolled > 0.6) {
+    popupShown = true;
+    sessionStorage.setItem('hebraPopupSeen', '1');
+    const popup = document.getElementById('emailPopup');
+    popup.style.opacity = '1';
+    popup.style.pointerEvents = 'auto';
+  }
+});
+
+async function submitPopupEmail() {
+  const emailEl = document.getElementById('popupEmail');
+  const email = emailEl.value.trim();
+  if (!email || !email.includes('@')) return;
+
+  try {
+    await fetch('https://connect.mailerlite.com/api/subscribers', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiZmNhOTY4NTdlMWExMzllZjJlMThiYTliMWRlZjY4MGIxOGYwY2U5OWQ0MWU4MjRkNTFhNGY5NjY2ZDE1ODMyMWRmYjBlMzZlODg0M2IzM2EiLCJpYXQiOjE3NzMwMjg5ODcuODczMTM5LCJuYmYiOjE3NzMwMjg5ODcuODczMTQyLCJleHAiOjQ5Mjg3MDI1ODcuODY2NDAxLCJzdWIiOiIyMTkyNzk2Iiwic2NvcGVzIjpbXX0.N7XwCChaYReKhCML_6JjTjowKM8rFJ2LHu21lAAYBeeAL91NPYmdidSvHOUEq1E_3jL42C8qGr8o3tTtxZO0l484V5Ob0iF2_p4VnlwcejDfkQNP0vTLpmR4rn_51mfuU5jc4QpZiigG8pkOlOJ6WN8uCgbqpI28vFLvlXDfoKuzpxcVbrZ0K67L1SQrvBXMyNDlhzSMX1oRe94OeLQmaVYkDX63vC12CalvWVtgcWO5kWj2HP_p-YRuW27FyHIBv0wCniVyjPiVGS0EPIFJiuqUm1oDU029RH0KyDnVXb87_t0G25lwpugYEwLdLcZtp7fG-6qWzlEfD4LQ3Mst4CGdvwhi4eiq_KBQ7s_vMgfr1QCAqQJV-boS0MRMfBr4T-ELwyJuQlE9oQmvyb6nCMR9sagetfTxdURtq70o4lBppN4vPW5PJnTiVBi1SdKMWBnh7DktAIgj8m1LcbTJf7bOHQwaaSNmhcEx5k3eVsg6hNgEQcs8meiHSpTEPj86Nw0dOrKxIv9M7b-ssGTkddxfp540Kqp27b_S-cWhrlrlzXrI4sXL2Xco5x3_K2Lu5P1gPGPelKUzrC-F1AGMnbYuxtNVlHSlceiqD_ZmZQJqcn8-92cxZR4-_3CmI_H9_mLbnA8Plf2A29nVb5DneHp2oOhmron-NHfdasClH5U'
+      },
+      body: JSON.stringify({
+        email: email,
+        groups: ['181434268294055127']
+      })
+    });
+  } catch(e) {
+    // Silent fail — don't block UX
+  }
+
+  closePopup();
+}
+
+function closePopup() {
+  sessionStorage.setItem('hebraPopupSeen', '1');
+  const popup = document.getElementById('emailPopup');
+  popup.style.opacity = '0';
+  popup.style.pointerEvents = 'none';
+  setTimeout(() => popup.style.display = 'none', 600);
+}
+</script>
+
 <!-- ── NAV ── -->
 <nav id="mainNav">
-  <a href="#" class="nav-logo">Hebra</a>
+  <a href="index.html" class="nav-logo">Hebra</a>
   <ul class="nav-links">
-    <li><a href="#" href="scan.html">Scan</a></li>
+    <li><a href="scan.html">Scan</a></li>
     <li><a href="#" onclick="openPage('aboutPage'); return false;">About</a></li>
-    <li><a href="#results">Results</a></li>
   </ul>
 </nav>
 
@@ -2072,43 +2264,41 @@
 
   <!-- Video background — archivo: hero.mp4 en misma carpeta -->
   <video id="heroVideo" autoplay muted loop playsinline poster="">
-    <source src="hero.mp4" type="video/mp4">
+    <source src="https://res.cloudinary.com/dgkacltrs/video/upload/v1772964600/hero_czna1z.mp4" type="video/mp4">
   </video>
 
   <!-- Dark overlay -->
   <div class="hero-overlay"></div>
 
   <div class="hero-content">
-    <p class="hero-label">AI Hair Diagnosis · Hebra</p>
+    <p class="hero-label">Personalised Diagnosis · Hebra</p>
 
     <h1 class="hero-h1">
-      <span class="hl">Your hair</span>
-      <span class="hl">has a story.</span>
-      <span class="hl">We read it.</span>
+      <span class="hl">Decode</span>
+      <span class="hl">your hair</span>
     </h1>
 
-    <div class="hero-divider"></div>
     <p class="hero-sub">3 photos · 9 questions · 1 complete diagnosis</p>
     <a href="scan.html" class="hero-cta-btn">Begin your diagnosis →</a>
   </div>
 
-
-
   <div class="hero-ticker">
     <div class="hero-ticker-track">
-      <div class="hero-ticker-item">AI Diagnosis <span class="hero-ticker-dot"></span></div>
+      <div class="hero-ticker-item">Personalised Diagnosis <span class="hero-ticker-dot"></span></div>
       <div class="hero-ticker-item">Scalp Health <span class="hero-ticker-dot"></span></div>
       <div class="hero-ticker-item">Strand Strength <span class="hero-ticker-dot"></span></div>
       <div class="hero-ticker-item">Moisture Balance <span class="hero-ticker-dot"></span></div>
       <div class="hero-ticker-item">Structural Integrity <span class="hero-ticker-dot"></span></div>
       <div class="hero-ticker-item">Vitality Index <span class="hero-ticker-dot"></span></div>
+      <div class="hero-ticker-item">94% Satisfaction <span class="hero-ticker-dot"></span></div>
       <div class="hero-ticker-item">Science-Backed <span class="hero-ticker-dot"></span></div>
-      <div class="hero-ticker-item">AI Diagnosis <span class="hero-ticker-dot"></span></div>
+      <div class="hero-ticker-item">Personalised Diagnosis <span class="hero-ticker-dot"></span></div>
       <div class="hero-ticker-item">Scalp Health <span class="hero-ticker-dot"></span></div>
       <div class="hero-ticker-item">Strand Strength <span class="hero-ticker-dot"></span></div>
       <div class="hero-ticker-item">Moisture Balance <span class="hero-ticker-dot"></span></div>
       <div class="hero-ticker-item">Structural Integrity <span class="hero-ticker-dot"></span></div>
       <div class="hero-ticker-item">Vitality Index <span class="hero-ticker-dot"></span></div>
+      <div class="hero-ticker-item">94% Satisfaction <span class="hero-ticker-dot"></span></div>
       <div class="hero-ticker-item">Science-Backed <span class="hero-ticker-dot"></span></div>
     </div>
   </div>
@@ -2121,6 +2311,57 @@
 
 
 
+<!-- ── HOW IT WORKS ── -->
+<section style="background:#F5F2EC; padding:8rem 4rem; border-top:1px solid rgba(0,0,0,0.06);">
+  <div style="max-width:1200px; margin:0 auto;">
+
+    <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.35em; text-transform:uppercase; color:rgba(0,0,0,0.25); margin-bottom:1rem;">How it works</p>
+    <h2 style="font-family:'Barlow Condensed',sans-serif; font-size:clamp(2.5rem,6vw,5.5rem); font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#111; line-height:0.95; margin-bottom:0.5rem;">Your most honest<br>hair diagnosis.</h2>
+    <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.3rem; color:rgba(17,17,17,0.35); margin-bottom:7rem;">In three minutes.</p>
+
+    <!-- Step 01 -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; padding:4rem 0; border-top:1px solid rgba(0,0,0,0.08);">
+      <div style="position:relative;">
+        <span style="font-family:'Barlow Condensed',sans-serif; font-size:clamp(7rem,15vw,13rem); font-weight:700; letter-spacing:-0.03em; color:rgba(17,17,17,0.04); line-height:1; display:block; user-select:none;">01</span>
+        <div style="position:absolute; top:50%; transform:translateY(-50%); left:2rem;">
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.35em;text-transform:uppercase;color:rgba(0,0,0,0.25);margin-bottom:0.6rem;">Step one</p>
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#111;line-height:1;">Photograph</p>
+        </div>
+      </div>
+      <p style="font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:300;line-height:1.85;color:rgba(17,17,17,0.55);">Three angles of your hair. Crown, side, ends. No special lighting, no preparation required.</p>
+    </div>
+
+    <!-- Step 02 -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; padding:4rem 0; border-top:1px solid rgba(0,0,0,0.08);">
+      <div style="position:relative;">
+        <span style="font-family:'Barlow Condensed',sans-serif; font-size:clamp(7rem,15vw,13rem); font-weight:700; letter-spacing:-0.03em; color:rgba(17,17,17,0.04); line-height:1; display:block; user-select:none;">02</span>
+        <div style="position:absolute; top:50%; transform:translateY(-50%); left:2rem;">
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.35em;text-transform:uppercase;color:rgba(0,0,0,0.25);margin-bottom:0.6rem;">Step two</p>
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#111;line-height:1;">Answer</p>
+        </div>
+      </div>
+      <p style="font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:300;line-height:1.85;color:rgba(17,17,17,0.55);">Nine questions about your history, habits and health. Takes under three minutes to complete.</p>
+    </div>
+
+    <!-- Step 03 -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; padding:4rem 0; border-top:1px solid rgba(0,0,0,0.08); border-bottom:1px solid rgba(0,0,0,0.08);">
+      <div style="position:relative;">
+        <span style="font-family:'Barlow Condensed',sans-serif; font-size:clamp(7rem,15vw,13rem); font-weight:700; letter-spacing:-0.03em; color:rgba(17,17,17,0.04); line-height:1; display:block; user-select:none;">03</span>
+        <div style="position:absolute; top:50%; transform:translateY(-50%); left:2rem;">
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.35em;text-transform:uppercase;color:rgba(0,0,0,0.25);margin-bottom:0.6rem;">Step three</p>
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#111;line-height:1;">Read</p>
+        </div>
+      </div>
+      <p style="font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:300;line-height:1.85;color:rgba(17,17,17,0.55);">Your complete diagnosis — five dimensions scored, a personalised routine and recommendations chosen specifically for you.</p>
+    </div>
+
+    <div style="text-align:center; margin-top:4rem;">
+      <a href="scan.html" style="display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:0.82rem;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:#FFF;background:#111;padding:1.1rem 3rem;text-decoration:none;border-radius:2px;">Begin your diagnosis →</a>
+    </div>
+
+  </div>
+</section>
+
 <!-- ── FOOTER ── -->
 <footer class="footer-byredo">
   <div class="footer-top">
@@ -2131,20 +2372,24 @@
       <p class="footer-col-label">The App</p>
       <a href="#" onclick="document.getElementById('scanOverlay').style.display='block'; window.scrollTo(0,0); return false;">Hair Scan</a>
       <a href="#" onclick="document.getElementById('questOverlay').style.display='block'; window.scrollTo(0,0); return false;">Questionnaire</a>
-      <a href="#results">Your Results</a>
+      <a href="results-preview.html">Your Results</a>
     </div>
     <div class="footer-col">
       <p class="footer-col-label">Company</p>
-      <a href="about.html">About Hebra</a>
-      <a href="privacy.html">Privacy Policy</a>
-      <a href="terms.html">Terms of Use</a>
+      <a href="#" onclick="openPage('aboutPage'); return false;">About Hebra</a>
+      <a href="#" onclick="openPage('privacyPage'); return false;">Privacy Policy</a>
+      <a href="#" onclick="openPage('termsPage'); return false;">Terms of Use</a>
+      <a href="/cdn-cgi/l/email-protection#b8d0dddacad9d0d9d1caf8dfd5d9d1d496dbd7d5" style="color:#111;"><span class="__cf_email__" data-cfemail="deb6bbbcacbfb6bfb7ac9eb9b3bfb7b2f0bdb1b3">[email&#160;protected]</span></a>
     </div>
     <div class="footer-col">
-      <p class="footer-col-label">Hair Intelligence</p>
-      <a href="journal.html">All Articles</a>
+      <p class="footer-col-label">Philosophy</p>
+      <a href="#" onclick="openPage('hairPage'); return false;">Hair is a language.</a>
+      <a href="#" onclick="openPage('sciencePage'); return false;">Science, not guesswork.</a>
+      <a href="#" onclick="openPage('precisionPage'); return false;">Precision care.</a>
     </div>
     <div class="footer-col footer-col-right">
       <p class="footer-col-label">Stay informed</p>
+      <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:0.95rem; color:rgba(255,255,255,0.45); margin-bottom:0.8rem; line-height:1.5;">Get a free DIY hair mask recipe every week — matched to your hair type.</p>
       <div class="footer-email">
         <input type="email" placeholder="your@email.com" class="footer-input">
         <button class="footer-submit">→</button>
@@ -2157,7 +2402,40 @@
 
 
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ── PAGE OVERLAYS ──
+function openPage(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = 'block';
+  window.scrollTo(0, 0);
+  document.body.style.overflow = 'hidden';
+}
+
+function closePage(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+// ── PAGE OVERLAYS ──
+function openPage(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.style.display = 'block';
+    window.scrollTo(0, 0);
+    document.body.style.overflow = 'hidden';
+  }
+}
+function closePage(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+}
+
 // ── NAV scroll ──
 window.addEventListener('scroll', () => {
   document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 60);
@@ -2560,7 +2838,6 @@ async function downloadShareCard() {
   const hero = document.getElementById('hero');
 
   function resizeCanvas() {
-    if (!hairCanvas) return;
     hairCanvas.width = window.innerWidth;
     hairCanvas.height = window.innerHeight;
   }
@@ -2849,7 +3126,7 @@ async function downloadShareCard() {
       <div style="margin-bottom:3.5rem;">
         <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:rgba(0,0,0,0.25);margin-bottom:0.8rem;">04</p>
         <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#111;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(0,0,0,0.08);">Contact</h2>
-        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.92rem;font-weight:500;line-height:1.85;color:rgba(17,17,17,0.7);letter-spacing:0.04em;">For questions about this Privacy Policy, contact us at <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="91e1e3f8e7f0f2e8d1f9f4f3e3f0bff2fefc">[email&#160;protected]</a>.</p>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.92rem;font-weight:500;line-height:1.85;color:rgba(17,17,17,0.7);letter-spacing:0.04em;">For questions about this Privacy Policy, contact us at <a href="/cdn-cgi/l/email-protection#127a777060737a737b6052757f737b7e3c717d7f" style="color:#111;"><span class="__cf_email__" data-cfemail="b0d8d5d2c2d1d8d1d9c2f0d7ddd1d9dc9ed3dfdd">[email&#160;protected]</span></a>.</p>
       </div>
     </div>
   </div>
@@ -2905,23 +3182,170 @@ async function downloadShareCard() {
       <div style="margin-bottom:3.5rem;">
         <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:rgba(0,0,0,0.25);margin-bottom:0.8rem;">05</p>
         <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#111;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(0,0,0,0.08);">Contact</h2>
-        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.92rem;font-weight:500;line-height:1.85;color:rgba(17,17,17,0.7);letter-spacing:0.04em;">For questions regarding these Terms of Use, please contact us at <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="046861636568446c616676652a676b69">[email&#160;protected]</a>.</p>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.92rem;font-weight:500;line-height:1.85;color:rgba(17,17,17,0.7);letter-spacing:0.04em;">For questions regarding these Terms of Use, please contact us at <a href="/cdn-cgi/l/email-protection#2d45484f5f4c454c445f6d4a404c4441034e4240" style="color:#111;"><span class="__cf_email__" data-cfemail="c9a1acabbba8a1a8a0bb89aea4a8a0a5e7aaa6a4">[email&#160;protected]</span></a>.</p>
       </div>
     </div>
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-function openPage(id) {
-  document.getElementById(id).style.display = 'block';
-  document.getElementById(id).scrollTop = 0;
-  document.body.style.overflow = 'hidden';
-}
-function closePage(id) {
-  document.getElementById(id).style.display = 'none';
-  document.body.style.overflow = '';
-}
-</script>
+<!-- ── HAIR IS A LANGUAGE PAGE ── -->
+<div id="hairPage" style="display:none; position:fixed; inset:0; background:#F5F2EC; z-index:9000; overflow-y:auto;">
+  <nav style="position:sticky; top:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:1.4rem 3rem; background:#F5F2EC; border-bottom:1px solid rgba(17,17,17,0.08);">
+    <a href="#" onclick="closePage('hairPage')" style="font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:0.15em; color:#111111; text-decoration:none;">Hebra</a>
+    <a href="#" onclick="closePage('hairPage')" style="font-family:'Barlow Condensed',sans-serif; font-size:0.82rem; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:rgba(17,17,17,0.4); text-decoration:none;">← Back</a>
+  </nav>
+  <div style="padding:8rem 4rem 6rem; max-width:1200px; margin:0 auto;">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.35em; text-transform:uppercase; color:rgba(17,17,17,0.3); margin-bottom:2rem;">Philosophy — 01</p>
+    <h1 style="font-family:'Barlow Condensed',sans-serif; font-size:clamp(3.5rem,9vw,8rem); font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#111111; line-height:0.95; margin-bottom:3rem;">Hair is a<br><span style="font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:300; color:rgba(17,17,17,0.35);">language.</span></h1>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:6rem; margin-bottom:6rem;">
+      <p style="font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:300; font-style:italic; line-height:1.7; color:rgba(17,17,17,0.55);">Your hair speaks before you do. It carries the record of every decision, every season, every chapter of your life — written in texture, density and shine.</p>
+      <div>
+        <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.95rem; font-weight:500; line-height:1.85; color:rgba(17,17,17,0.6); margin-bottom:1.5rem; letter-spacing:0.04em;">Breakage after a difficult year. Thinning after a pregnancy. Dullness after months of poor sleep. None of this is coincidence. Your hair is a biological diary — precise, honest, and deeply personal.</p>
+        <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.95rem; font-weight:500; line-height:1.85; color:rgba(17,17,17,0.6); letter-spacing:0.04em;">Hebra was built to read that language — and to translate it into something actionable. Not to make you feel that something is wrong, but to give you the clarity to make it right.</p>
+      </div>
+    </div>
+    <!-- 6 Pillars -->
+    <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.35em; text-transform:uppercase; color:rgba(17,17,17,0.3); margin-bottom:2.5rem;">The Six Pillars We Measure</p>
+    <div style="display:grid; grid-template-columns:repeat(6,1fr); gap:1px; background:rgba(17,17,17,0.08); border-radius:4px; overflow:hidden;">
 
-</body>
-</html>
+      <div style="background:#EDEAE3; display:flex; flex-direction:column;">
+        <div style="aspect-ratio:3/4; overflow:hidden;">
+          <img src="https://res.cloudinary.com/dgkacltrs/image/upload/v1772967571/WhatsApp_Image_2026-03-06_at_17.53.21_j6hjyf.jpg" alt="Scalp Health" style="width:100%;height:100%;object-fit:cover;opacity:0.85;filter:grayscale(30%);">
+        </div>
+        <div style="padding:1.4rem 1.2rem; flex:1;">
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#111111;margin-bottom:0.6rem;">Scalp Health</p>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:300;line-height:1.65;color:rgba(17,17,17,0.5);">follicle density, sebum balance and inflammation signals from your root zone</p>
+        </div>
+      </div>
+
+      <div style="background:#EDEAE3; display:flex; flex-direction:column;">
+        <div style="aspect-ratio:3/4; overflow:hidden;">
+          <img src="https://res.cloudinary.com/dgkacltrs/image/upload/v1772967566/f9d85f2fd97cf2ad91c8e4f94f7cb109529b0bcbf67edc1417fa5676554666c3_o5kbo5.png" alt="Strength" style="width:100%;height:100%;object-fit:cover;opacity:0.85;filter:grayscale(30%);">
+        </div>
+        <div style="padding:1.4rem 1.2rem; flex:1;">
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#111111;margin-bottom:0.6rem;">Strength</p>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:300;line-height:1.65;color:rgba(17,17,17,0.5);">cortex resilience, protein bond integrity and breakage risk along the shaft</p>
+        </div>
+      </div>
+
+      <div style="background:#EDEAE3; display:flex; flex-direction:column;">
+        <div style="aspect-ratio:3/4; overflow:hidden;">
+          <img src="https://res.cloudinary.com/dgkacltrs/image/upload/v1772967565/c3fea9f7a4ce9e2d525ff4f9eefffef77fb6f8c0869e1137dbd76db04e8eb44d_ozonhx.png" alt="Moisture" style="width:100%;height:100%;object-fit:cover;opacity:0.85;filter:grayscale(30%);">
+        </div>
+        <div style="padding:1.4rem 1.2rem; flex:1;">
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#111111;margin-bottom:0.6rem;">Moisture</p>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:300;line-height:1.65;color:rgba(17,17,17,0.5);">porosity patterns, hydration capacity and dryness markers from root to tip</p>
+        </div>
+      </div>
+
+      <div style="background:#EDEAE3; display:flex; flex-direction:column;">
+        <div style="aspect-ratio:3/4; overflow:hidden;">
+          <img src="https://res.cloudinary.com/dgkacltrs/image/upload/v1772967576/65e59cfee78975e684d38eb55efbd91283e1b3d160e236084dbda33b557fac7c_iz1d9o.png" alt="Integrity" style="width:100%;height:100%;object-fit:cover;opacity:0.85;filter:grayscale(30%);">
+        </div>
+        <div style="padding:1.4rem 1.2rem; flex:1;">
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#111111;margin-bottom:0.6rem;">Integrity</p>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:300;line-height:1.65;color:rgba(17,17,17,0.5);">split ends, cuticle lift and surface damage — the cumulative record of your hair history</p>
+        </div>
+      </div>
+
+      <div style="background:#EDEAE3; display:flex; flex-direction:column;">
+        <div style="aspect-ratio:3/4; overflow:hidden;">
+          <img src="https://res.cloudinary.com/dgkacltrs/image/upload/v1772967578/0af6c4a49e4f37da44ed43a7c0b90589d98db78b0f0275f4fd2604f1355a3e1a_xheedg.png" alt="Vitality" style="width:100%;height:100%;object-fit:cover;opacity:0.85;filter:grayscale(30%);">
+        </div>
+        <div style="padding:1.4rem 1.2rem; flex:1;">
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#111111;margin-bottom:0.6rem;">Vitality</p>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:300;line-height:1.65;color:rgba(17,17,17,0.5);">growth cycle activity, shedding patterns and overall strand density over time</p>
+        </div>
+      </div>
+
+      <div style="background:#EDEAE3; display:flex; flex-direction:column;">
+        <div style="aspect-ratio:3/4; overflow:hidden;">
+          <img src="https://res.cloudinary.com/dgkacltrs/image/upload/v1772967567/94f1d62f93b6f0b990b32661eea9f1cd7f1356b718daddcb2ddbfdf42ae9c529_jwg5ig.png" alt="Ingredients" style="width:100%;height:100%;object-fit:cover;opacity:0.85;filter:grayscale(30%);">
+        </div>
+        <div style="padding:1.4rem 1.2rem; flex:1;">
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#111111;margin-bottom:0.6rem;">Ingredients</p>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:300;line-height:1.65;color:rgba(17,17,17,0.5);">every product recommendation is matched to your diagnosis using clean, evidence-based actives</p>
+        </div>
+      </div>
+
+    </div>
+    <div style="text-align:center; margin-top:5rem;">
+      <a href="scan.html" style="display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:#111;background:#FFF;padding:1.1rem 3rem;text-decoration:none;border-radius:2px;">Begin your diagnosis →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── SCIENCE NOT GUESSWORK PAGE ── -->
+<div id="sciencePage" style="display:none; position:fixed; inset:0; background:#F5F2EC; z-index:9000; overflow-y:auto;">
+  <nav style="position:sticky; top:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:1.4rem 3rem; background:#F5F2EC; border-bottom:1px solid rgba(0,0,0,0.08);">
+    <a href="#" onclick="closePage('sciencePage')" style="font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:0.15em; color:#111; text-decoration:none;">Hebra</a>
+    <a href="#" onclick="closePage('sciencePage')" style="font-family:'Barlow Condensed',sans-serif; font-size:0.82rem; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:rgba(0,0,0,0.4); text-decoration:none;">← Back</a>
+  </nav>
+  <div style="padding:8rem 4rem 6rem; max-width:1200px; margin:0 auto;">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.35em; text-transform:uppercase; color:rgba(0,0,0,0.25); margin-bottom:2rem;">Philosophy — 02</p>
+    <h1 style="font-family:'Barlow Condensed',sans-serif; font-size:clamp(3rem,8vw,7rem); font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#111; line-height:0.95; margin-bottom:3rem;">Science,<br>not <span style="font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:300; color:rgba(0,0,0,0.3);">guesswork.</span></h1>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:6rem; margin-bottom:6rem;">
+      <p style="font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:300; font-style:italic; line-height:1.7; color:rgba(0,0,0,0.45);">Most hair advice is built on generalisation. Hebra is built on analysis — real image data, real answers, real science applied to your specific biology.</p>
+      <div>
+        <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.95rem; font-weight:500; line-height:1.85; color:rgba(17,17,17,0.6); margin-bottom:1.5rem; letter-spacing:0.04em;">We analyse porosity, elasticity, cuticle integrity, scalp condition and strand density using visual AI trained on thousands of hair types. Combined with your personal history, the result is a diagnosis that reflects your actual condition — not the average.</p>
+        <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.95rem; font-weight:500; line-height:1.85; color:rgba(17,17,17,0.6); letter-spacing:0.04em;">Every recommendation is backed by trichological research. Every product is selected because it addresses a specific deficiency we identified in your profile — not because it is trending or sponsored.</p>
+      </div>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(0,0,0,0.08); border:1px solid rgba(0,0,0,0.08); border-radius:4px; overflow:hidden; margin-bottom:5rem;">
+      <div style="background:#FFFFFF; padding:3rem 2.5rem;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(3rem,5vw,4.5rem);font-weight:700;letter-spacing:-0.02em;color:#111;line-height:1;margin-bottom:0.8rem;">5</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:rgba(0,0,0,0.3);margin-bottom:1rem;">Dimensions analysed</div>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:500;line-height:1.7;color:#666;">Scalp, strength, moisture, structure and vitality — scored independently, then synthesised into one complete profile.</p>
+      </div>
+      <div style="background:#FFFFFF; padding:3rem 2.5rem;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(3rem,5vw,4.5rem);font-weight:700;letter-spacing:-0.02em;color:#111;line-height:1;margin-bottom:0.8rem;">3</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:rgba(0,0,0,0.3);margin-bottom:1rem;">Photos required</div>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:500;line-height:1.7;color:#666;">Crown, profile and ends — three angles that together reveal what a single photograph never could.</p>
+      </div>
+      <div style="background:#FFFFFF; padding:3rem 2.5rem;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(3rem,5vw,4.5rem);font-weight:700;letter-spacing:-0.02em;color:#111;line-height:1;margin-bottom:0.8rem;">9</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:rgba(0,0,0,0.3);margin-bottom:1rem;">Questions asked</div>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:500;line-height:1.7;color:#666;">Designed to surface what images cannot see — lifestyle, history, environment and internal health signals.</p>
+      </div>
+    </div>
+    <div style="text-align:center;">
+      <a href="scan.html" style="display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:#FFF;background:#111;padding:1.1rem 3rem;text-decoration:none;border-radius:2px;">Begin your diagnosis →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── PRECISION CARE PAGE ── -->
+<div id="precisionPage" style="display:none; position:fixed; inset:0; background:#FFFFFF; z-index:9000; overflow-y:auto;">
+  <nav style="position:sticky; top:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:1.4rem 3rem; background:#FFFFFF; border-bottom:1px solid rgba(0,0,0,0.08);">
+    <a href="#" onclick="closePage('precisionPage')" style="font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:0.15em; color:#111; text-decoration:none;">Hebra</a>
+    <a href="#" onclick="closePage('precisionPage')" style="font-family:'Barlow Condensed',sans-serif; font-size:0.82rem; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:rgba(0,0,0,0.4); text-decoration:none;">← Back</a>
+  </nav>
+  <div style="padding:8rem 4rem 6rem; max-width:1200px; margin:0 auto;">
+    <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.35em; text-transform:uppercase; color:rgba(0,0,0,0.25); margin-bottom:2rem;">Philosophy — 03</p>
+    <h1 style="font-family:'Barlow Condensed',sans-serif; font-size:clamp(3rem,8vw,7rem); font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#111; line-height:0.95; margin-bottom:3rem;">Precision<br><span style="font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:300; color:rgba(0,0,0,0.3);">care.</span></h1>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:6rem; margin-bottom:6rem;">
+      <p style="font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:300; font-style:italic; line-height:1.7; color:rgba(0,0,0,0.45);">Generic routines produce generic results. Hebra gives you exactly what your hair needs — nothing more, nothing less.</p>
+      <div>
+        <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.95rem; font-weight:500; line-height:1.85; color:rgba(17,17,17,0.6); margin-bottom:1.5rem; letter-spacing:0.04em;">Precision care means understanding that what works for one person actively harms another. Protein treatments that restore one hair type will make another brittle. The moisturiser that transforms dry hair will weigh down fine hair for days.</p>
+        <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.95rem; font-weight:500; line-height:1.85; color:rgba(17,17,17,0.6); letter-spacing:0.04em;">Hebra does not give you a shortlist of popular products. It gives you the specific intervention your hair requires right now — ranked by impact, filtered by what you already own, calibrated to the time you have available.</p>
+      </div>
+    </div>
+    <div style="background:#F5F2EC; border-radius:4px; padding:5rem 4rem; margin-bottom:5rem;">
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:3rem;">
+        <div>
+          <div style="width:2px;height:40px;background:#111;margin-bottom:1.5rem;"></div>
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#111;margin-bottom:0.6rem;">Diagnose</p>
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.82rem;font-weight:500;line-height:1.7;color:#888;">We analyse your photos and questionnaire to score five dimensions of hair health.</p>
+        </div>
+        <div>
+          <div style="width:2px;height:40px;background:#111;margin-bottom:1.5rem;"></div>
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#111;margin-bottom:0.6rem;">Prioritise</p>
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.82rem;font-weight:500;line-height:1.7;color:#888;">We identify your most critical deficiencies and rank interventions by expected impact.</p>
+        </div>
+        <div>
+          <div style="width:2px;height:40px;background:#111;margin-bottom:1.5rem;"></div>
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#111;margin-bottom:0.6rem;">Prescribe</p>
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.82rem;font-weight:500;line-height:1.7;color:#888;">We recommend only products you don't already own, matched to your exact hair type and goals.</p>
+        </div>
+        <div>
+          <div style="width:2px;height:40px;background:#111;mar

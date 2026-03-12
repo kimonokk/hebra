@@ -1999,7 +1999,20 @@ function _camStartLoop() {
 /* ── Capture ── */
 function camCapture() {
   const vid = document.getElementById('camVideo');
-  if (!vid.videoWidth) return;
+  const cvs = document.getElementById('camCanvas');
+
+  // Use video dimensions or fallback to 640x480
+  const W = vid.videoWidth  || 640;
+  const H = vid.videoHeight || 480;
+  cvs.width = W; cvs.height = H;
+
+  const ctx = cvs.getContext('2d');
+  ctx.save();
+  ctx.scale(-1, 1);
+  ctx.drawImage(vid, -W, 0, W, H);
+  ctx.restore();
+
+  const dataUrl = cvs.toDataURL('image/jpeg', 0.92);
 
   // Flash
   const flash = document.getElementById('camFlash');
@@ -2007,23 +2020,15 @@ function camCapture() {
   void flash.offsetWidth;
   flash.classList.add('pop');
 
-  // Draw frame to canvas at full resolution
-  const cvs = document.getElementById('camCanvas');
-  cvs.width = vid.videoWidth; cvs.height = vid.videoHeight;
-  const ctx = cvs.getContext('2d');
-  ctx.save(); ctx.scale(-1,1); ctx.drawImage(vid, -cvs.width, 0, cvs.width, cvs.height); ctx.restore();
-
-  const dataUrl = cvs.toDataURL('image/jpeg', 0.92);
-
-  // Insert into the correct slot exactly like handleFile() does
+  // Insert into the correct slot
   S.photos[_camSlot] = dataUrl;
   const img = document.getElementById('preview' + _camSlot);
   img.src = dataUrl;
   img.style.display = 'block';
   document.getElementById('zone' + _camSlot).classList.add('has-image');
 
-  // Close overlay after short delay so user sees the flash
-  setTimeout(closeCam, 280);
+  // Close overlay after flash
+  setTimeout(closeCam, 320);
 }
 
   S.photos = {1:null,2:null,3:null};
@@ -2043,6 +2048,7 @@ function camCapture() {
   document.getElementById('navStep').textContent = 'Step 1 of 3';
 }
 </script>
+<!-- ════════ CAMERA HUD OVERLAY ════════ -->
 <!-- ════════ CAMERA HUD OVERLAY ════════ -->
 <div id="camOverlay">
   <div class="cam-inner">
@@ -2116,4 +2122,5 @@ function camCapture() {
 </div>
 
 </body>
+</html>
 </html>

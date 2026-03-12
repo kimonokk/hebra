@@ -1049,10 +1049,11 @@
     color: #111111;
     text-decoration: none;
     transition: opacity 0.2s;
+    flex-shrink: 0;
   }
   .nav-logo:hover { opacity: 0.7; }
   nav.scrolled .nav-logo { color: #111111; }
-  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
   .nav-links a {
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 0.85rem;
@@ -1062,10 +1063,29 @@
     color: rgba(0,0,0,0.6);
     text-decoration: none;
     transition: color 0.2s;
+    white-space: nowrap;
   }
   nav.scrolled .nav-links a { color: rgba(0,0,0,0.5); }
   .nav-links a:hover { color: #111111; }
   nav.scrolled .nav-links a:hover { color: #111111; }
+  /* Nav CTA button — visible only on mobile */
+  .nav-mobile-cta { display: none; }
+
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 1.5rem; }
+    /* Hide all nav links on mobile */
+    .nav-links { display: none; }
+    /* Show a single CTA button instead */
+    .nav-mobile-cta {
+      display: inline-flex;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: #FFFFFF; background: #111111;
+      padding: 0.55rem 1.2rem; text-decoration: none;
+      border-radius: 2px; white-space: nowrap;
+    }
+  }
 
 
 
@@ -2255,9 +2275,11 @@ function closePopup() {
   <a href="index.html" class="nav-logo">Hebra</a>
   <ul class="nav-links">
     <li><a href="scan.html">Scan</a></li>
+    <li><a href="live-scan.html">Live Scan</a></li>
     <li><a href="scanner.html">Ingredient Scanner</a></li>
     <li><a href="#" onclick="openPage('aboutPage'); return false;">About</a></li>
   </ul>
+  <a href="scan.html" class="nav-mobile-cta">Begin Diagnosis →</a>
 </nav>
 
 <!-- ── HERO ── -->
@@ -2374,6 +2396,7 @@ function closePopup() {
       <a href="#" onclick="document.getElementById('scanOverlay').style.display='block'; window.scrollTo(0,0); return false;">Hair Scan</a>
       <a href="#" onclick="document.getElementById('questOverlay').style.display='block'; window.scrollTo(0,0); return false;">Questionnaire</a>
       <a href="results-preview.html">Your Results</a>
+      <a href="live-scan.html">Live Scan</a>
       <a href="journal.html">Journal</a>
       <a href="scanner.html">Ingredient Scanner</a>
     </div>

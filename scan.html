@@ -121,15 +121,11 @@ nav {
   align-items: center; justify-content: center;
   cursor: pointer; position: relative; overflow: hidden;
   transition: border-color 0.3s, background 0.2s;
+  -webkit-tap-highlight-color: transparent;
 }
 .upload-zone:hover { border-color: var(--ink); }
 .upload-zone.has-image { border-style: solid; border-color: var(--ink); }
 .upload-zone input[type="file"] {
-  position: absolute; inset: 0; opacity: 0;
-  cursor: pointer; width: 100%; height: 100%;
-  z-index: 2;
-}
-.upload-zone.has-image input[type="file"] {
   display: none;
 }
 .preview-img {
@@ -168,8 +164,11 @@ nav {
   font-size: 0.65rem; font-weight: 700;
   letter-spacing: 0.2em; text-transform: uppercase;
   color: var(--ink30); background: none; border: none;
-  cursor: pointer; padding: 0.25rem 0;
+  cursor: pointer; padding: 0.4rem 0;
   transition: color 0.2s;
+  position: relative; z-index: 10;
+  -webkit-tap-highlight-color: rgba(0,0,0,0.05);
+  touch-action: manipulation;
 }
 .live-cam-link:hover { color: var(--ink); }
 .live-cam-link svg { flex-shrink: 0; }
@@ -213,6 +212,8 @@ nav {
   color: rgba(255,255,255,0.35); background: none;
   border: none; cursor: pointer; padding: 0.3rem 0;
   transition: color 0.2s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(255,255,255,0.1);
 }
 .cam-close:hover { color: rgba(255,255,255,0.8); }
 
@@ -337,6 +338,9 @@ nav {
   border-radius: 2px; cursor: pointer;
   transition: background 0.2s, transform 0.15s;
   display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(0,0,0,0.05);
+  position: relative; z-index: 10;
 }
 .cam-capture-btn:hover { background: #e8e4dd; transform: translateY(-1px); }
 

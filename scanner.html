@@ -651,9 +651,12 @@ Rules:
       })
     });
 
-    if (!response.ok) throw new Error(`API error ${response.status}`);
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      throw new Error(errData.error || `Server error ${response.status}`);
+    }
     const parsed = await response.json();
-
+    if (parsed.error) throw new Error(parsed.error);
     renderResults(parsed);
 
   } catch (err) {

@@ -1029,11 +1029,10 @@
     background: #FFFFFF;
     color: var(--dark);
     overflow-x: hidden;
-    padding-top: 127px; /* nav 73px + strip 54px */
   }
 
   @media (max-width: 768px) {
-    body { padding-top: 107px; } /* nav 63px + strip ~44px */
+    body { padding-top: 107px; }
     .feat-strip { top: 63px; }
   }
 
@@ -2618,10 +2617,25 @@ window.addEventListener('scroll', () => {
   document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 60);
 });
 
-// ── Feat strip drag-to-scroll ──
+// ── Feat strip — position dynamically below nav ──
 (function() {
   const strip = document.querySelector('.feat-strip');
-  if (!strip) return;
+  const nav = document.getElementById('mainNav');
+  if (!strip || !nav) return;
+
+  function positionStrip() {
+    const navH = nav.offsetHeight;
+    const stripH = strip.offsetHeight;
+    strip.style.top = navH + 'px';
+    document.body.style.paddingTop = (navH + stripH) + 'px';
+  }
+
+  positionStrip();
+  window.addEventListener('resize', positionStrip);
+  // Re-run after fonts load (can change nav height)
+  document.fonts && document.fonts.ready.then(positionStrip);
+
+  // Drag-to-scroll
   let isDown = false, startX, scrollLeft;
   strip.addEventListener('mousedown', e => {
     isDown = true;
@@ -2634,8 +2648,7 @@ window.addEventListener('scroll', () => {
   strip.addEventListener('mousemove', e => {
     if (!isDown) return;
     e.preventDefault();
-    const x = e.pageX - strip.offsetLeft;
-    strip.scrollLeft = scrollLeft - (x - startX);
+    strip.scrollLeft = scrollLeft - (e.pageX - strip.offsetLeft - startX);
   });
 })();
 

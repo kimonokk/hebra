@@ -852,6 +852,17 @@ nav {
   .q-intimate { margin: -2.5rem -1.5rem 2rem; padding: 2.5rem 1.5rem 2rem; }
 }
 </style>
+  <!-- Open Graph / Social -->
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://www.hebrahair.com/scan.html">
+  <meta property="og:title"       content="Begin Your Hair Diagnosis | Hebra">
+  <meta property="og:description" content="Upload 3 photos of your hair, answer 9 questions, and get a complete personalised diagnosis with product recommendations, free.">
+  <meta property="og:image"       content="https://res.cloudinary.com/dgkacltrs/image/upload/v1773581590/close-up-woman-with-tangles_tsbdkn.jpg">
+  <meta property="og:site_name"   content="Hebra">
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       content="Begin Your Hair Diagnosis | Hebra">
+  <meta name="twitter:description" content="Upload 3 photos of your hair, answer 9 questions, and get a complete personalised diagnosis with product recommendations, free.">
+  <meta name="twitter:image"       content="https://res.cloudinary.com/dgkacltrs/image/upload/v1773581590/close-up-woman-with-tangles_tsbdkn.jpg">
 </head>
 <body>
 
@@ -867,6 +878,15 @@ nav {
   <p class="step-label">01 — Photo Upload</p>
   <h1 class="step-title">Show us<br>your hair.</h1>
   <p class="step-subtitle">Three angles. One complete picture.</p>
+
+  <!-- Returning user banner -->
+  <div id="returningBanner" style="display:none; background:var(--white); border:1px solid rgba(17,17,17,0.08); border-radius:3px; padding:1rem 1.4rem; margin-bottom:1.8rem; display:none; align-items:center; justify-content:space-between; gap:1rem;">
+    <div>
+      <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:0.28em;text-transform:uppercase;color:rgba(17,17,17,0.35);margin-bottom:0.3rem;">Your last diagnosis</p>
+      <p id="returningText" style="font-family:'Barlow Condensed',sans-serif;font-size:0.95rem;font-weight:700;letter-spacing:0.05em;color:#111;"></p>
+    </div>
+    <button onclick="loadPreviousDiagnosis()" style="font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;background:#111;color:#fff;border:none;padding:0.55rem 1.1rem;border-radius:2px;cursor:pointer;white-space:nowrap;flex-shrink:0;">View Results</button>
+  </div>
 
   <div id="uploadError" class="error-msg">Please upload all three photos before continuing.</div>
 
@@ -1602,6 +1622,7 @@ function submitEmail() {
   }
   S.email = val;
   sendToMailerLite(val, S.results, S.name);
+  saveDiagnosisToStorage(S.results, S.name);
   renderResults(S.results);
   showPanel('step-results');
   document.getElementById('navStep').textContent = 'Your Diagnosis';
@@ -2370,6 +2391,57 @@ function copyResultsLink() {
   });
 }
 
+/* ══════════════════════════════════════════
+   LOCAL STORAGE — remember last diagnosis
+══════════════════════════════════════════ */
+function saveDiagnosisToStorage(data, name) {
+  try {
+    const record = {
+      results: data,
+      name: name || '',
+      date: new Date().toISOString(),
+    };
+    localStorage.setItem('hebra_last_diagnosis', JSON.stringify(record));
+  } catch(e) {}
+}
+
+function loadDiagnosisFromStorage() {
+  try {
+    const raw = localStorage.getItem('hebra_last_diagnosis');
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch(e) { return null; }
+}
+
+function checkReturningUser() {
+  const record = loadDiagnosisFromStorage();
+  if (!record || !record.results) return;
+
+  const r = record.results;
+  const name = record.name ? record.name + "'s last" : "Your last";
+  const date = new Date(record.date);
+  const daysAgo = Math.floor((Date.now() - date.getTime()) / (1000 * 60 * 60 * 24));
+  const when = daysAgo === 0 ? 'Today' : daysAgo === 1 ? 'Yesterday' : daysAgo + ' days ago';
+
+  const banner = document.getElementById('returningBanner');
+  const text = document.getElementById('returningText');
+  if (!banner || !text) return;
+
+  text.textContent = `${r.hair_type_label || 'Hair Profile'} — ${r.overall}/100 · ${when}`;
+  banner.style.display = 'flex';
+}
+
+function loadPreviousDiagnosis() {
+  const record = loadDiagnosisFromStorage();
+  if (!record || !record.results) return;
+  S.results = record.results;
+  S.name = record.name || '';
+  renderResults(S.results);
+  showPanel('step-results');
+  document.getElementById('navStep').textContent = 'Your Diagnosis';
+  setTimeout(animateScoreBars, 400);
+}
+
 function startOver() {
   S.photos = {1:null,2:null,3:null};
   S.answers = {}; S.currentQ = 0; S.results = null;
@@ -2387,6 +2459,9 @@ function startOver() {
   showPanel('step-upload');
   document.getElementById('navStep').textContent = 'Step 1 of 3';
 }
+
+// Check for returning user on load
+document.addEventListener('DOMContentLoaded', checkReturningUser);
 </script>
 <!-- ════════ CAMERA HUD OVERLAY ════════ -->
 <div id="camOverlay">

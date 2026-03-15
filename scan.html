@@ -2179,23 +2179,177 @@ function camCapture() {
 }
 
 /* ══════════════════════════════════════════
-   SHARE
+   SHARE CARD
 ══════════════════════════════════════════ */
 function shareResults() {
   const r = S.results;
   if (!r) return;
-  const name = S.name ? S.name + "'s" : "My";
-  const score = r.overall || 0;
-  const label = r.hair_type_label || 'Hair';
-  const text = `${name} Hebra Hair Diagnosis 🧬\n\nOverall Score: ${score}/100\nHair Type: ${label}\n\nKey finding: ${(r.key_finding || '').slice(0, 120)}...\n\nGet your free diagnosis at hebrahair.com`;
+  _buildShareCard(r);
+}
 
-  if (navigator.share) {
-    navigator.share({ title: 'My Hebra Hair Diagnosis', text: text, url: 'https://www.hebrahair.com' })
-      .catch(() => {});
+function _buildShareCard(r) {
+  // Remove existing if any
+  const existing = document.getElementById('shareCardOverlay');
+  if (existing) existing.remove();
+
+  const s = r.scores || {};
+  const name = S.name || '';
+  const score = r.overall || 0;
+  const hairType = r.hair_type_label || 'Hair Profile';
+  const finding = r.key_finding || r.summary || '';
+  // Shorten finding to fit card
+  const shortFinding = finding.length > 110 ? finding.slice(0, 108) + '…' : finding;
+
+  const scoreColor = score >= 70 ? '#2D6A4F' : score >= 45 ? '#b8860b' : '#8B1A1A';
+
+  // Score bars for the 5 dimensions
+  const dims = [
+    { label: 'Scalp Health',     val: s.scalp_health || 0 },
+    { label: 'Strand Strength',  val: s.strand_strength || 0 },
+    { label: 'Moisture Balance', val: s.moisture_balance || 0 },
+    { label: 'Structural Integrity', val: s.structural_integrity || 0 },
+    { label: 'Vitality Index',   val: s.vitality_index || 0 },
+  ];
+
+  const barsHTML = dims.map(d => `
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:7px;">
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(17,17,17,0.4);width:130px;flex-shrink:0;">${d.label}</span>
+      <div style="flex:1;height:3px;background:rgba(17,17,17,0.08);border-radius:2px;overflow:hidden;">
+        <div style="height:100%;width:${d.val}%;background:#111;border-radius:2px;"></div>
+      </div>
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;color:#111;width:28px;text-align:right;">${d.val}</span>
+    </div>
+  `).join('');
+
+  // Build overlay
+  const overlay = document.createElement('div');
+  overlay.id = 'shareCardOverlay';
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;';
+
+  overlay.innerHTML = `
+    <div style="width:100%;max-width:420px;display:flex;flex-direction:column;gap:1rem;">
+
+      <!-- Card -->
+      <div id="shareCardEl" style="
+        width:420px; max-width:100%;
+        background:#F5F2EC;
+        padding:44px 40px 36px;
+        border-radius:3px;
+        font-family:'Barlow Condensed',sans-serif;
+        position:relative;
+        overflow:hidden;
+      ">
+        <!-- Top label -->
+        <p style="font-size:9px;font-weight:700;letter-spacing:0.4em;text-transform:uppercase;color:rgba(17,17,17,0.3);margin-bottom:28px;">Personalised Diagnosis · Hebra</p>
+
+        <!-- Hair type — big italic -->
+        <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:42px;line-height:1.05;color:#111;margin-bottom:6px;">${hairType}</p>
+        ${name ? `<p style="font-size:10px;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:rgba(17,17,17,0.35);margin-bottom:28px;">${name}'s profile</p>` : '<div style="margin-bottom:28px;"></div>'}
+
+        <!-- Divider -->
+        <div style="height:1px;background:rgba(17,17,17,0.1);margin-bottom:22px;"></div>
+
+        <!-- Overall score -->
+        <div style="display:flex;align-items:flex-end;gap:10px;margin-bottom:24px;">
+          <span style="font-size:64px;font-weight:700;letter-spacing:-0.03em;line-height:1;color:${scoreColor};">${score}</span>
+          <div style="padding-bottom:8px;">
+            <p style="font-size:9px;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:rgba(17,17,17,0.3);margin-bottom:2px;">Overall</p>
+            <p style="font-size:9px;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:rgba(17,17,17,0.3);">Score / 100</p>
+          </div>
+        </div>
+
+        <!-- Dimension bars -->
+        <div style="margin-bottom:22px;">${barsHTML}</div>
+
+        <!-- Divider -->
+        <div style="height:1px;background:rgba(17,17,17,0.1);margin-bottom:18px;"></div>
+
+        <!-- Key finding -->
+        <p style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;line-height:1.7;color:rgba(17,17,17,0.6);margin-bottom:28px;">${shortFinding}</p>
+
+        <!-- Footer -->
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.15em;color:#111;">HEBRA</span>
+          <span style="font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(17,17,17,0.3);">hebrahair.com</span>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div style="display:flex;gap:0.6rem;">
+        <button onclick="_downloadCard()" style="flex:1;font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;background:#fff;color:#111;border:none;padding:0.9rem;border-radius:2px;cursor:pointer;">↓ Save Image</button>
+        <button onclick="_shareCardNative()" style="flex:1;font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;background:#111;color:#fff;border:none;padding:0.9rem;border-radius:2px;cursor:pointer;">Share</button>
+        <button onclick="document.getElementById('shareCardOverlay').remove()" style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);border:none;padding:0.9rem 1rem;border-radius:2px;cursor:pointer;">✕</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  // Load fonts into card
+  if (!document.getElementById('shareCardFonts')) {
+    const link = document.createElement('link');
+    link.id = 'shareCardFonts';
+    link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@1,300&family=DM+Sans:wght@300&family=Barlow+Condensed:wght@700&display=swap';
+    document.head.appendChild(link);
+  }
+}
+
+async function _downloadCard() {
+  const card = document.getElementById('shareCardEl');
+  if (!card) return;
+
+  // Use html2canvas if available, otherwise fallback to SVG screenshot
+  if (typeof html2canvas !== 'undefined') {
+    const canvas = await html2canvas(card, { scale: 2, backgroundColor: '#F5F2EC', useCORS: true });
+    const link = document.createElement('a');
+    link.download = 'hebra-hair-diagnosis.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
   } else {
-    // Fallback: WhatsApp
-    const wa = 'https://wa.me/?text=' + encodeURIComponent(text);
-    window.open(wa, '_blank');
+    // Load html2canvas dynamically
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+    script.onload = async () => {
+      const canvas = await html2canvas(card, { scale: 2, backgroundColor: '#F5F2EC', useCORS: true });
+      const link = document.createElement('a');
+      link.download = 'hebra-hair-diagnosis.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    };
+    document.head.appendChild(script);
+  }
+}
+
+async function _shareCardNative() {
+  const card = document.getElementById('shareCardEl');
+  const r = S.results;
+  if (!card || !r) return;
+
+  const text = `My Hebra Hair Diagnosis ✨\n${r.hair_type_label} — ${r.overall}/100\n\nGet yours free at hebrahair.com`;
+
+  // Try to share image
+  if (typeof html2canvas !== 'undefined') {
+    try {
+      const canvas = await html2canvas(card, { scale: 2, backgroundColor: '#F5F2EC', useCORS: true });
+      canvas.toBlob(async (blob) => {
+        if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob], 'hebra.png', { type: 'image/png' })] })) {
+          await navigator.share({ files: [new File([blob], 'hebra-diagnosis.png', { type: 'image/png' })], text });
+        } else if (navigator.share) {
+          await navigator.share({ text, url: 'https://www.hebrahair.com' });
+        } else {
+          window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+        }
+      }, 'image/png');
+      return;
+    } catch(e) {}
+  }
+
+  // Fallback
+  if (navigator.share) {
+    navigator.share({ text, url: 'https://www.hebrahair.com' }).catch(() => {});
+  } else {
+    window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
   }
 }
 
@@ -2203,24 +2357,14 @@ function copyResultsLink() {
   const r = S.results;
   if (!r) return;
   const name = S.name ? S.name + "'s" : "My";
-  const score = r.overall || 0;
-  const label = r.hair_type_label || 'Hair';
-  const text = `${name} Hebra Hair Diagnosis — Score: ${score}/100 — ${label}\n\nGet yours free at hebrahair.com`;
-
+  const text = `${name} Hebra Hair Diagnosis\n\n${r.hair_type_label} — Score: ${r.overall}/100\n\nGet yours free → hebrahair.com`;
   navigator.clipboard.writeText(text).then(() => {
     const el = document.getElementById('shareConfirm');
-    if (el) {
-      el.style.display = 'block';
-      setTimeout(() => { el.style.display = 'none'; }, 3000);
-    }
+    if (el) { el.style.display = 'block'; setTimeout(() => { el.style.display = 'none'; }, 3000); }
   }).catch(() => {
-    // Fallback for older browsers
     const ta = document.createElement('textarea');
-    ta.value = text;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
     const el = document.getElementById('shareConfirm');
     if (el) { el.style.display = 'block'; setTimeout(() => { el.style.display = 'none'; }, 3000); }
   });

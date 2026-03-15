@@ -1029,6 +1029,11 @@
     background: #FFFFFF;
     color: var(--dark);
     overflow-x: hidden;
+    padding-top: 73px; /* fixed nav height */
+  }
+
+  @media (max-width: 768px) {
+    body { padding-top: 63px; }
   }
 
   /* ── NAV ── */
@@ -1120,6 +1125,7 @@
 
   @media (max-width: 768px) {
     nav { padding: 1.2rem 1.5rem; }
+    .feat-strip { top: 63px; }
     /* Hide all nav links on mobile */
     .nav-links { display: none; }
     /* Show a single CTA button instead */
@@ -1343,9 +1349,10 @@
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     cursor: grab;
-    position: relative;
-    z-index: 99;
-    margin-top: 72px; /* height of fixed nav */
+    position: sticky;
+    top: 73px;
+    z-index: 98;
+    margin-top: 0;
   }
   .feat-strip::-webkit-scrollbar { display: none; }
   .feat-strip-track {
@@ -2421,9 +2428,6 @@ function closePopup() {
     <a href="journal.html" class="feat-chip">Journal</a>
     <span class="feat-chip feat-chip--plain">Hair is a language</span>
     <span class="feat-chip feat-chip--plain">Science, not guesswork</span>
-    <a href="scan.html" class="feat-chip">Live Hair Scan</a>
-    <span class="feat-chip feat-chip--plain">Personalised Routine</span>
-    <span class="feat-chip feat-chip--plain">Precision care</span>
     <a href="scan.html" class="feat-chip">Free Diagnosis</a>
   </div>
 </div>

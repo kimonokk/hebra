@@ -1729,12 +1729,13 @@ function renderResults(data) {
       </div>
     </div>
 
-
-        <div class="results-actions">
-      <button class="btn-primary" onclick="window.print()">Save Results</button>
-      <a href="index.html" class="btn-secondary">← Back to Hebra</a>
+    <div class="results-actions">
+      <button class="btn-primary" onclick="shareResults()">Share My Results</button>
+      <button class="btn-secondary" onclick="copyResultsLink()">Copy Link</button>
       <button class="btn-secondary" onclick="startOver()">New Diagnosis</button>
     </div>
+
+    <div id="shareConfirm" style="display:none; font-family:'Barlow Condensed',sans-serif; font-size:0.72rem; font-weight:600; letter-spacing:0.15em; color:var(--ink60); text-align:center; margin-top:0.5rem;">✓ Link copied to clipboard</div>
 
     <div class="disclaimer">
       Your diagnosis is based on a combined analysis of your three photographs and your questionnaire responses. Photo analysis evaluates visible texture, porosity, cuticle condition, strand density and scalp presentation. Questionnaire responses provide context on your chemical history, lifestyle, health and current routine — factors that are not visible in images but directly influence hair condition. Product recommendations are selected specifically to address the deficiencies identified in your profile, filtered to exclude products you already use. Results are for informational purposes only and do not constitute medical or dermatological advice.
@@ -2175,6 +2176,54 @@ function camCapture() {
   img.style.display = 'block';
   document.getElementById('zone' + _camSlot).classList.add('has-image');
   setTimeout(closeCam, 320);
+}
+
+/* ══════════════════════════════════════════
+   SHARE
+══════════════════════════════════════════ */
+function shareResults() {
+  const r = S.results;
+  if (!r) return;
+  const name = S.name ? S.name + "'s" : "My";
+  const score = r.overall || 0;
+  const label = r.hair_type_label || 'Hair';
+  const text = `${name} Hebra Hair Diagnosis 🧬\n\nOverall Score: ${score}/100\nHair Type: ${label}\n\nKey finding: ${(r.key_finding || '').slice(0, 120)}...\n\nGet your free diagnosis at hebrahair.com`;
+
+  if (navigator.share) {
+    navigator.share({ title: 'My Hebra Hair Diagnosis', text: text, url: 'https://www.hebrahair.com' })
+      .catch(() => {});
+  } else {
+    // Fallback: WhatsApp
+    const wa = 'https://wa.me/?text=' + encodeURIComponent(text);
+    window.open(wa, '_blank');
+  }
+}
+
+function copyResultsLink() {
+  const r = S.results;
+  if (!r) return;
+  const name = S.name ? S.name + "'s" : "My";
+  const score = r.overall || 0;
+  const label = r.hair_type_label || 'Hair';
+  const text = `${name} Hebra Hair Diagnosis — Score: ${score}/100 — ${label}\n\nGet yours free at hebrahair.com`;
+
+  navigator.clipboard.writeText(text).then(() => {
+    const el = document.getElementById('shareConfirm');
+    if (el) {
+      el.style.display = 'block';
+      setTimeout(() => { el.style.display = 'none'; }, 3000);
+    }
+  }).catch(() => {
+    // Fallback for older browsers
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const el = document.getElementById('shareConfirm');
+    if (el) { el.style.display = 'block'; setTimeout(() => { el.style.display = 'none'; }, 3000); }
+  });
 }
 
 function startOver() {

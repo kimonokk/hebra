@@ -1034,13 +1034,60 @@
   /* ── NAV ── */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.4rem 3rem;
+    display: flex; flex-direction: column;
     background: #FFFFFF;
     transition: box-shadow 0.4s;
   }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.4rem 3rem;
+  }
   nav.scrolled {
     box-shadow: 0 2px 24px rgba(0,0,0,0.08);
+  }
+  /* ── Feature strip inside nav ── */
+  .feat-strip {
+    border-top: 1px solid rgba(17,17,17,0.07);
+    border-bottom: 1px solid rgba(17,17,17,0.07);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    cursor: grab;
+    background: #FFFFFF;
+  }
+  .feat-strip::-webkit-scrollbar { display: none; }
+  .feat-strip-track {
+    display: flex; align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 3rem;
+    width: max-content;
+    min-width: 100%;
+  }
+  .feat-chip {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(17,17,17,0.45);
+    background: transparent;
+    border: 1px solid rgba(17,17,17,0.12);
+    border-radius: 2px;
+    padding: 0.3rem 0.85rem;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: color 0.2s, border-color 0.2s;
+    flex-shrink: 0;
+    user-select: none;
+  }
+  a.feat-chip:hover { color: #111; border-color: rgba(17,17,17,0.5); }
+  .feat-chip--plain {
+    color: rgba(17,17,17,0.25);
+    border-color: rgba(17,17,17,0.06);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    text-transform: none;
+    font-weight: 400;
   }
   .nav-logo {
     font-family: 'Bebas Neue', sans-serif;
@@ -1298,6 +1345,7 @@
     cursor: grab;
     position: relative;
     z-index: 99;
+    margin-top: 72px; /* height of fixed nav */
   }
   .feat-strip::-webkit-scrollbar { display: none; }
   .feat-strip-track {
@@ -2355,13 +2403,15 @@ function closePopup() {
 
 <!-- ── NAV ── -->
 <nav id="mainNav">
-  <a href="index.html" class="nav-logo">Hebra</a>
-  <ul class="nav-links">
-    <li><a href="scan.html">Scan</a></li>
-    <li><a href="scanner.html">Ingredient Scanner</a></li>
-    <li><a href="#" onclick="openPage('aboutPage'); return false;">About</a></li>
-  </ul>
-  <a href="scan.html" class="nav-mobile-cta">Begin Diagnosis →</a>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Hebra</a>
+    <ul class="nav-links">
+      <li><a href="scan.html">Scan</a></li>
+      <li><a href="scanner.html">Ingredient Scanner</a></li>
+      <li><a href="#" onclick="openPage('aboutPage'); return false;">About</a></li>
+    </ul>
+    <a href="scan.html" class="nav-mobile-cta">Begin Diagnosis →</a>
+  </div>
 </nav>
 
 <!-- ── Swipeable feature strip ── -->

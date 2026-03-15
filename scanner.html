@@ -65,21 +65,26 @@ nav { display: flex; align-items: center; justify-content: space-between; paddin
 .chip-neutral { color: var(--neutral); background: var(--neutral-bg); }
 .chip-bad { color: var(--bad); background: var(--bad-bg); }
 .ingredients-list { display: flex; flex-direction: column; gap: 0.6rem; }
-.ingredient-card { border-radius: 3px; border: 1px solid transparent; padding: 1.4rem 1.6rem; display: grid; grid-template-columns: auto 1fr auto; gap: 1.2rem; align-items: start; transition: transform 0.15s; }
+.ingredient-card { border-radius: 3px; border: 1px solid rgba(17,17,17,0.07); background: var(--white); padding: 1.4rem 1.6rem; display: flex; flex-direction: column; gap: 0.8rem; transition: transform 0.15s; }
 .ingredient-card:hover { transform: translateX(3px); }
-.ingredient-card.beneficial { background: var(--good-bg); border-color: rgba(45,106,79,0.15); }
-.ingredient-card.neutral { background: var(--neutral-bg); border-color: rgba(17,17,17,0.06); }
-.ingredient-card.harmful { background: var(--bad-bg); border-color: rgba(139,26,26,0.15); }
-.ingredient-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
-.beneficial .ingredient-dot { background: var(--good); }
-.neutral .ingredient-dot { background: var(--neutral); }
-.harmful .ingredient-dot { background: var(--bad); }
-.ingredient-name { font-size: 0.95rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); margin-bottom: 0.4rem; }
-.ingredient-explanation { font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 300; line-height: 1.75; color: var(--ink60); }
-.ingredient-badge { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; padding: 0.25rem 0.6rem; border-radius: 2px; flex-shrink: 0; white-space: nowrap; }
-.beneficial .ingredient-badge { color: var(--good); background: rgba(45,106,79,0.12); }
+.ingredient-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+.ingredient-name { font-size: 0.95rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); }
+.ingredient-badge { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; padding: 0.25rem 0.7rem; border-radius: 2px; flex-shrink: 0; white-space: nowrap; }
+.beneficial .ingredient-badge { color: var(--good); background: rgba(45,106,79,0.1); }
 .neutral .ingredient-badge { color: var(--neutral); background: rgba(17,17,17,0.07); }
-.harmful .ingredient-badge { color: var(--bad); background: rgba(139,26,26,0.12); }
+.harmful .ingredient-badge { color: var(--bad); background: rgba(139,26,26,0.1); }
+
+/* ── Spectrum bar ── */
+.ingredient-spectrum { position: relative; height: 6px; border-radius: 3px; background: linear-gradient(to right, #8B1A1A 0%, #c0392b 20%, #d4a843 45%, #d4a843 55%, #4a9e7f 80%, #2D6A4F 100%); margin: 0.2rem 0; }
+.ingredient-spectrum-track { position: relative; height: 6px; }
+.ingredient-spectrum-labels { display: flex; justify-content: space-between; margin-top: 4px; }
+.ingredient-spectrum-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.52rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(17,17,17,0.3); }
+.ingredient-spectrum-marker { position: absolute; top: 50%; width: 14px; height: 14px; border-radius: 50%; background: var(--ink); border: 2.5px solid var(--white); box-shadow: 0 1px 4px rgba(0,0,0,0.25); transform: translate(-50%, -50%); transition: left 0.6s cubic-bezier(0.16,1,0.3,1); }
+.beneficial .ingredient-spectrum-marker { background: var(--good); }
+.neutral .ingredient-spectrum-marker { background: #888; }
+.harmful .ingredient-spectrum-marker { background: var(--bad); }
+
+.ingredient-explanation { font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 300; line-height: 1.75; color: var(--ink60); }
 .product-name-block { display: none; margin-bottom: 2rem; }
 .product-name-block.active { display: block; }
 .product-name-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink30); margin-bottom: 0.4rem; }
@@ -109,8 +114,8 @@ nav { display: flex; align-items: center; justify-content: space-between; paddin
   .cta-block { padding: 3rem 1.5rem; }
   .footer-top { padding: 4rem 2rem 3rem; }
   .footer-bottom { grid-template-columns: 1fr 1fr; gap: 2rem; padding: 2rem; }
-  .ingredient-card { grid-template-columns: auto 1fr; }
-  .ingredient-badge { display: none; }
+  .ingredient-card { grid-template-columns: 1fr; }
+  .ingredient-badge { display: inline-block; }
 }
 @media (max-width: 480px) {
   .footer-bottom { grid-template-columns: 1fr; }
@@ -172,7 +177,6 @@ nav { display: flex; align-items: center; justify-content: space-between; paddin
       <p class="product-name-label">Product identified</p>
       <p class="product-name-value" id="productNameValue"></p>
     </div>
-    <div id="sourceNote" style="display:none; font-family:'Barlow Condensed',sans-serif; font-size:0.72rem; font-weight:600; letter-spacing:0.12em; color:rgba(17,17,17,0.4); background:rgba(17,17,17,0.04); border:1px solid rgba(17,17,17,0.08); border-radius:3px; padding:0.7rem 1rem; margin-bottom:1.5rem;"></div>
     <div class="results-header">
       <p class="results-title">Ingredient Analysis</p>
       <div class="results-summary" id="resultsSummary"></div>
@@ -252,7 +256,6 @@ function resetAll() {
   document.getElementById('errorState').classList.remove('active');
   document.getElementById('uploadSection').style.display = 'block';
   document.getElementById('productNameBlock').classList.remove('active');
-  document.getElementById('sourceNote').style.display = 'none';
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -289,18 +292,6 @@ function renderResults(data) {
     document.getElementById('productNameBlock').classList.add('active');
   }
 
-  // Show source badge if not from label
-  const sourceEl = document.getElementById('sourceNote');
-  if (data.source === 'knowledge') {
-    sourceEl.textContent = '⚡ Ingredients retrieved from AI knowledge — label not visible in photo';
-    sourceEl.style.display = 'block';
-  } else if (data.source === 'combined') {
-    sourceEl.textContent = '⚡ Partial label — completed with AI knowledge of this product';
-    sourceEl.style.display = 'block';
-  } else {
-    sourceEl.style.display = 'none';
-  }
-
   const ingredients = data.ingredients || [];
   const counts = { beneficial: 0, neutral: 0, harmful: 0 };
   ingredients.forEach(i => {
@@ -319,11 +310,24 @@ function renderResults(data) {
   document.getElementById('ingredientsList').innerHTML = sorted.map(item => {
     const effect = (item.effect || 'neutral').toLowerCase();
     const badge = effect === 'beneficial' ? 'Beneficial' : effect === 'harmful' ? 'Harmful' : 'Neutral';
+    // Marker position: harmful=8%, neutral=50%, beneficial=92%
+    const markerPos = effect === 'beneficial' ? '92%' : effect === 'harmful' ? '8%' : '50%';
     return '<div class="ingredient-card ' + effect + '">' +
-      '<div class="ingredient-dot"></div>' +
-      '<div><p class="ingredient-name">' + escapeHtml(item.ingredient || '') + '</p>' +
-      '<p class="ingredient-explanation">' + escapeHtml(item.explanation || '') + '</p></div>' +
-      '<span class="ingredient-badge">' + badge + '</span>' +
+      '<div class="ingredient-card-top">' +
+        '<p class="ingredient-name">' + escapeHtml(item.ingredient || '') + '</p>' +
+        '<span class="ingredient-badge">' + badge + '</span>' +
+      '</div>' +
+      '<div class="ingredient-spectrum-track">' +
+        '<div class="ingredient-spectrum">' +
+          '<div class="ingredient-spectrum-marker" style="left:' + markerPos + '"></div>' +
+        '</div>' +
+        '<div class="ingredient-spectrum-labels">' +
+          '<span class="ingredient-spectrum-label">Harmful</span>' +
+          '<span class="ingredient-spectrum-label">Neutral</span>' +
+          '<span class="ingredient-spectrum-label">Beneficial</span>' +
+        '</div>' +
+      '</div>' +
+      '<p class="ingredient-explanation">' + escapeHtml(item.explanation || '') + '</p>' +
       '</div>';
   }).join('');
 

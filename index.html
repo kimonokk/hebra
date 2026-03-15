@@ -1226,6 +1226,42 @@
   }
 
   /* Ticker */
+  /* ── Feature ticker inside hero content ── */
+  .hero-feat-ticker {
+    overflow: hidden;
+    margin-top: 2.5rem;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    border-top: 1px solid rgba(255,255,255,0.12);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    padding: 0.7rem 0;
+  }
+  .hero-feat-track {
+    display: flex; align-items: center;
+    width: max-content;
+    animation: featTick 28s linear infinite;
+    gap: 1.5rem;
+  }
+  @keyframes featTick {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  .hero-feat-item {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.28em; text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .hero-feat-sep {
+    color: rgba(255,255,255,0.2);
+    font-size: 0.5rem;
+    flex-shrink: 0;
+  }
+
   .hero-ticker {
     position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
     background: rgba(0,0,0,0.5);
@@ -1250,6 +1286,53 @@
   @keyframes hIn {
     from { opacity: 0; transform: translateY(50px); }
     to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Feature strip (swipeable) ── */
+  .feat-strip {
+    background: #FFFFFF;
+    border-bottom: 1px solid rgba(17,17,17,0.08);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    cursor: grab;
+    position: relative;
+    z-index: 99;
+  }
+  .feat-strip::-webkit-scrollbar { display: none; }
+  .feat-strip-track {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 2rem;
+    width: max-content;
+    min-width: 100%;
+  }
+  .feat-chip {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(17,17,17,0.5);
+    background: transparent;
+    border: 1px solid rgba(17,17,17,0.13);
+    border-radius: 2px;
+    padding: 0.35rem 0.9rem;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: color 0.2s, border-color 0.2s;
+    flex-shrink: 0;
+    user-select: none;
+  }
+  a.feat-chip:hover { color: #111; border-color: rgba(17,17,17,0.5); }
+  .feat-chip--plain {
+    color: rgba(17,17,17,0.28);
+    border-color: rgba(17,17,17,0.07);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+    text-transform: none;
+    font-weight: 400;
   }
 
   @media (max-width: 768px) {
@@ -2281,6 +2364,20 @@ function closePopup() {
   <a href="scan.html" class="nav-mobile-cta">Begin Diagnosis →</a>
 </nav>
 
+<!-- ── Swipeable feature strip ── -->
+<div class="feat-strip">
+  <div class="feat-strip-track">
+    <a href="scanner.html" class="feat-chip">Ingredient Scanner</a>
+    <a href="journal.html" class="feat-chip">Journal</a>
+    <span class="feat-chip feat-chip--plain">Hair is a language</span>
+    <span class="feat-chip feat-chip--plain">Science, not guesswork</span>
+    <a href="scan.html" class="feat-chip">Live Hair Scan</a>
+    <span class="feat-chip feat-chip--plain">Personalised Routine</span>
+    <span class="feat-chip feat-chip--plain">Precision care</span>
+    <a href="scan.html" class="feat-chip">Free Diagnosis</a>
+  </div>
+</div>
+
 <!-- ── HERO ── -->
 <section id="hero">
 
@@ -2465,6 +2562,27 @@ function closePage(id) {
 window.addEventListener('scroll', () => {
   document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 60);
 });
+
+// ── Feat strip drag-to-scroll ──
+(function() {
+  const strip = document.querySelector('.feat-strip');
+  if (!strip) return;
+  let isDown = false, startX, scrollLeft;
+  strip.addEventListener('mousedown', e => {
+    isDown = true;
+    strip.style.cursor = 'grabbing';
+    startX = e.pageX - strip.offsetLeft;
+    scrollLeft = strip.scrollLeft;
+  });
+  strip.addEventListener('mouseleave', () => { isDown = false; strip.style.cursor = 'grab'; });
+  strip.addEventListener('mouseup', () => { isDown = false; strip.style.cursor = 'grab'; });
+  strip.addEventListener('mousemove', e => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - strip.offsetLeft;
+    strip.scrollLeft = scrollLeft - (x - startX);
+  });
+})();
 
 // ── UPLOADS ──
 const photos = { f: null, e: null, l: null };

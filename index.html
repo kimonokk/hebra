@@ -1029,11 +1029,12 @@
     background: #FFFFFF;
     color: var(--dark);
     overflow-x: hidden;
-    padding-top: 73px; /* fixed nav height */
+    padding-top: 127px; /* nav 73px + strip 54px */
   }
 
   @media (max-width: 768px) {
-    body { padding-top: 63px; }
+    body { padding-top: 107px; } /* nav 63px + strip ~44px */
+    .feat-strip { top: 63px; }
   }
 
   /* ── NAV ── */
@@ -1349,10 +1350,10 @@
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     cursor: grab;
-    position: sticky;
+    position: fixed;
     top: 73px;
+    left: 0; right: 0;
     z-index: 98;
-    margin-top: 0;
   }
   .feat-strip::-webkit-scrollbar { display: none; }
   .feat-strip-track {

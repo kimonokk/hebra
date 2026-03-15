@@ -4,422 +4,103 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ingredient Scanner | Hebra</title>
-<meta name="description" content="Photograph your product label. We'll tell you what each ingredient is doing to your hair — beneficial, neutral, or harmful.">
+<meta name="description" content="Photograph your product label. We'll tell you what each ingredient is doing to your hair.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" href="favicon.png">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap');
-
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 :root {
-  --cream: #F5F2EC;
-  --ink: #111111;
-  --ink60: rgba(17,17,17,0.6);
-  --ink30: rgba(17,17,17,0.3);
-  --ink10: rgba(17,17,17,0.07);
-  --white: #FFFFFF;
-  --good:    #2D6A4F;
-  --good-bg: rgba(45,106,79,0.07);
-  --bad:     #8B1A1A;
-  --bad-bg:  rgba(139,26,26,0.07);
-  --neutral: rgba(17,17,17,0.35);
-  --neutral-bg: rgba(17,17,17,0.04);
+  --cream: #F5F2EC; --ink: #111111; --ink60: rgba(17,17,17,0.6);
+  --ink30: rgba(17,17,17,0.3); --ink10: rgba(17,17,17,0.07); --white: #FFFFFF;
+  --good: #2D6A4F; --good-bg: rgba(45,106,79,0.07);
+  --bad: #8B1A1A; --bad-bg: rgba(139,26,26,0.07);
+  --neutral: rgba(17,17,17,0.35); --neutral-bg: rgba(17,17,17,0.04);
 }
-
 html { scroll-behavior: smooth; }
-body {
-  background: var(--cream);
-  color: var(--ink);
-  font-family: 'Barlow Condensed', sans-serif;
-  min-height: 100vh;
-}
-
-/* ── NAV ── */
-nav {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 1.5rem 4rem;
-  border-bottom: 1px solid var(--ink10);
-  background: var(--cream);
-  position: sticky; top: 0; z-index: 100;
-}
-.nav-logo {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.5rem; letter-spacing: 0.1em;
-  color: var(--ink); text-decoration: none;
-}
-.nav-cta {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.75rem; font-weight: 700;
-  letter-spacing: 0.25em; text-transform: uppercase;
-  color: var(--white); background: var(--ink);
-  padding: 0.6rem 1.4rem; text-decoration: none;
-  transition: background 0.2s;
-}
+body { background: var(--cream); color: var(--ink); font-family: 'Barlow Condensed', sans-serif; min-height: 100vh; }
+nav { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 4rem; border-bottom: 1px solid var(--ink10); background: var(--cream); position: sticky; top: 0; z-index: 100; }
+.nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.1em; color: var(--ink); text-decoration: none; }
+.nav-cta { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: var(--white); background: var(--ink); padding: 0.6rem 1.4rem; text-decoration: none; transition: background 0.2s; }
 .nav-cta:hover { background: #333; }
-
-/* ── HERO ── */
-.hero {
-  max-width: 860px; margin: 0 auto;
-  padding: 5rem 4rem 3rem;
-}
-.hero-label {
-  font-size: 0.65rem; font-weight: 700;
-  letter-spacing: 0.35em; text-transform: uppercase;
-  color: var(--ink30); margin-bottom: 1.2rem;
-}
-.hero-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic; font-weight: 300;
-  font-size: clamp(2.6rem, 6vw, 4.2rem);
-  line-height: 1.1; color: var(--ink);
-  margin-bottom: 1.2rem;
-}
-.hero-sub {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1.05rem; font-weight: 400;
-  letter-spacing: 0.05em; color: var(--ink60);
-  line-height: 1.6; max-width: 520px;
-  margin-bottom: 0;
-}
-
-/* ── DIVIDER ── */
-.divider {
-  border: none; border-top: 1px solid var(--ink10);
-  margin: 0 4rem;
-}
-
-/* ── MAIN CONTENT ── */
-.content {
-  max-width: 860px; margin: 0 auto;
-  padding: 4rem 4rem 6rem;
-}
-
-/* ── UPLOAD ZONE ── */
-.upload-area {
-  border: 1.5px dashed rgba(17,17,17,0.18);
-  border-radius: 4px;
-  background: var(--white);
-  min-height: 280px;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  gap: 1.2rem; cursor: pointer;
-  position: relative; overflow: hidden;
-  transition: border-color 0.3s, background 0.2s;
-  margin-bottom: 1.5rem;
-}
+.hero { max-width: 860px; margin: 0 auto; padding: 5rem 4rem 3rem; }
+.hero-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.35em; text-transform: uppercase; color: var(--ink30); margin-bottom: 1.2rem; }
+.hero-title { font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300; font-size: clamp(2.6rem, 6vw, 4.2rem); line-height: 1.1; color: var(--ink); margin-bottom: 1.2rem; }
+.hero-sub { font-family: 'Barlow Condensed', sans-serif; font-size: 1.05rem; font-weight: 400; letter-spacing: 0.05em; color: var(--ink60); line-height: 1.6; max-width: 520px; }
+.divider { border: none; border-top: 1px solid var(--ink10); margin: 0 4rem; }
+.content { max-width: 860px; margin: 0 auto; padding: 4rem 4rem 6rem; }
+.upload-area { border: 1.5px dashed rgba(17,17,17,0.18); border-radius: 4px; background: var(--white); min-height: 280px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.2rem; cursor: pointer; position: relative; overflow: hidden; transition: border-color 0.3s; margin-bottom: 1.5rem; }
 .upload-area:hover { border-color: var(--ink); }
-.upload-area.has-image {
-  border-style: solid; border-color: var(--ink);
-  min-height: auto;
-}
-.upload-area input[type="file"] {
-  position: absolute; inset: 0;
-  opacity: 0; cursor: pointer;
-  width: 100%; height: 100%;
-}
-.upload-preview {
-  width: 100%; max-height: 420px;
-  object-fit: contain;
-  display: none;
-  padding: 1.5rem;
-}
+.upload-area.has-image { border-style: solid; border-color: var(--ink); min-height: auto; }
+.upload-area input[type="file"] { display: none; }
+.upload-preview { width: 100%; max-height: 420px; object-fit: contain; display: none; padding: 1.5rem; }
 .upload-area.has-image .upload-preview { display: block; }
 .upload-area.has-image .upload-placeholder { display: none; }
-.upload-placeholder {
-  display: flex; flex-direction: column;
-  align-items: center; gap: 1rem;
-  pointer-events: none;
-}
-.upload-icon-wrap {
-  width: 52px; height: 52px;
-  border: 1.5px solid var(--ink10);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-}
-.upload-title {
-  font-size: 0.9rem; font-weight: 700;
-  letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--ink);
-}
-.upload-hint {
-  font-size: 0.75rem; font-weight: 500;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--ink30);
-  text-align: center; line-height: 1.6;
-}
-.upload-change {
-  position: absolute; bottom: 1rem; right: 1rem;
-  font-size: 0.65rem; font-weight: 700;
-  letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--ink30); background: var(--cream);
-  border: none; cursor: pointer; padding: 0.4rem 0.8rem;
-  border-radius: 2px; transition: color 0.2s;
-  display: none;
-}
+.upload-placeholder { display: flex; flex-direction: column; align-items: center; gap: 1rem; pointer-events: none; }
+.upload-icon-wrap { width: 52px; height: 52px; border: 1.5px solid var(--ink10); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.upload-title { font-size: 0.9rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink); }
+.upload-hint { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink30); text-align: center; line-height: 1.6; }
+.upload-change { position: absolute; bottom: 1rem; right: 1rem; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink30); background: var(--cream); border: none; cursor: pointer; padding: 0.4rem 0.8rem; border-radius: 2px; display: none; transition: color 0.2s; z-index: 10; }
 .upload-area.has-image .upload-change { display: block; }
 .upload-change:hover { color: var(--ink); }
-
-/* ── SCAN BUTTON ── */
-.scan-btn {
-  display: inline-flex; align-items: center; gap: 0.6rem;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.82rem; font-weight: 700;
-  letter-spacing: 0.25em; text-transform: uppercase;
-  color: var(--white); background: var(--ink);
-  border: none; padding: 1.1rem 2.8rem;
-  border-radius: 2px; cursor: pointer;
-  transition: background 0.3s, transform 0.2s;
-}
+.scan-btn { display: inline-flex; align-items: center; gap: 0.6rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: var(--white); background: var(--ink); border: none; padding: 1.1rem 2.8rem; border-radius: 2px; cursor: pointer; transition: background 0.3s, transform 0.2s; touch-action: manipulation; }
 .scan-btn:hover:not(:disabled) { background: #333; transform: translateY(-2px); }
 .scan-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
-
-.privacy-note {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.72rem; font-weight: 300;
-  color: var(--ink30); line-height: 1.7;
-  margin-top: 1rem; max-width: 420px;
-}
-
-/* ── LOADING STATE ── */
-.loading-state {
-  display: none;
-  flex-direction: column; align-items: center;
-  padding: 4rem 2rem; text-align: center; gap: 1.5rem;
-}
+.privacy-note { font-family: 'DM Sans', sans-serif; font-size: 0.72rem; font-weight: 300; color: var(--ink30); line-height: 1.7; margin-top: 1rem; max-width: 420px; }
+.loading-state { display: none; flex-direction: column; align-items: center; padding: 4rem 2rem; text-align: center; gap: 1.5rem; }
 .loading-state.active { display: flex; }
-.loading-spinner {
-  width: 48px; height: 48px;
-  border: 1.5px solid var(--ink10);
-  border-top-color: var(--ink);
-  border-radius: 50%;
-  animation: spin 0.9s linear infinite;
-}
+.loading-spinner { width: 48px; height: 48px; border: 1.5px solid var(--ink10); border-top-color: var(--ink); border-radius: 50%; animation: spin 0.9s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
-.loading-text {
-  font-size: 0.78rem; font-weight: 600;
-  letter-spacing: 0.25em; text-transform: uppercase;
-  color: var(--ink60);
-}
-.loading-sub {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic; font-size: 1rem;
-  color: var(--ink30);
-}
-
-/* ── ERROR STATE ── */
-.error-state {
-  display: none;
-  background: rgba(139,26,26,0.06);
-  border: 1px solid rgba(139,26,26,0.15);
-  border-radius: 3px;
-  padding: 1.2rem 1.6rem;
-  font-size: 0.85rem; font-weight: 500;
-  letter-spacing: 0.05em; color: var(--bad);
-  line-height: 1.6;
-}
+.loading-text { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; color: var(--ink60); }
+.loading-sub { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1rem; color: var(--ink30); }
+.error-state { display: none; background: rgba(139,26,26,0.06); border: 1px solid rgba(139,26,26,0.15); border-radius: 3px; padding: 1.2rem 1.6rem; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.05em; color: var(--bad); line-height: 1.6; margin-top: 1rem; }
 .error-state.active { display: block; }
-
-/* ── RESULTS ── */
 .results-wrap { display: none; margin-top: 3.5rem; }
 .results-wrap.active { display: block; }
-
-.results-header {
-  display: flex; align-items: baseline;
-  justify-content: space-between;
-  padding-bottom: 1.2rem;
-  border-bottom: 1px solid var(--ink10);
-  margin-bottom: 2rem; gap: 1rem;
-  flex-wrap: wrap;
-}
-.results-title {
-  font-size: 0.65rem; font-weight: 700;
-  letter-spacing: 0.35em; text-transform: uppercase;
-  color: var(--ink30);
-}
-.results-summary {
-  display: flex; gap: 1.5rem;
-}
-.summary-chip {
-  font-size: 0.68rem; font-weight: 700;
-  letter-spacing: 0.2em; text-transform: uppercase;
-  padding: 0.3rem 0.8rem; border-radius: 2px;
-}
-.chip-good    { color: var(--good);    background: var(--good-bg); }
+.results-header { display: flex; align-items: baseline; justify-content: space-between; padding-bottom: 1.2rem; border-bottom: 1px solid var(--ink10); margin-bottom: 2rem; gap: 1rem; flex-wrap: wrap; }
+.results-title { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.35em; text-transform: uppercase; color: var(--ink30); }
+.results-summary { display: flex; gap: 1.5rem; }
+.summary-chip { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; padding: 0.3rem 0.8rem; border-radius: 2px; }
+.chip-good { color: var(--good); background: var(--good-bg); }
 .chip-neutral { color: var(--neutral); background: var(--neutral-bg); }
-.chip-bad     { color: var(--bad);     background: var(--bad-bg); }
-
-/* ── INGREDIENT CARDS ── */
-.ingredients-list {
-  display: flex; flex-direction: column; gap: 0.6rem;
-}
-.ingredient-card {
-  border-radius: 3px;
-  border: 1px solid transparent;
-  padding: 1.4rem 1.6rem;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 1.2rem; align-items: start;
-  transition: transform 0.15s;
-  cursor: default;
-}
+.chip-bad { color: var(--bad); background: var(--bad-bg); }
+.ingredients-list { display: flex; flex-direction: column; gap: 0.6rem; }
+.ingredient-card { border-radius: 3px; border: 1px solid transparent; padding: 1.4rem 1.6rem; display: grid; grid-template-columns: auto 1fr auto; gap: 1.2rem; align-items: start; transition: transform 0.15s; }
 .ingredient-card:hover { transform: translateX(3px); }
-.ingredient-card.beneficial {
-  background: var(--good-bg);
-  border-color: rgba(45,106,79,0.15);
-}
-.ingredient-card.neutral {
-  background: var(--neutral-bg);
-  border-color: rgba(17,17,17,0.06);
-}
-.ingredient-card.harmful {
-  background: var(--bad-bg);
-  border-color: rgba(139,26,26,0.15);
-}
-.ingredient-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%; flex-shrink: 0;
-  margin-top: 5px;
-}
+.ingredient-card.beneficial { background: var(--good-bg); border-color: rgba(45,106,79,0.15); }
+.ingredient-card.neutral { background: var(--neutral-bg); border-color: rgba(17,17,17,0.06); }
+.ingredient-card.harmful { background: var(--bad-bg); border-color: rgba(139,26,26,0.15); }
+.ingredient-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
 .beneficial .ingredient-dot { background: var(--good); }
-.neutral    .ingredient-dot { background: var(--neutral); }
-.harmful    .ingredient-dot { background: var(--bad); }
-
-.ingredient-name {
-  font-size: 0.95rem; font-weight: 700;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--ink); margin-bottom: 0.4rem;
-}
-.ingredient-explanation {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.88rem; font-weight: 300;
-  line-height: 1.75; color: var(--ink60);
-}
-.ingredient-badge {
-  font-size: 0.58rem; font-weight: 700;
-  letter-spacing: 0.22em; text-transform: uppercase;
-  padding: 0.25rem 0.6rem; border-radius: 2px;
-  flex-shrink: 0; white-space: nowrap;
-}
-.beneficial .ingredient-badge { color: var(--good);    background: rgba(45,106,79,0.12); }
-.neutral    .ingredient-badge { color: var(--neutral); background: rgba(17,17,17,0.07); }
-.harmful    .ingredient-badge { color: var(--bad);     background: rgba(139,26,26,0.12); }
-
-/* ── PRODUCT NAME ── */
-.product-name-block {
-  display: none;
-  margin-bottom: 2rem;
-}
+.neutral .ingredient-dot { background: var(--neutral); }
+.harmful .ingredient-dot { background: var(--bad); }
+.ingredient-name { font-size: 0.95rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); margin-bottom: 0.4rem; }
+.ingredient-explanation { font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 300; line-height: 1.75; color: var(--ink60); }
+.ingredient-badge { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; padding: 0.25rem 0.6rem; border-radius: 2px; flex-shrink: 0; white-space: nowrap; }
+.beneficial .ingredient-badge { color: var(--good); background: rgba(45,106,79,0.12); }
+.neutral .ingredient-badge { color: var(--neutral); background: rgba(17,17,17,0.07); }
+.harmful .ingredient-badge { color: var(--bad); background: rgba(139,26,26,0.12); }
+.product-name-block { display: none; margin-bottom: 2rem; }
 .product-name-block.active { display: block; }
-.product-name-label {
-  font-size: 0.6rem; font-weight: 700;
-  letter-spacing: 0.3em; text-transform: uppercase;
-  color: var(--ink30); margin-bottom: 0.4rem;
-}
-.product-name-value {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic; font-size: 1.6rem;
-  color: var(--ink); font-weight: 300;
-}
-
-/* ── SCAN AGAIN ── */
-.scan-again-btn {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.75rem; font-weight: 600;
-  letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--ink30); background: transparent;
-  border: none; cursor: pointer; padding: 0;
-  margin-top: 2.5rem; transition: color 0.2s;
-}
+.product-name-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink30); margin-bottom: 0.4rem; }
+.product-name-value { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.6rem; color: var(--ink); font-weight: 300; }
+.scan-again-btn { display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink30); background: transparent; border: none; cursor: pointer; padding: 0; margin-top: 2.5rem; transition: color 0.2s; }
 .scan-again-btn:hover { color: var(--ink); }
-
-/* ── CTA BLOCK ── */
-.cta-block {
-  background: var(--ink); padding: 5rem 4rem;
-  text-align: center; margin-top: 2rem;
-}
-.cta-label {
-  font-size: 0.65rem; font-weight: 700;
-  letter-spacing: 0.35em; text-transform: uppercase;
-  color: rgba(255,255,255,0.3); margin-bottom: 1rem;
-}
-.cta-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic; font-weight: 300;
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
-  color: var(--white); line-height: 1.2; margin-bottom: 1rem;
-}
-.cta-sub {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.9rem; letter-spacing: 0.08em;
-  color: rgba(255,255,255,0.45); margin-bottom: 2.2rem;
-  max-width: 420px; margin-left: auto; margin-right: auto;
-}
-.cta-btn {
-  display: inline-block;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.8rem; font-weight: 700;
-  letter-spacing: 0.3em; text-transform: uppercase;
-  color: var(--ink); background: var(--cream);
-  padding: 1rem 2.5rem; text-decoration: none;
-  transition: background 0.2s;
-}
+.cta-block { background: var(--ink); padding: 5rem 4rem; text-align: center; margin-top: 2rem; }
+.cta-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.35em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 1rem; }
+.cta-title { font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300; font-size: clamp(1.8rem, 4vw, 2.8rem); color: var(--white); line-height: 1.2; margin-bottom: 1rem; }
+.cta-sub { font-family: 'Barlow Condensed', sans-serif; font-size: 0.9rem; letter-spacing: 0.08em; color: rgba(255,255,255,0.45); margin-bottom: 2.2rem; max-width: 420px; margin-left: auto; margin-right: auto; }
+.cta-btn { display: inline-block; font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink); background: var(--cream); padding: 1rem 2.5rem; text-decoration: none; transition: background 0.2s; }
 .cta-btn:hover { background: #e8e4dd; }
-
-/* ── FOOTER ── */
-.footer-byredo { background: #111111; color: #FFFFFF; padding: 0; }
+.footer-byredo { background: #111; color: #fff; }
 .footer-top { padding: 6rem 4rem 4rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
-.footer-brand-giant {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: clamp(5rem, 14vw, 12rem); font-weight: 700;
-  letter-spacing: 0.15em; line-height: 1;
-  color: #FFFFFF; opacity: 0.12; user-select: none;
-}
-.footer-bottom {
-  display: grid; grid-template-columns: 1fr 1fr 1fr 1.5fr;
-  gap: 3rem; padding: 4rem 4rem 3rem;
-}
+.footer-brand-giant { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(5rem,14vw,12rem); font-weight: 700; letter-spacing: 0.15em; line-height: 1; opacity: 0.12; user-select: none; }
+.footer-bottom { display: grid; grid-template-columns: 1fr 1fr 1fr 1.5fr; gap: 3rem; padding: 4rem 4rem 3rem; }
 .footer-col { display: flex; flex-direction: column; gap: 0.8rem; }
-.footer-col-label {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.6rem; font-weight: 700;
-  letter-spacing: 0.3em; text-transform: uppercase;
-  color: rgba(255,255,255,0.3); margin-bottom: 0.5rem;
-}
-.footer-col a {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.85rem; font-weight: 500;
-  letter-spacing: 0.1em; color: rgba(255,255,255,0.65);
-  text-decoration: none; transition: color 0.2s; text-transform: uppercase;
-}
-.footer-col a:hover { color: #FFFFFF; }
-.footer-email {
-  display: flex; align-items: center;
-  border: 1px solid rgba(255,255,255,0.25);
-  border-radius: 2px; margin-bottom: 1rem;
-  padding: 0 0.75rem; background: rgba(255,255,255,0.05);
-}
-.footer-input {
-  flex: 1; background: transparent; border: none; outline: none;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.85rem; font-weight: 500;
-  letter-spacing: 0.1em; color: #FFFFFF; padding: 0.75rem 0;
-}
-.footer-input::placeholder { color: rgba(255,255,255,0.3); }
-.footer-submit {
-  background: none; border: none; color: rgba(255,255,255,0.5);
-  font-size: 1rem; cursor: pointer;
-  padding: 0.5rem 0 0.5rem 0.5rem; transition: color 0.2s;
-}
-.footer-submit:hover { color: #FFFFFF; }
-.footer-fine {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.6rem; letter-spacing: 0.15em;
-  color: rgba(255,255,255,0.2); text-transform: uppercase; margin-top: auto;
-}
-
-/* ── RESPONSIVE ── */
+.footer-col-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 0.5rem; }
+.footer-col a { font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.1em; color: rgba(255,255,255,0.65); text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
+.footer-col a:hover { color: #fff; }
+.footer-fine { font-family: 'Barlow Condensed', sans-serif; font-size: 0.6rem; letter-spacing: 0.15em; color: rgba(255,255,255,0.2); text-transform: uppercase; margin-top: auto; }
 @media (max-width: 768px) {
   nav { padding: 1.2rem 1.5rem; }
   .hero { padding: 3rem 1.5rem 2rem; }
@@ -439,25 +120,19 @@ nav {
 </head>
 <body>
 
-<!-- ── NAV ── -->
 <nav>
   <a href="index.html" class="nav-logo">Hebra</a>
   <a href="scan.html" class="nav-cta">Begin Your Diagnosis</a>
 </nav>
 
-<!-- ── HERO ── -->
 <div class="hero">
   <p class="hero-label">Hebra — Hair Intelligence</p>
   <h1 class="hero-title">Ingredient<br>Scanner.</h1>
   <p class="hero-sub">Photograph your product label. We'll tell you what every ingredient is doing to your hair — and whether you should keep using it.</p>
 </div>
-
 <hr class="divider">
 
-<!-- ── CONTENT ── -->
 <div class="content">
-
-  <!-- Upload -->
   <div id="uploadSection">
     <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
       <input type="file" id="fileInput" accept="image/*" onchange="handleUpload(this)">
@@ -474,7 +149,6 @@ nav {
       </div>
       <button class="upload-change" onclick="event.stopPropagation(); resetUpload()">Change image</button>
     </div>
-
     <button class="scan-btn" id="scanBtn" onclick="runScan()" disabled>
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
         <circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.3"/>
@@ -482,43 +156,31 @@ nav {
       </svg>
       Scan Ingredients
     </button>
-
-    <p class="privacy-note">🔒 Your image is sent directly to the analysis engine and never stored or shared.</p>
+    <p class="privacy-note">🔒 Your image is analysed securely and never stored or shared.</p>
   </div>
 
-  <!-- Loading -->
   <div class="loading-state" id="loadingState">
     <div class="loading-spinner"></div>
     <p class="loading-text">Reading the label…</p>
     <p class="loading-sub">Identifying ingredients and cross-referencing hair science data.</p>
   </div>
 
-  <!-- Error -->
   <div class="error-state" id="errorState"></div>
 
-  <!-- Results -->
   <div class="results-wrap" id="resultsWrap">
-
     <div class="product-name-block" id="productNameBlock">
       <p class="product-name-label">Product identified</p>
       <p class="product-name-value" id="productNameValue"></p>
     </div>
-
     <div class="results-header">
       <p class="results-title">Ingredient Analysis</p>
       <div class="results-summary" id="resultsSummary"></div>
     </div>
-
     <div class="ingredients-list" id="ingredientsList"></div>
-
-    <button class="scan-again-btn" onclick="resetAll()">
-      ← Scan another product
-    </button>
+    <button class="scan-again-btn" onclick="resetAll()">← Scan another product</button>
   </div>
-
 </div>
 
-<!-- ── CTA ── -->
 <div class="cta-block">
   <p class="cta-label">Hebra — Hair Intelligence</p>
   <h2 class="cta-title">Now find out what your<br>hair actually needs.</h2>
@@ -526,7 +188,6 @@ nav {
   <a href="scan.html" class="cta-btn">Begin My Diagnosis</a>
 </div>
 
-<!-- ── FOOTER ── -->
 <footer class="footer-byredo">
   <div class="footer-top">
     <div class="footer-brand-giant">HEBRA</div>
@@ -540,10 +201,9 @@ nav {
     </div>
     <div class="footer-col">
       <p class="footer-col-label">Company</p>
-      <a href="index.html#about">About Hebra</a>
-      <a href="index.html#privacy">Privacy Policy</a>
-      <a href="index.html#terms">Terms of Use</a>
-      <a href="/cdn-cgi/l/email-protection#5038353c3c3f103835322231383139227e333f3d" style="color:rgba(255,255,255,0.65);"><span class="__cf_email__" data-cfemail="2048454c4c4f604845425241484149520e434f4d">[email&#160;protected]</span></a>
+      <a href="index.html">About Hebra</a>
+      <a href="index.html">Privacy Policy</a>
+      <a href="index.html">Terms of Use</a>
     </div>
     <div class="footer-col">
       <p class="footer-col-label">Philosophy</p>
@@ -553,31 +213,20 @@ nav {
     </div>
     <div class="footer-col">
       <p class="footer-col-label">Stay informed</p>
-      <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:0.95rem; color:rgba(255,255,255,0.45); margin-bottom:0.8rem; line-height:1.5;">Get a free DIY hair mask recipe every week — matched to your hair type.</p>
-      <div class="footer-email">
-        <input type="email" placeholder="your@email.com" class="footer-input">
-        <button class="footer-submit">→</button>
-      </div>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.95rem;color:rgba(255,255,255,0.45);margin-bottom:0.8rem;line-height:1.5;">Get a free DIY hair mask recipe every week.</p>
       <p class="footer-fine">© 2026 HEBRA. All rights reserved.</p>
     </div>
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-/* ══════════════════════════════════════════
-   STATE
-══════════════════════════════════════════ */
+<script>
 let imageBase64 = null;
 let imageMediaType = 'image/jpeg';
 
-/* ══════════════════════════════════════════
-   UPLOAD
-══════════════════════════════════════════ */
 function handleUpload(input) {
   if (!input.files || !input.files[0]) return;
   const file = input.files[0];
   imageMediaType = file.type || 'image/jpeg';
-
   const reader = new FileReader();
   reader.onload = e => {
     imageBase64 = e.target.result.split(',')[1];
@@ -605,60 +254,26 @@ function resetAll() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-/* ══════════════════════════════════════════
-   SCAN — CLAUDE API
-══════════════════════════════════════════ */
 async function runScan() {
   if (!imageBase64) return;
-
-  // UI: show loading
   document.getElementById('uploadSection').style.display = 'none';
   document.getElementById('loadingState').classList.add('active');
   document.getElementById('errorState').classList.remove('active');
   document.getElementById('resultsWrap').classList.remove('active');
 
-  const PROMPT = `You are a professional hair care ingredient expert with deep knowledge of cosmetic chemistry and trichology.
-
-Analyze the product label in this image carefully. Read every ingredient you can see.
-
-Return a JSON object with this exact structure:
-{
-  "product_name": "Name of the product if visible, otherwise null",
-  "ingredients": [
-    {
-      "ingredient": "exact ingredient name as written on label",
-      "effect": "beneficial" | "neutral" | "harmful",
-      "explanation": "2-3 sentences explaining what this ingredient does, which hair types it helps or harms, and why. Be specific and practical."
-    }
-  ]
-}
-
-Rules:
-- effect must be exactly one of: "beneficial", "neutral", "harmful"
-- "harmful" means genuinely problematic for most hair types (e.g. sulfates that strip, drying alcohols, formaldehyde donors)
-- "beneficial" means actively nourishing, repairing, or protective
-- "neutral" means present for texture, preservation, or function without notable benefit or harm
-- If you cannot read the label clearly, still list what you can see and note uncertainty in the explanation
-- Output ONLY the raw JSON object. No markdown, no backticks, no preamble.`;
-
   try {
     const response = await fetch('/api/scanner', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        image: imageBase64,
-        mediaType: imageMediaType
-      })
+      body: JSON.stringify({ image: imageBase64, mediaType: imageMediaType })
     });
-
     if (!response.ok) {
       const errData = await response.json().catch(() => ({}));
-      throw new Error(errData.error || `Server error ${response.status}`);
+      throw new Error(errData.error || 'Server error ' + response.status);
     }
-    const parsed = await response.json();
-    if (parsed.error) throw new Error(parsed.error);
-    renderResults(parsed);
-
+    const data = await response.json();
+    if (data.error) throw new Error(data.error);
+    renderResults(data);
   } catch (err) {
     showError(err.message || 'Something went wrong. Please try again.');
   } finally {
@@ -666,17 +281,12 @@ Rules:
   }
 }
 
-/* ══════════════════════════════════════════
-   RENDER RESULTS
-══════════════════════════════════════════ */
 function renderResults(data) {
-  // Product name
   if (data.product_name) {
     document.getElementById('productNameValue').textContent = data.product_name;
     document.getElementById('productNameBlock').classList.add('active');
   }
 
-  // Summary counts
   const ingredients = data.ingredients || [];
   const counts = { beneficial: 0, neutral: 0, harmful: 0 };
   ingredients.forEach(i => {
@@ -684,33 +294,23 @@ function renderResults(data) {
     if (counts[e] !== undefined) counts[e]++;
   });
 
-  const summaryEl = document.getElementById('resultsSummary');
-  summaryEl.innerHTML = `
-    ${counts.beneficial > 0 ? `<span class="summary-chip chip-good">${counts.beneficial} Beneficial</span>` : ''}
-    ${counts.neutral    > 0 ? `<span class="summary-chip chip-neutral">${counts.neutral} Neutral</span>` : ''}
-    ${counts.harmful    > 0 ? `<span class="summary-chip chip-bad">${counts.harmful} Harmful</span>` : ''}
-  `;
+  document.getElementById('resultsSummary').innerHTML =
+    (counts.beneficial > 0 ? '<span class="summary-chip chip-good">' + counts.beneficial + ' Beneficial</span>' : '') +
+    (counts.neutral    > 0 ? '<span class="summary-chip chip-neutral">' + counts.neutral + ' Neutral</span>' : '') +
+    (counts.harmful    > 0 ? '<span class="summary-chip chip-bad">' + counts.harmful + ' Harmful</span>' : '');
 
-  // Ingredient cards — sorted: harmful first, then neutral, then beneficial
   const order = { harmful: 0, neutral: 1, beneficial: 2 };
-  const sorted = [...ingredients].sort((a, b) =>
-    (order[a.effect] ?? 1) - (order[b.effect] ?? 1)
-  );
+  const sorted = [...ingredients].sort((a, b) => (order[a.effect] ?? 1) - (order[b.effect] ?? 1));
 
-  const listEl = document.getElementById('ingredientsList');
-  listEl.innerHTML = sorted.map(item => {
+  document.getElementById('ingredientsList').innerHTML = sorted.map(item => {
     const effect = (item.effect || 'neutral').toLowerCase();
-    const badgeText = effect === 'beneficial' ? 'Beneficial' : effect === 'harmful' ? 'Harmful' : 'Neutral';
-    return `
-      <div class="ingredient-card ${effect}">
-        <div class="ingredient-dot"></div>
-        <div>
-          <p class="ingredient-name">${escapeHtml(item.ingredient || '')}</p>
-          <p class="ingredient-explanation">${escapeHtml(item.explanation || '')}</p>
-        </div>
-        <span class="ingredient-badge">${badgeText}</span>
-      </div>
-    `;
+    const badge = effect === 'beneficial' ? 'Beneficial' : effect === 'harmful' ? 'Harmful' : 'Neutral';
+    return '<div class="ingredient-card ' + effect + '">' +
+      '<div class="ingredient-dot"></div>' +
+      '<div><p class="ingredient-name">' + escapeHtml(item.ingredient || '') + '</p>' +
+      '<p class="ingredient-explanation">' + escapeHtml(item.explanation || '') + '</p></div>' +
+      '<span class="ingredient-badge">' + badge + '</span>' +
+      '</div>';
   }).join('');
 
   document.getElementById('resultsWrap').classList.add('active');
@@ -720,4 +320,13 @@ function renderResults(data) {
 function showError(msg) {
   document.getElementById('uploadSection').style.display = 'block';
   const el = document.getElementById('errorState');
-  el.textContent = 'Could not analyse the label: ' + msg + ' — make sure the ingredients list is clearly vis
+  el.textContent = 'Could not analyse the label: ' + msg;
+  el.classList.add('active');
+}
+
+function escapeHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>

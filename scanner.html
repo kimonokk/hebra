@@ -172,6 +172,7 @@ nav { display: flex; align-items: center; justify-content: space-between; paddin
       <p class="product-name-label">Product identified</p>
       <p class="product-name-value" id="productNameValue"></p>
     </div>
+    <div id="sourceNote" style="display:none; font-family:'Barlow Condensed',sans-serif; font-size:0.72rem; font-weight:600; letter-spacing:0.12em; color:rgba(17,17,17,0.4); background:rgba(17,17,17,0.04); border:1px solid rgba(17,17,17,0.08); border-radius:3px; padding:0.7rem 1rem; margin-bottom:1.5rem;"></div>
     <div class="results-header">
       <p class="results-title">Ingredient Analysis</p>
       <div class="results-summary" id="resultsSummary"></div>
@@ -251,6 +252,7 @@ function resetAll() {
   document.getElementById('errorState').classList.remove('active');
   document.getElementById('uploadSection').style.display = 'block';
   document.getElementById('productNameBlock').classList.remove('active');
+  document.getElementById('sourceNote').style.display = 'none';
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -285,6 +287,18 @@ function renderResults(data) {
   if (data.product_name) {
     document.getElementById('productNameValue').textContent = data.product_name;
     document.getElementById('productNameBlock').classList.add('active');
+  }
+
+  // Show source badge if not from label
+  const sourceEl = document.getElementById('sourceNote');
+  if (data.source === 'knowledge') {
+    sourceEl.textContent = '⚡ Ingredients retrieved from AI knowledge — label not visible in photo';
+    sourceEl.style.display = 'block';
+  } else if (data.source === 'combined') {
+    sourceEl.textContent = '⚡ Partial label — completed with AI knowledge of this product';
+    sourceEl.style.display = 'block';
+  } else {
+    sourceEl.style.display = 'none';
   }
 
   const ingredients = data.ingredients || [];

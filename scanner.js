@@ -31,23 +31,34 @@ export default async function handler(req, res) {
   const cleanImage = image.replace(/^data:[^;]+;base64,/, '');
   const cleanMediaType = mediaType || 'image/jpeg';
 
-  const PROMPT = `You are a professional hair care ingredient expert with deep knowledge of cosmetic chemistry.
+  const PROMPT = `You are a professional hair care ingredient expert with deep knowledge of cosmetic chemistry, trichology, and hair care products worldwide.
 
-Analyze the product label in this image. Read every ingredient visible.
+You will receive an image. It may show a full ingredient list, only the product name/brand, or both.
 
-Return ONLY a raw JSON object with this exact structure, no markdown, no backticks:
+Your task:
+- If you can READ ingredients directly from the label: analyse those
+- If you can only see the PRODUCT NAME/BRAND (e.g. "Dercos Aminexil", "Olaplex No.3", "Kérastase Résistance"): identify the product and list its known ingredients from your training knowledge
+- If you recognise the product partially: combine what you see with your knowledge
+
+Return ONLY a raw JSON object, no markdown, no backticks:
 {
-  "product_name": "Name of the product if visible, otherwise null",
+  "product_name": "Full product name as best identified",
+  "source": "label" | "knowledge" | "combined",
   "ingredients": [
     {
-      "ingredient": "exact ingredient name",
-      "effect": "beneficial",
-      "explanation": "2-3 sentences on what it does, which hair types it helps or harms."
+      "ingredient": "ingredient name",
+      "effect": "beneficial" | "neutral" | "harmful",
+      "explanation": "2-3 sentences: what it does, which hair types it helps or harms, and why."
     }
   ]
 }
 
-effect must be exactly one of: "beneficial", "neutral", "harmful"`;
+Rules for effect:
+- "harmful": sulfates that strip, drying alcohols (SD Alcohol, Alcohol Denat.), formaldehyde donors, heavy silicone build-up
+- "beneficial": proteins, oils, ceramides, panthenol, niacinamide, aminexil, active repair agents
+- "neutral": texture, preservation, pH function without notable benefit or harm
+
+If you truly cannot identify anything, return your best attempt with whatever is visible.`;
 
   try {
     const claudeRes = await fetch('https://api.anthropic.com/v1/messages', {

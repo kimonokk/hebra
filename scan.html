@@ -791,6 +791,11 @@ nav {
   width: 100%; aspect-ratio: 1;
   background: #EDEAE4;
   display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.product-img-wrap img {
+  width: 100%; height: 100%; object-fit: contain;
+  padding: 12px;
 }
 .product-img-wrap span {
   font-size: 0.6rem; font-weight: 700;
@@ -852,17 +857,6 @@ nav {
   .q-intimate { margin: -2.5rem -1.5rem 2rem; padding: 2.5rem 1.5rem 2rem; }
 }
 </style>
-  <!-- Open Graph / Social -->
-  <meta property="og:type"        content="website">
-  <meta property="og:url"         content="https://www.hebrahair.com/scan.html">
-  <meta property="og:title"       content="Begin Your Hair Diagnosis | Hebra">
-  <meta property="og:description" content="Upload 3 photos of your hair, answer 9 questions, and get a complete personalised diagnosis with product recommendations, free.">
-  <meta property="og:image"       content="https://res.cloudinary.com/dgkacltrs/image/upload/v1773581590/close-up-woman-with-tangles_tsbdkn.jpg">
-  <meta property="og:site_name"   content="Hebra">
-  <meta name="twitter:card"        content="summary_large_image">
-  <meta name="twitter:title"       content="Begin Your Hair Diagnosis | Hebra">
-  <meta name="twitter:description" content="Upload 3 photos of your hair, answer 9 questions, and get a complete personalised diagnosis with product recommendations, free.">
-  <meta name="twitter:image"       content="https://res.cloudinary.com/dgkacltrs/image/upload/v1773581590/close-up-woman-with-tangles_tsbdkn.jpg">
 </head>
 <body>
 
@@ -1737,7 +1731,7 @@ function renderResults(data) {
       <div class="products-grid">
         ${data.products.map(p => `
           <div class="product-card">
-            <div class="product-img-wrap"><span>${p.brand}</span></div>
+            <div class="product-img-wrap">${p.img ? `<img src="${p.img}" alt="${p.name}" loading="lazy">` : `<span>${p.brand}</span>`}</div>
             <div class="product-body">
               <p class="product-rank">${p.rank}</p>
               <p class="product-name">${p.name}</p>
@@ -1808,25 +1802,50 @@ function generateFallback() {
   const currentProducts = Array.isArray(a.products) ? a.products : [];
 
   // ── PRODUCT CATALOGUE ──
+  const BASE_IMG = 'https://res.cloudinary.com/dgkacltrs/image/upload';
+
   const PRODUCTS = {
-    olaplex3:    { name: 'Olaplex No.3 Hair Perfector',             brand: 'Olaplex',          reason: 'Rebuilds broken disulfide bonds caused by chemical services and heat — the most effective at-home bond repair treatment available.', link: 'https://www.amazon.com/dp/B00SNM5US4?tag=hebrahair20-20' },
-    olaplex4:    { name: 'Olaplex No.4 Bond Maintenance Shampoo',   brand: 'Olaplex',          reason: 'Gently cleanses while continuing to repair bonds — designed to work alongside No.3 for cumulative strength restoration.', link: 'https://www.amazon.com/dp/B09DKMX8VD?tag=hebrahair20-20' },
-    k18:         { name: 'K18 Leave-In Molecular Repair Mask',       brand: 'K18',              reason: 'Repairs keratin chains at a molecular level in just 4 minutes — a single-use treatment that delivers immediate, measurable strength.', link: 'https://www.amazon.com/s?k=K18+leave+in+molecular+repair+mask&tag=hebrahair20-20' },
-    honeyShamp:  { name: '&honey Deep Moist Shampoo 1.0',           brand: '&honey',           reason: 'A 14% moisture-level formula with Manuka honey, argan oil and hyaluronic acid — exceptional hydration for dry, depleted strands.', link: 'https://www.amazon.com/dp/B07C58WZ2R?tag=hebrahair20-20' },
-    honeyTreat:  { name: '&honey Deep Moist Treatment 2.0',         brand: '&honey',           reason: 'Intense conditioning mask with three types of honey and royal jelly — restores softness and seals the cuticle from root to tip.', link: 'https://www.amazon.com/dp/B07C4ZX46D?tag=hebrahair20-20' },
-    honeyOil:    { name: '&honey Deep Moist Hair Oil',              brand: '&honey',           reason: 'Lightweight finishing oil with Bulgarian rose honey and argan — seals hydration, controls frizz and adds a silk-like finish.', link: 'https://www.amazon.com/dp/B07DMSBFXJ?tag=hebrahair20-20' },
-    honeyMelty:  { name: '&honey Melty Moist Repair Shampoo',       brand: '&honey',           reason: 'Sulfate-free formula designed specifically for frizzy and curly hair — honey and argan oil define and hydrate simultaneously.', link: 'https://www.amazon.com/dp/B0DMTVRS94?tag=hebrahair20-20' },
-    alfaCristalli:{ name: 'Alfaparf Semi di Lino Cristalli Liquidi', brand: 'Alfaparf Milano', reason: 'Professional-grade serum with thermal protection — smooths the cuticle, eliminates frizz and delivers mirror-like shine.', link: 'https://www.amazon.com/s?k=alfaparf+semi+di+lino+cristalli+liquidi&tag=hebrahair20-20' },
-    alfaMask:    { name: 'Alfaparf Semi di Lino Moisture Mask',     brand: 'Alfaparf Milano',  reason: 'Deep conditioning mask with linseed extract — replenishes moisture, improves manageability and restores natural luster.', link: 'https://www.amazon.com/dp/B07D6QZ2T4?tag=hebrahair20-20' },
-    alfaShamp:   { name: 'Alfaparf Semi di Lino Moisture Shampoo',  brand: 'Alfaparf Milano',  reason: 'Sulfate-free nutritive shampoo that gently cleanses without stripping — safe for color-treated and dry hair.', link: 'https://www.amazon.com/dp/B07BZC65LL?tag=hebrahair20-20' },
-    christophe:  { name: 'Christophe Robin Cleansing Purifying Scrub', brand: 'Christophe Robin', reason: 'Sea salt exfoliation removes product buildup and rebalances scalp microbiome — restores clarity without disrupting moisture.', link: 'https://www.amazon.com/s?k=christophe+robin+cleansing+purifying+scrub&tag=hebrahair20-20' },
-    paulMitchell:{ name: 'Paul Mitchell Tea Tree Special Shampoo',  brand: 'Paul Mitchell',    reason: 'Tea tree and peppermint purify and energize an oily scalp — leaves the scalp clean and balanced without over-drying.', link: 'https://www.amazon.com/s?k=paul+mitchell+tea+tree+special+shampoo&tag=hebrahair20-20' },
-    alfaDetox:   { name: 'Alfaparf Semi di Lino Scalp Detox',       brand: 'Alfaparf Milano',  reason: 'Professional detox treatment that removes excess sebum and impurities at the scalp level — ideal before your regular shampoo.', link: 'https://www.amazon.com/s?k=alfaparf+scalp+detox&tag=hebrahair20-20' },
-    ordinary:    { name: 'The Ordinary Multi-Peptide Hair Serum',   brand: 'The Ordinary',     reason: 'Clinically studied peptide complex supports follicle activity and improves hair density visibly over 90 days of consistent use.', link: 'https://www.amazon.com/s?k=the+ordinary+multi+peptide+hair+serum&tag=hebrahair20-20' },
-    nioxin:      { name: 'Nioxin System 2 Cleanser Shampoo',        brand: 'Nioxin',           reason: 'Removes follicle-blocking sebum and DHT residue from the scalp — creates the optimal environment for healthy regrowth.', link: 'https://www.amazon.com/s?k=nioxin+system+2+shampoo&tag=hebrahair20-20' },
-    livingProof: { name: 'Living Proof Full Shampoo',               brand: 'Living Proof',     reason: 'STRANDS molecule technology adds permanent body to fine strands — delivers volume without buildup or weighing hair down.', link: 'https://www.amazon.com/s?k=living+proof+full+shampoo&tag=hebrahair20-20' },
-    bumble:      { name: 'Bumble and Bumble Thickening Spray',      brand: 'Bumble and Bumble', reason: 'Lightweight volumizing spray that adds texture and fullness at the root — best applied to damp hair before blow-drying.', link: 'https://www.amazon.com/s?k=bumble+bumble+thickening+spray&tag=hebrahair20-20' },
-    vanicream:   { name: 'Vanicream Free & Clear Shampoo',          brand: 'Vanicream',        reason: 'Fragrance-free, dye-free formula for reactive scalps — clinically tested and gentle enough for daily use on sensitive skin.', link: 'https://www.amazon.com/s?k=vanicream+free+clear+shampoo&tag=hebrahair20-20' },
+    // ── BOND REPAIR ──
+    olaplex3:    { name: 'No.3 Hair Perfector',             brand: 'Olaplex',          reason: 'Rebuilds broken disulfide bonds caused by chemical services and heat — the most effective at-home bond repair treatment available.', img: `${BASE_IMG}/v1773647538/05a4ee8738166a368b771bad18b6667a3cc1ef62d0d82722c5d3ede56565bac0_huqj1f.png`, link: 'https://www.amazon.com/dp/B00SNM5US4?tag=hebrahair20-20' },
+    olaplex4:    { name: 'No.4 Bond Maintenance Shampoo',   brand: 'Olaplex',          reason: 'Gently cleanses while continuing to repair bonds — designed to work alongside No.3 for cumulative strength restoration.', img: `${BASE_IMG}/v1773647538/1881e9398079d647bceeac53876e9db7c08a434943857b68d1565580fce822dc_xa8vbj.png`, link: 'https://www.amazon.com/dp/B09DKMX8VD?tag=hebrahair20-20' },
+    k18:         { name: 'Leave-In Molecular Repair Mask',  brand: 'K18',              reason: 'Repairs keratin chains at a molecular level in just 4 minutes — delivers immediate, measurable strength.', img: `${BASE_IMG}/v1773647527/60e1e4e03081c9dbfcfa6c627e902b1b6433021c06b365fedddbbb76ef6a8d8f_vqn98a.png`, link: 'https://www.amazon.com/s?k=K18+leave+in+molecular+repair+mask&tag=hebrahair20-20' },
+    k18shamp:    { name: 'Peptide Prep Detox Shampoo',      brand: 'K18',              reason: 'Deep-cleanses product buildup and hard water minerals without stripping. Prepares hair for K18 peptide treatments.', img: `${BASE_IMG}/v1773652745/4ef58035cbf4f84c55230a3d61a78e922185733229bf81fc4a7d05cf62e47e28_lcwxoo.png`, link: 'https://www.amazon.com/s?k=K18+Peptide+Prep+Detox+Shampoo&tag=hebrahair20-20' },
+
+    // ── HYDRATION ──
+    honeyShamp:  { name: 'Deep Moist Shampoo 1.0',          brand: '&honey',           reason: 'A 14% moisture-level formula with Manuka honey, argan oil and hyaluronic acid — exceptional hydration for dry, depleted strands.', img: `${BASE_IMG}/v1773647538/d579b1dd250c8b4a27941795385eb9abdd40014f329b3acd4eec75d0ca5c436a_awqvv3.png`, link: 'https://www.amazon.com/dp/B07C58WZ2R?tag=hebrahair20-20' },
+    honeyTreat:  { name: 'Deep Moist Treatment 2.0',        brand: '&honey',           reason: 'Intense conditioning mask with three types of honey and royal jelly — restores softness and seals the cuticle from root to tip.', img: `${BASE_IMG}/v1773647566/22f1e03225dd4694a6bef5bec9af2bccdbe75ad83bbb0519bd38a8e3765e5002_nev2np.png`, link: 'https://www.amazon.com/dp/B07C4ZX46D?tag=hebrahair20-20' },
+    honeyOil:    { name: 'Deep Moist Hair Oil',             brand: '&honey',           reason: 'Lightweight finishing oil with Bulgarian rose honey and argan — seals hydration, controls frizz and adds a silk-like finish.', img: `${BASE_IMG}/v1773647539/67cc2d6b65dc9a2f8aca19203ce69276f677b29610c2ae97e320d7a29f3cfd5a_qi4gez.png`, link: 'https://www.amazon.com/dp/B07DMSBFXJ?tag=hebrahair20-20' },
+    honeyMelty:  { name: 'Melty Moist Repair Shampoo',      brand: '&honey',           reason: 'Sulfate-free formula designed for frizzy and curly hair — honey and argan oil define and hydrate simultaneously.', img: `${BASE_IMG}/v1773647573/517ff567871595e0cfaa35cd2545aae2691dabb34a21a1724d5a5063b5383ce6_izcgj8.png`, link: 'https://www.amazon.com/dp/B0DMTVRS94?tag=hebrahair20-20' },
+    alfaCristalli:{ name: 'Semi di Lino Cristalli Liquidi', brand: 'Alfaparf Milano',  reason: 'Professional-grade serum with thermal protection — smooths the cuticle, eliminates frizz and delivers mirror-like shine.', img: `${BASE_IMG}/v1773652754/1b1b2a68b942eb46bb1d036ebac293ab94070f7f54243b7bf910efb26e2e7957_hvptoa.png`, link: 'https://www.amazon.com/s?k=alfaparf+semi+di+lino+cristalli+liquidi&tag=hebrahair20-20' },
+    alfaMask:    { name: 'Semi di Lino Moisture Mask',      brand: 'Alfaparf Milano',  reason: 'Deep conditioning mask with linseed extract — replenishes moisture, improves manageability and restores natural luster.', img: `${BASE_IMG}/v1773647566/4dc441a1f0b68fc62bb10c5683881f4c5f5c94b5039679c684d3d24370a596f8_gpwmtg.png`, link: 'https://www.amazon.com/dp/B07D6QZ2T4?tag=hebrahair20-20' },
+    alfaShamp:   { name: 'Semi di Lino Moisture Shampoo',   brand: 'Alfaparf Milano',  reason: 'Sulfate-free nutritive shampoo that gently cleanses without stripping — safe for colour-treated and dry hair.', img: `${BASE_IMG}/v1773647566/8d53eec28447560a9686631d17f8632903e291137ffd3b704b27cf62436519aa_ytzmmd.png`, link: 'https://www.amazon.com/dp/B07BZC65LL?tag=hebrahair20-20' },
+    moroccanoil: { name: 'Moroccanoil Treatment Original',  brand: 'Moroccanoil',      reason: 'Argan oil treatment that detangles, conditions and speeds up drying. The original hair oil that started the category.', img: `${BASE_IMG}/v1773647560/eba9797519a8cec4ac935479b48c1dee59cdbd196febb2ea61714f146cb561ae_e130a2.png`, link: 'https://www.amazon.com/s?k=Moroccanoil+Treatment+Original&tag=hebrahair20-20' },
+    moroccanoilShamp: { name: 'Moisture Repair Shampoo',    brand: 'Moroccanoil',      reason: 'Argan oil-infused shampoo for dry or damaged hair. Repairs while cleansing without stripping natural oils.', img: `${BASE_IMG}/v1773652755/bf047fe3c740d56adcad369c528f39b6e6260ab1efe5e7343d8b6c1fa5fcfdbb_kuc2wu.png`, link: 'https://www.amazon.com/s?k=Moroccanoil+Moisture+Repair+Shampoo&tag=hebrahair20-20' },
+
+    // ── SCALP ──
+    alfaDetox:   { name: 'Semi di Lino Scalp Detox',        brand: 'Alfaparf Milano',  reason: 'Pre-shampoo treatment that removes excess sebum and impurities at scalp level — ideal before your regular shampoo.', img: `${BASE_IMG}/v1773652750/21f17c3c049dd0b910556e3f56a81f2cab15b2182c7b4e5c4de070575485daa0_oljt5l.png`, link: 'https://www.amazon.com/s?k=alfaparf+scalp+detox&tag=hebrahair20-20' },
+    christophe:  { name: 'Cleansing Purifying Scrub',       brand: 'Christophe Robin', reason: 'Sea salt exfoliation removes product buildup and rebalances scalp microbiome — restores clarity without disrupting moisture.', img: `${BASE_IMG}/v1773647549/48d2d62066f6ddb801f04f1b3e51b7d37256f44f885f89609168917c3f2d4f8b_notobz.png`, link: 'https://www.amazon.com/s?k=christophe+robin+cleansing+purifying+scrub&tag=hebrahair20-20' },
+    paulMitchell:{ name: 'Tea Tree Special Shampoo',        brand: 'Paul Mitchell',    reason: 'Tea tree and peppermint purify and energize an oily scalp — leaves the scalp clean and balanced without over-drying.', img: `${BASE_IMG}/v1773647552/8d5706b1cd47d708aa165f9d93a921dfb386bde5659833e6161947e122431806_gdomyx.png`, link: 'https://www.amazon.com/s?k=paul+mitchell+tea+tree+special+shampoo&tag=hebrahair20-20' },
+    vanicream:   { name: 'Free & Clear Shampoo',            brand: 'Vanicream',        reason: 'Fragrance-free, dye-free formula for reactive scalps — clinically tested and gentle enough for daily use on sensitive skin.', img: `${BASE_IMG}/v1773647542/52848c63e12e9937a2779c6337542fc0fdc776d5d2e3dba5a59be9e795632339_knv0fw.png`, link: 'https://www.amazon.com/s?k=vanicream+free+clear+shampoo&tag=hebrahair20-20' },
+    inkey:       { name: 'Salicylic Acid Scalp Treatment',  brand: 'The INKEY List',   reason: 'Leave-on BHA that dissolves flakes and buildup at scalp level. Affordable dermatology-grade formula for itchy scalps.', img: `${BASE_IMG}/v1773647557/2ecd95ffce29ee28fdb07cd85f59f0053b1c4a656105f5eb69cb9f7962c92eda_zf3jjn.png`, link: 'https://www.amazon.com/s?k=The+INKEY+List+Salicylic+Acid+Scalp+Treatment&tag=hebrahair20-20' },
+
+    // ── VOLUME / FINE ──
+    ordinary:    { name: 'Multi-Peptide Hair Serum',        brand: 'The Ordinary',     reason: 'Clinically studied peptide complex supports follicle activity and improves hair density visibly over 90 days of consistent use.', img: `${BASE_IMG}/v1773647546/9e548ec3d5d0e36e8667cf1431c27151bca467dc855b7608b8e3a5e7eca98e5b_v8caw7.png`, link: 'https://www.amazon.com/s?k=the+ordinary+multi+peptide+hair+serum&tag=hebrahair20-20' },
+    nioxin:      { name: 'System 2 Cleanser Shampoo',       brand: 'Nioxin',           reason: 'Removes follicle-blocking sebum and DHT residue from the scalp — creates the optimal environment for healthy regrowth.', img: `${BASE_IMG}/v1773647550/234d79d15c983352dcbb85e3c4e3d7b4fdf34cbfbae403f187af4ebd590eb5c1_ohwxox.png`, link: 'https://www.amazon.com/s?k=nioxin+system+2+shampoo&tag=hebrahair20-20' },
+    livingProof: { name: 'Full Shampoo',                   brand: 'Living Proof',     reason: 'STRANDS molecule technology adds permanent body to fine strands — delivers volume without buildup or weighing hair down.', img: `${BASE_IMG}/v1773647557/e7f7676d7912bf4f7f17645869197762f035d028031539fcb13826cc4d69c74d_rvy2xa.png`, link: 'https://www.amazon.com/s?k=living+proof+full+shampoo&tag=hebrahair20-20' },
+    bumble:      { name: 'Thickening Spray',               brand: 'Bumble and Bumble', reason: 'Lightweight volumizing spray that adds texture and fullness at the root — best applied to damp hair before blow-drying.', img: `${BASE_IMG}/v1773647563/aee0711adce0e72a95564a318d69440a6d2ce7b4e8b2eda5c77dfbb74c33c86d_g12sij.png`, link: 'https://www.amazon.com/s?k=bumble+bumble+thickening+spray&tag=hebrahair20-20' },
+    kerastase:   { name: 'Densifique Bain Densité',        brand: 'Kérastase',        reason: 'Hyaluronic acid shampoo that plumps individual strands from within. Visible density improvement in 4 weeks.', img: `${BASE_IMG}/v1773647545/38b32539064d6583d62b7b902d164e0f9c7c4b4fc56dd1a0ac83feae38e6a68d_g0rynk.png`, link: 'https://www.amazon.com/s?k=Kerastase+Densifique+Bain+Densite&tag=hebrahair20-20' },
+
+    // ── ORGANIC ──
+    briogeoBond: { name: "Don't Despair, Repair! Deep Mask", brand: 'Briogeo',         reason: 'Clean formula with rosehip, algae and B-vitamins. Restores 94% of broken bonds without silicones or sulfates.', img: `${BASE_IMG}/v1773652746/803755108e4bbd48cc9ccea61d6d866ee0ddbe75b9b560643d8a75027502fd5e_ogylth.png`, link: "https://www.amazon.com/s?k=Briogeo+Don%27t+Despair+Repair+Mask&tag=hebrahair20-20" },
+    briogeoScalp:{ name: 'Scalp Revival Charcoal Shampoo',  brand: 'Briogeo',          reason: 'Charcoal draws out follicle impurities while coconut oil nourishes. Best clean-beauty option for oily scalps.', img: `${BASE_IMG}/v1773652764/105402d828c2da88bbaa7bf1656112708851ef6e0d0ccafcd901a60e1e606bcf_t2cwua.png`, link: 'https://www.amazon.com/s?k=Briogeo+Scalp+Revival+Charcoal+Coconut+Shampoo&tag=hebrahair20-20' },
+    rahua:       { name: 'Omega 9 Hair Mask',               brand: 'Rahua',            reason: 'Amazonian rahua oil penetrates cortex to rebuild structure. Certified organic, free of all synthetic ingredients.', img: `${BASE_IMG}/v1773647530/bf75675ea26f233d5c720a2f2d16126ec33e43eab870676e14b6d5ed821015b2_qj4ahn.png`, link: 'https://www.amazon.com/s?k=Rahua+Omega+9+Hair+Mask&tag=hebrahair20-20' },
+    acure:       { name: 'Seriously Soothing Shampoo',      brand: 'Acure',            reason: 'Argan stem cells and chamomile calm reactive scalps. Vegan, budget-friendly alternative to clinical formulas.', img: `${BASE_IMG}/v1773647559/12535a29307777bf7a820fd894d9e3e556b4c7d98119be266683bd9258f31fd4_d0d3gi.png`, link: 'https://www.amazon.com/s?k=Acure+Seriously+Soothing+Shampoo&tag=hebrahair20-20' },
+
+    // ── GROWTH / ROSEMARY ──
+    mielle:      { name: 'Rosemary Mint Scalp & Hair Oil',  brand: 'Mielle Organics',  reason: 'Rosemary extract shown in studies to rival minoxidil for hair growth stimulation. Mint cools and invigorates the scalp.', img: `${BASE_IMG}/v1773647531/18853b7bbc0f3df197c599ce8a7386c98d49ca06db9c90671e5ab46b238ea377_ajommo.png`, link: 'https://www.amazon.com/s?k=Mielle+Organics+Rosemary+Mint+Scalp+Hair+Oil&tag=hebrahair20-20' },
+    kiehls:      { name: 'Magic Elixir Scalp & Hair Oil',   brand: "Kiehl's",          reason: 'Rosemary herb and avocado oil blend that stimulates circulation and nourishes follicles. Reduces shedding in 4 weeks.', img: `${BASE_IMG}/v1773652765/047a5a61b761e64b6b640c87baaa38789729d8e63a0f3b10dfffb566fa210579_qp9c6s.png`, link: "https://www.amazon.com/s?k=Kiehl%27s+Magic+Elixir+Scalp+Hair+Oil&tag=hebrahair20-20" },
+    vegamour:    { name: 'GRO Hair Serum',                  brand: 'Vegamour',         reason: 'Plant-based phyto-actives clinically shown to reduce shedding by 76% in 90 days. Vegan and hormone-free.', img: `${BASE_IMG}/v1773647548/bebc3db400a77773657f34d74d2de36d7e401d7a6c605966a71217366f44fd5e_ruhypf.png`, link: 'https://www.amazon.com/s?k=Vegamour+GRO+Hair+Serum&tag=hebrahair20-20' },
   };
 
   // ── PROFILE DETECTION ──
@@ -1858,13 +1877,13 @@ function generateFallback() {
   }
 
   const PROFILES = {
-    damaged:   [PRODUCTS.olaplex3, PRODUCTS.olaplex4, PRODUCTS.k18, PRODUCTS.alfaMask, PRODUCTS.honeyOil],
-    dry:       [PRODUCTS.honeyShamp, PRODUCTS.honeyTreat, PRODUCTS.honeyOil, PRODUCTS.alfaMask, PRODUCTS.alfaShamp],
-    frizzy:    [PRODUCTS.honeyMelty, PRODUCTS.honeyOil, PRODUCTS.alfaCristalli, PRODUCTS.alfaMask, PRODUCTS.honeyTreat],
-    oily:      [PRODUCTS.christophe, PRODUCTS.paulMitchell, PRODUCTS.alfaDetox, PRODUCTS.ordinary, PRODUCTS.nioxin],
-    shedding:  [PRODUCTS.ordinary, PRODUCTS.nioxin, PRODUCTS.alfaMask, PRODUCTS.honeyShamp, PRODUCTS.christophe],
-    fine:      [PRODUCTS.livingProof, PRODUCTS.bumble, PRODUCTS.alfaShamp, PRODUCTS.ordinary, PRODUCTS.nioxin],
-    sensitive: [PRODUCTS.vanicream, PRODUCTS.honeyMelty, PRODUCTS.alfaMask, PRODUCTS.honeyShamp, PRODUCTS.alfaShamp],
+    damaged:   [PRODUCTS.olaplex3, PRODUCTS.olaplex4, PRODUCTS.k18, PRODUCTS.k18shamp, PRODUCTS.briogeoBond, PRODUCTS.rahua],
+    dry:       [PRODUCTS.honeyShamp, PRODUCTS.honeyTreat, PRODUCTS.honeyOil, PRODUCTS.alfaMask, PRODUCTS.moroccanoil, PRODUCTS.moroccanoilShamp],
+    frizzy:    [PRODUCTS.honeyMelty, PRODUCTS.alfaCristalli, PRODUCTS.honeyOil, PRODUCTS.moroccanoil, PRODUCTS.alfaMask, PRODUCTS.honeyTreat],
+    oily:      [PRODUCTS.christophe, PRODUCTS.briogeoScalp, PRODUCTS.paulMitchell, PRODUCTS.alfaDetox, PRODUCTS.inkey, PRODUCTS.ordinary],
+    shedding:  [PRODUCTS.mielle, PRODUCTS.vegamour, PRODUCTS.kiehls, PRODUCTS.ordinary, PRODUCTS.nioxin, PRODUCTS.kerastase],
+    fine:      [PRODUCTS.kerastase, PRODUCTS.livingProof, PRODUCTS.bumble, PRODUCTS.nioxin, PRODUCTS.ordinary, PRODUCTS.alfaShamp],
+    sensitive: [PRODUCTS.vanicream, PRODUCTS.acure, PRODUCTS.honeyMelty, PRODUCTS.alfaMask, PRODUCTS.briogeoBond, PRODUCTS.rahua],
   };
 
   // Brand/keyword exclusion map
@@ -1907,7 +1926,7 @@ function generateFallback() {
 
   const recommended = finalProducts.map((p, i) => ({
     rank: String(i+1).padStart(2,'0'),
-    name: p.name, brand: p.brand, reason: p.reason, link: p.link
+    name: p.name, brand: p.brand, reason: p.reason, link: p.link, img: p.img || ''
   }));
 
   return {

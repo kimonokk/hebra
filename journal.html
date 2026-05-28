@@ -14,20 +14,12 @@ body { background: #F5F2EC; color: #111111; font-family: 'DM Sans', sans-serif; 
 nav { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 4rem; border-bottom: 1px solid rgba(17,17,17,0.08); }
 .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.1em; color: #111111; text-decoration: none; }
 .nav-cta { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: #F5F2EC; background: #111111; padding: 0.6rem 1.4rem; text-decoration: none; }
-
-/* Hero */
 .journal-hero { padding: 6rem 4rem 4rem; max-width: 900px; margin: 0 auto; }
 .journal-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.35em; text-transform: uppercase; color: rgba(17,17,17,0.35); margin-bottom: 1.5rem; }
 .journal-hero h1 { font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300; font-size: clamp(2.8rem, 6vw, 4.5rem); line-height: 1.1; color: #111111; margin-bottom: 1.5rem; }
 .journal-hero p { font-family: 'Barlow Condensed', sans-serif; font-size: 1.05rem; font-weight: 400; letter-spacing: 0.05em; color: rgba(17,17,17,0.5); line-height: 1.7; max-width: 560px; }
-
-/* Divider */
 .divider { border: none; border-top: 1px solid rgba(17,17,17,0.1); margin: 0 4rem; }
-
-/* Articles grid */
 .articles-wrap { max-width: 900px; margin: 0 auto; padding: 4rem 4rem 6rem; }
-
-/* Featured article (first one - bigger) */
 .article-featured { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; padding-bottom: 4rem; margin-bottom: 4rem; border-bottom: 1px solid rgba(17,17,17,0.08); text-decoration: none; color: inherit; }
 .article-featured:hover .article-title { opacity: 0.6; }
 .article-featured-img { width: 100%; height: 320px; object-fit: cover; filter: grayscale(20%); }
@@ -36,26 +28,20 @@ nav { display: flex; justify-content: space-between; align-items: center; paddin
 .article-title { font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300; font-size: clamp(1.6rem, 3vw, 2.4rem); line-height: 1.2; color: #111111; transition: opacity 0.2s; }
 .article-excerpt { font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 300; line-height: 1.8; color: rgba(17,17,17,0.55); }
 .article-read { font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: #111111; margin-top: 0.5rem; }
-
-/* Article list */
 .articles-list { display: flex; flex-direction: column; gap: 0; }
 .article-row { display: grid; grid-template-columns: 200px 1fr; gap: 2rem; align-items: center; padding: 2.5rem 0; border-bottom: 1px solid rgba(17,17,17,0.08); text-decoration: none; color: inherit; transition: opacity 0.2s; }
 .article-row:hover { opacity: 0.65; }
 .article-row:first-child { padding-top: 0; }
 .article-row-img { width: 100%; height: 140px; object-fit: cover; filter: grayscale(20%); }
 .article-row-content { display: flex; flex-direction: column; gap: 0.6rem; }
-
-/* CTA bottom */
 .cta-block { background: #111111; padding: 4rem; text-align: center; }
 .cta-block .label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.35em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 1rem; }
 .cta-block h2 { font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300; font-size: clamp(1.8rem, 4vw, 2.6rem); color: #FFFFFF; line-height: 1.2; margin-bottom: 1rem; }
 .cta-block p { font-family: 'Barlow Condensed', sans-serif; font-size: 0.9rem; letter-spacing: 0.08em; color: rgba(255,255,255,0.45); margin-bottom: 2rem; max-width: 420px; margin-left: auto; margin-right: auto; }
 .cta-btn { display: inline-block; font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: #111111; background: #F5F2EC; padding: 1rem 2.5rem; text-decoration: none; }
-
 footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content: space-between; align-items: center; }
 .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 0.1em; color: #F5F2EC; text-decoration: none; }
 .footer-note { font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.25); }
-
 @media (max-width: 700px) {
   nav { padding: 1.2rem 1.5rem; }
   .journal-hero { padding: 3rem 1.5rem 2.5rem; }
@@ -69,17 +55,16 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
   footer { flex-direction: column; gap: 0.8rem; padding: 2rem 1.5rem; }
 }
 </style>
-  <!-- Open Graph / Social -->
-  <meta property="og:type"        content="website">
-  <meta property="og:url"         content="https://www.hebrahair.com/journal.html">
-  <meta property="og:title"       content="Hair Intelligence Journal | Hebra">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.hebrahair.com/journal.html">
+  <meta property="og:title" content="Hair Intelligence Journal | Hebra">
   <meta property="og:description" content="Real answers to the questions you have been Googling at midnight, written by people who have been there, explained by science.">
-  <meta property="og:image"       content="https://res.cloudinary.com/dgkacltrs/image/upload/v1773581261/woman-getting-hair-loss-treatment-clinic_aidalo.jpg">
-  <meta property="og:site_name"   content="Hebra">
-  <meta name="twitter:card"        content="summary_large_image">
-  <meta name="twitter:title"       content="Hair Intelligence Journal | Hebra">
+  <meta property="og:image" content="https://res.cloudinary.com/dgkacltrs/image/upload/v1773581261/woman-getting-hair-loss-treatment-clinic_aidalo.jpg">
+  <meta property="og:site_name" content="Hebra">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Hair Intelligence Journal | Hebra">
   <meta name="twitter:description" content="Real answers to the questions you have been Googling at midnight, written by people who have been there, explained by science.">
-  <meta name="twitter:image"       content="https://res.cloudinary.com/dgkacltrs/image/upload/v1773581261/woman-getting-hair-loss-treatment-clinic_aidalo.jpg">
+  <meta name="twitter:image" content="https://res.cloudinary.com/dgkacltrs/image/upload/v1773581261/woman-getting-hair-loss-treatment-clinic_aidalo.jpg">
   <link rel="canonical" href="https://www.hebrahair.com/journal.html">
 </head>
 <body>
@@ -87,18 +72,13 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
   <a href="index.html" class="nav-logo">Hebra</a>
   <a href="scan.html" class="nav-cta">Begin Your Diagnosis</a>
 </nav>
-
 <div class="journal-hero">
   <p class="journal-label">Hebra — Hair Intelligence</p>
   <h1>Why is my hair<br>doing this?</h1>
   <p>Real answers to the questions you've been Googling at midnight — written by people who've been there, and explained by the science behind what you're actually seeing.</p>
 </div>
-
 <hr class="divider">
-
 <div class="articles-wrap">
-
-  <!-- Featured article -->
   <a href="hair-loss-article.html" class="article-featured">
     <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&q=80" alt="Hair loss" class="article-featured-img">
     <div class="article-featured-content">
@@ -108,10 +88,7 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
       <span class="article-read">Read →</span>
     </div>
   </a>
-
-  <!-- Article list -->
   <div class="articles-list">
-
     <a href="hair-dry-after-washing.html" class="article-row">
       <img src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=400&q=80" alt="Dry hair" class="article-row-img">
       <div class="article-row-content">
@@ -121,7 +98,6 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="hair-breaking-at-ends.html" class="article-row">
       <img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?w=400&q=80" alt="Hair breakage" class="article-row-img">
       <div class="article-row-content">
@@ -131,7 +107,6 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="scalp-itchy-at-night.html" class="article-row">
       <img src="https://images.unsplash.com/photo-1527799820374-87fbc4bcc42e?w=400&q=80" alt="Scalp itch" class="article-row-img">
       <div class="article-row-content">
@@ -141,7 +116,6 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="hair-frizzy-after-shower.html" class="article-row">
       <img src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=400&q=80" alt="Frizzy hair" class="article-row-img">
       <div class="article-row-content">
@@ -151,7 +125,6 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="hair-thinning-suddenly.html" class="article-row">
       <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400&q=80" alt="Hair thinning" class="article-row-img">
       <div class="article-row-content">
@@ -161,7 +134,6 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="why-does-my-hair-fall-out-more-at-the-same-time-every-year.html" class="article-row">
       <img src="https://res.cloudinary.com/dgkacltrs/image/upload/v1773581261/woman-getting-hair-loss-treatment-clinic_aidalo.jpg" alt="Seasonal hair shedding" class="article-row-img">
       <div class="article-row-content">
@@ -171,7 +143,6 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="why-does-my-hair-look-better-the-day-i-dont-wash-it.html" class="article-row">
       <img src="https://res.cloudinary.com/dgkacltrs/image/upload/v1773581440/portrait-woman-with-brush-hairdryer_pyrjuo.jpg" alt="Second day hair" class="article-row-img">
       <div class="article-row-content">
@@ -181,7 +152,6 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="why-is-my-hair-greasy-at-roots-but-dry-at-ends.html" class="article-row">
       <img src="https://res.cloudinary.com/dgkacltrs/image/upload/v1773581590/close-up-woman-with-tangles_tsbdkn.jpg" alt="Combination hair" class="article-row-img">
       <div class="article-row-content">
@@ -191,7 +161,6 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="why-does-my-hair-stop-growing-at-the-same-length.html" class="article-row">
       <img src="https://res.cloudinary.com/dgkacltrs/image/upload/v1773581451/brunette-hair-with-serum_php5rp.jpg" alt="Hair growth length" class="article-row-img">
       <div class="article-row-content">
@@ -201,7 +170,6 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="why-does-my-scalp-itch-after-washing-hair.html" class="article-row">
       <img src="https://res.cloudinary.com/dgkacltrs/image/upload/v1773581286/close-up-hair-with-dandruff_fokham.jpg" alt="Scalp itching after washing" class="article-row-img">
       <div class="article-row-content">
@@ -211,7 +179,6 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="why-is-my-hair-frizzy-after-shower.html" class="article-row">
       <img src="https://res.cloudinary.com/dgkacltrs/image/upload/v1774002907/pexels-gratisography-4614_u0yaee.jpg" alt="Frizzy hair after shower" class="article-row-img">
       <div class="article-row-content">
@@ -221,7 +188,6 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="itchy-scalp-at-night.html" class="article-row">
       <img src="https://res.cloudinary.com/dgkacltrs/image/upload/v1774002369/pexels-krivitskiy-4664650_cubgqo.jpg" alt="Itchy scalp at night" class="article-row-img">
       <div class="article-row-content">
@@ -231,7 +197,6 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="why-your-scalp-itches-at-night.html" class="article-row">
       <img src="https://res.cloudinary.com/dgkacltrs/image/upload/v1774002370/pexels-ron-lach-8511478_kkuyww.jpg" alt="Scalp itch fix fast" class="article-row-img">
       <div class="article-row-content">
@@ -241,7 +206,6 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="poofy-hair-after-shower.html" class="article-row">
       <img src="https://res.cloudinary.com/dgkacltrs/image/upload/v1774002912/pexels-karola-g-7320781_ridlhw.jpg" alt="Poofy hair after shower" class="article-row-img">
       <div class="article-row-content">
@@ -251,7 +215,6 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="how-to-get-rid-of-frizzy-hair-after-shower.html" class="article-row">
       <img src="https://res.cloudinary.com/dgkacltrs/image/upload/v1774262452/engin-akyurt-4du1ZBIscOM-unsplash_xe4os0.jpg" alt="Get rid of frizzy hair" class="article-row-img">
       <div class="article-row-content">
@@ -261,7 +224,6 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="why-does-my-hair-get-frizzy-when-it-dries.html" class="article-row">
       <img src="https://res.cloudinary.com/dgkacltrs/image/upload/v1774262419/kasia-serbin-UxcRjTtzLXw-unsplash_bbxisn.jpg" alt="Hair frizzy when drying" class="article-row-img">
       <div class="article-row-content">
@@ -271,7 +233,6 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="night-hair-routine-prevent-frizz-itchy-scalp.html" class="article-row">
       <img src="https://res.cloudinary.com/dgkacltrs/image/upload/v1774262451/quentin-mahe-DWb7mPRv_eM-unsplash_lb6zaz.jpg" alt="Night hair routine" class="article-row-img">
       <div class="article-row-content">
@@ -281,7 +242,6 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="why-is-my-hair-so-frizzy-in-humidity.html" class="article-row">
       <img src="https://res.cloudinary.com/dgkacltrs/image/upload/v1774262440/pexels-marina-zasorina-7486691_wmzgcg.jpg" alt="Frizzy hair in humidity" class="article-row-img">
       <div class="article-row-content">
@@ -291,9 +251,8 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="how-to-stop-hair-frizz-after-washing.html" class="article-row">
-      <img src="https://res.cloudinary.com/dgkacltrs/image/upload/w_400,q_auto,f_auto/v1774262426/miska-sage-V4xjCOmchjs-unsplash_tgfr2u.jpg" alt="Stop hair frizz after washing" class="article-row-img">
+      <img src="https://res.cloudinary.com/dgkacltrs/image/upload/w_400,q_auto,f_auto/v1774262426/miska-sage-V4xjCOmchJs-unsplash_tgfr2u.jpg" alt="Stop hair frizz after washing" class="article-row-img">
       <div class="article-row-content">
         <span class="article-tag">Frizz</span>
         <h2 class="article-title" style="font-size:1.4rem;">How to stop hair frizz after washing (what actually works)</h2>
@@ -301,7 +260,6 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="why-is-my-hair-frizzy-after-washing.html" class="article-row">
       <img src="https://res.cloudinary.com/dgkacltrs/image/upload/w_400,q_auto,f_auto/v1774277107/pexels-yankrukov-7020353_eikfxa.jpg" alt="Frizzy after washing" class="article-row-img">
       <div class="article-row-content">
@@ -311,7 +269,6 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="why-is-my-hair-frizzy-even-after-conditioning.html" class="article-row">
       <img src="https://res.cloudinary.com/dgkacltrs/image/upload/w_400,q_auto,f_auto/v1774277095/pexels-koolshooters-7142799_yquolo.jpg" alt="Frizzy even after conditioning" class="article-row-img">
       <div class="article-row-content">
@@ -321,7 +278,6 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="how-to-stop-frizzy-hair-for-good.html" class="article-row">
       <img src="https://res.cloudinary.com/dgkacltrs/image/upload/w_400,q_auto,f_auto/v1774277072/pexels-karola-g-8092943_wyhcnl.jpg" alt="Stop frizzy hair for good" class="article-row-img">
       <div class="article-row-content">
@@ -331,7 +287,6 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="why-does-my-head-itch-at-night.html" class="article-row">
       <img src="https://res.cloudinary.com/dgkacltrs/image/upload/w_400,q_auto,f_auto/v1774277077/pexels-olly-3807771_etvr5g.jpg" alt="Head itch at night" class="article-row-img">
       <div class="article-row-content">
@@ -341,7 +296,6 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="scalp-itch-at-night-what-your-body-is-telling-you.html" class="article-row">
       <img src="https://res.cloudinary.com/dgkacltrs/image/upload/w_400,q_auto,f_auto/v1774277071/pexels-alinaskazka-14730876_huxdmp.jpg" alt="Scalp itch at night signal" class="article-row-img">
       <div class="article-row-content">
@@ -351,7 +305,6 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="why-is-my-hair-still-frizzy-after-shower.html" class="article-row">
       <img src="https://res.cloudinary.com/dgkacltrs/image/upload/w_400,q_auto,f_auto/v1774277070/pexels-karola-g-5240713_ro85nx.jpg" alt="Still frizzy after shower" class="article-row-img">
       <div class="article-row-content">
@@ -361,7 +314,6 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="how-to-wash-hair-without-making-it-frizzy.html" class="article-row">
       <img src="https://res.cloudinary.com/dgkacltrs/image/upload/w_400,q_auto,f_auto/v1774277063/pexels-artempodrez-4783294_xlxua6.jpg" alt="How to wash hair without frizz" class="article-row-img">
       <div class="article-row-content">
@@ -371,7 +323,6 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="why-does-my-scalp-itch-more-in-winter.html" class="article-row">
       <img src="https://res.cloudinary.com/dgkacltrs/image/upload/w_400,q_auto,f_auto/v1774277065/pexels-54514172-7846881_n9k9vv.jpg" alt="Scalp itchy in winter" class="article-row-img">
       <div class="article-row-content">
@@ -381,7 +332,6 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="why-is-my-hair-frizzy-at-roots-but-straight-at-ends.html" class="article-row">
       <img src="https://res.cloudinary.com/dgkacltrs/image/upload/w_400,q_auto,f_auto/v1774277066/pexels-ailin-policano-2150264477-32787101_gx3gdk.jpg" alt="Frizzy roots straight ends" class="article-row-img">
       <div class="article-row-content">
@@ -391,7 +341,6 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
     <a href="how-long-does-it-take-for-hair-to-stop-being-frizzy.html" class="article-row">
       <img src="https://res.cloudinary.com/dgkacltrs/image/upload/w_400,q_auto,f_auto/v1774277067/pexels-foodie-factor-162291-566566_oew2eq.jpg" alt="How long to fix frizzy hair" class="article-row-img">
       <div class="article-row-content">
@@ -401,17 +350,33 @@ footer { background: #111111; padding: 2rem 4rem; display: flex; justify-content
         <span class="article-read">Read →</span>
       </div>
     </a>
-
+    <!-- NEW ARTICLES -->
+    <a href="greasy-roots-dry-ends.html" class="article-row">
+      <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&q=80" alt="Greasy roots dry ends" class="article-row-img">
+      <div class="article-row-content">
+        <span class="article-tag">Scalp & Ends</span>
+        <h2 class="article-title" style="font-size:1.4rem;">Greasy roots, dry ends.</h2>
+        <p class="article-excerpt">Your roots are oily by noon. Your ends are completely parched. It makes no sense — until you understand what's actually happening.</p>
+        <span class="article-read">Read →</span>
+      </div>
+    </a>
+    <a href="lost-my-hair-three-times.html" class="article-row">
+      <img src="https://res.cloudinary.com/dgkacltrs/image/upload/v1779969406/vii-nguyenn-zQyJSt3sl7E-unsplash_wy1qxm.jpg" alt="Hair loss recovery" class="article-row-img">
+      <div class="article-row-content">
+        <span class="article-tag">Hair Loss & Recovery</span>
+        <h2 class="article-title" style="font-size:1.4rem;">I lost my hair three times. Here's the routine that finally saved it.</h2>
+        <p class="article-excerpt">Chemical treatments, salon disasters, and three rounds of major hair loss. What I finally learned — and why this time feels different.</p>
+        <span class="article-read">Read →</span>
+      </div>
+    </a>
   </div>
 </div>
-
 <div class="cta-block">
   <p class="label">Hebra — Hair Intelligence</p>
   <h2>Ready to know what's<br>actually happening to your hair?</h2>
   <p>Upload three photos. Answer ten questions. Get a diagnosis built specifically for you — free.</p>
   <a href="scan.html" class="cta-btn">Begin My Diagnosis</a>
 </div>
-
 <footer>
   <a href="index.html" class="footer-logo">Hebra</a>
   <p class="footer-note">© 2026 Hebra. For informational purposes only.</p>
